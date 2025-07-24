@@ -152,7 +152,7 @@ const MultiBrainLanding = () => {
           <p className="text-xl md:text-2xl mb-8 text-muted-foreground max-w-3xl mx-auto leading-relaxed">Conectamos mentes brilhantes para acelerar o crescimento do seu negócio através de inteligência estratégica e investimento.</p>
           
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-12">
-            <Button variant="cyber" size="xl" className="animate-neural-pulse">
+            <Button variant="cyber" size="xl">
               <Sparkles className="mr-2" />
               Conectar ao Ecossistema
             </Button>
