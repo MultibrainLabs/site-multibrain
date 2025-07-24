@@ -64,6 +64,14 @@ const MultiBrainLanding = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   };
 
+  const scrollToPilares = () => {
+    document.getElementById('pilares')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  };
+
+  const scrollToConecte = () => {
+    document.getElementById('conecte-se')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  };
+
   useEffect(() => {
     scrollToBottom();
   }, [messages]);
@@ -152,11 +160,11 @@ const MultiBrainLanding = () => {
           <p className="text-xl md:text-2xl mb-8 text-muted-foreground max-w-3xl mx-auto leading-relaxed">Conectamos mentes brilhantes para acelerar o crescimento do seu negócio através de inteligência estratégica e investimento.</p>
           
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-12">
-            <Button variant="cyber" size="xl">
+            <Button variant="cyber" size="xl" onClick={scrollToConecte}>
               <Sparkles className="mr-2" />
               Conectar ao Ecossistema
             </Button>
-            <Button variant="neural" size="xl">
+            <Button variant="neural" size="xl" onClick={scrollToPilares}>
               <Brain className="mr-2" />
               Explorar Pilares
             </Button>
@@ -185,7 +193,7 @@ const MultiBrainLanding = () => {
       </section>
 
       {/* Pilares Section */}
-      <section className="py-20 px-4 relative">
+      <section id="pilares" className="py-20 px-4 relative">
         <div className="max-w-7xl mx-auto">
           <h2 className="text-5xl font-bold text-center mb-4 bg-gradient-accent bg-clip-text text-transparent">
             Nossos Pilares
@@ -244,7 +252,7 @@ const MultiBrainLanding = () => {
       </section>
 
       {/* Chat Section */}
-      <section className="py-20 px-4">
+      <section id="conecte-se" className="py-20 px-4">
         <div className="max-w-4xl mx-auto">
           <div className="text-center mb-12">
             <h2 className="text-4xl font-bold mb-4 bg-gradient-primary bg-clip-text text-transparent">
