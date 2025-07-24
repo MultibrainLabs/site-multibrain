@@ -82,7 +82,7 @@ const MultiBrainLanding = () => {
       setIsLoading(true);
 
       try {
-        const response = await fetch('https://n8n.wouw.online/webhook-test/c66a85a2-7fcd-4fb4-9111-4edc9d723847', {
+        const response = await fetch('https://webhook.wouw.online/webhook/c66a85a2-7fcd-4fb4-9111-4edc9d723847', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
