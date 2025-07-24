@@ -6,6 +6,9 @@ import { Textarea } from "@/components/ui/textarea";
 import { Brain, Zap, TrendingUp, Users, MessageCircle, Send, Sparkles, Rocket, Target, DollarSign, Loader2, Bot, User } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import heroImage from "@/assets/multibrain-hero.jpg";
+import expertLogo from "@/assets/expert-solucoes-logo.png";
+import linkobrasLogo from "@/assets/linkobras-logo.png";
+import huawLogo from "@/assets/huaw-logo.png";
 interface ChatMessage {
   id: string;
   type: 'user' | 'ai';
@@ -48,17 +51,20 @@ const MultiBrainLanding = () => {
     name: "Linkobras",
     type: "Investimento",
     description: "Marketplace de construção e reformas",
-    badge: "Investimento"
+    badge: "Investimento",
+    logo: linkobrasLogo
   }, {
     name: "Expert Soluções",
     type: "Advisor",
     description: "Empresa de incorporação imobiliária e construção",
-    badge: "Advisor"
+    badge: "Advisor",
+    logo: expertLogo
   }, {
     name: "Huaw",
     type: "Investimento, Smart Money",
     description: "Empresa de Consultoria de IA",
-    badge: "IA & Consultoria"
+    badge: "IA & Consultoria",
+    logo: huawLogo
   }];
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -233,6 +239,13 @@ const MultiBrainLanding = () => {
           <div className="grid md:grid-cols-3 gap-8">
             {empresas.map((empresa, index) => <Card key={index} className="group hover:scale-105 transition-all duration-300 bg-card/90 backdrop-blur-sm border-accent/30 hover:border-accent hover:shadow-glow-accent">
                 <CardHeader>
+                  <div className="flex items-center justify-center mb-4">
+                    <img 
+                      src={empresa.logo} 
+                      alt={`${empresa.name} logo`}
+                      className="h-16 w-auto object-contain"
+                    />
+                  </div>
                   <div className="flex items-center justify-between mb-2">
                     <CardTitle className="text-xl">{empresa.name}</CardTitle>
                     <Badge variant="secondary" className="bg-accent/20 text-accent border-accent/30">
