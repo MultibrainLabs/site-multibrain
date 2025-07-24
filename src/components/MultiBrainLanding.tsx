@@ -48,11 +48,23 @@ const MultiBrainLanding = () => {
     description: "Empresa de Consultoria de IA",
     badge: "IA & Consultoria"
   }];
-  const handleSendMessage = () => {
+  const handleSendMessage = async () => {
     if (chatMessage.trim()) {
-      // Aqui seria integrada a lógica de IA para avaliar a mensagem
-      console.log("Mensagem enviada:", chatMessage);
-      setChatMessage("");
+      try {
+        await fetch('https://n8n.wouw.online/webhook-test/c66a85a2-7fcd-4fb4-9111-4edc9d723847', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            message: chatMessage,
+            timestamp: new Date().toISOString()
+          })
+        });
+        setChatMessage("");
+      } catch (error) {
+        console.error("Erro ao enviar mensagem:", error);
+      }
     }
   };
   return <div className="min-h-screen bg-background text-foreground overflow-hidden">
