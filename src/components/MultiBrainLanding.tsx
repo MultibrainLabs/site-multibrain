@@ -1,12 +1,24 @@
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Textarea } from "@/components/ui/textarea";
-import { Brain, Zap, TrendingUp, Users, MessageCircle, Send, Sparkles, Rocket, Target, DollarSign } from "lucide-react";
+import { Brain, Zap, TrendingUp, Users, MessageCircle, Send, Sparkles, Rocket, Target, DollarSign, Loader2, Bot, User } from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
 import heroImage from "@/assets/multibrain-hero.jpg";
+interface ChatMessage {
+  id: string;
+  type: 'user' | 'ai';
+  content: string;
+  timestamp: Date;
+}
+
 const MultiBrainLanding = () => {
   const [chatMessage, setChatMessage] = useState("");
+  const [messages, setMessages] = useState<ChatMessage[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const messagesEndRef = useRef<HTMLDivElement>(null);
+  const { toast } = useToast();
   const pilares = [{
     icon: Brain,
     title: "Smart Money",
@@ -48,22 +60,69 @@ const MultiBrainLanding = () => {
     description: "Empresa de Consultoria de IA",
     badge: "IA & Consultoria"
   }];
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  };
+
+  useEffect(() => {
+    scrollToBottom();
+  }, [messages]);
+
   const handleSendMessage = async () => {
-    if (chatMessage.trim()) {
+    if (chatMessage.trim() && !isLoading) {
+      const userMessage: ChatMessage = {
+        id: Date.now().toString(),
+        type: 'user',
+        content: chatMessage.trim(),
+        timestamp: new Date()
+      };
+
+      setMessages(prev => [...prev, userMessage]);
+      setChatMessage("");
+      setIsLoading(true);
+
       try {
-        await fetch('https://n8n.wouw.online/webhook-test/c66a85a2-7fcd-4fb4-9111-4edc9d723847', {
+        const response = await fetch('https://n8n.wouw.online/webhook-test/c66a85a2-7fcd-4fb4-9111-4edc9d723847', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
           },
           body: JSON.stringify({
-            message: chatMessage,
+            message: userMessage.content,
             timestamp: new Date().toISOString()
           })
         });
-        setChatMessage("");
+
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        const data = await response.json();
+        
+        const aiMessage: ChatMessage = {
+          id: (Date.now() + 1).toString(),
+          type: 'ai',
+          content: data.output || data.message || "Obrigado pela sua mensagem! Entraremos em contato em breve.",
+          timestamp: new Date()
+        };
+
+        setMessages(prev => [...prev, aiMessage]);
+        
+        toast({
+          title: "Mensagem enviada!",
+          description: "Nossa IA processou sua solicitação.",
+        });
+
       } catch (error) {
         console.error("Erro ao enviar mensagem:", error);
+        
+        toast({
+          title: "Erro ao enviar mensagem",
+          description: "Tente novamente em alguns instantes.",
+          variant: "destructive",
+        });
+      } finally {
+        setIsLoading(false);
       }
     }
   };
@@ -207,12 +266,107 @@ const MultiBrainLanding = () => {
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
-              <Textarea placeholder="Ex: Preciso de investimento para minha startup de tecnologia, ou estou buscando mentoria para escalar meu negócio..." value={chatMessage} onChange={e => setChatMessage(e.target.value)} className="min-h-32 bg-background/50 border-primary/20 focus:border-primary" />
-              <div className="flex justify-end">
-                <Button onClick={handleSendMessage} variant="cyber" disabled={!chatMessage.trim()} className="min-w-32">
-                  <Send className="w-4 h-4 mr-2" />
-                  Enviar
-                </Button>
+              {/* Chat Messages */}
+              {messages.length > 0 && (
+                <div className="max-h-96 overflow-y-auto space-y-4 p-4 bg-background/30 rounded-lg border border-primary/10">
+                  {messages.map((message) => (
+                    <div
+                      key={message.id}
+                      className={`flex gap-3 ${message.type === 'user' ? 'justify-end' : 'justify-start'}`}
+                    >
+                      <div className={`flex gap-2 max-w-[80%] ${message.type === 'user' ? 'flex-row-reverse' : 'flex-row'}`}>
+                        <div className={`w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 ${
+                          message.type === 'user' 
+                            ? 'bg-primary text-primary-foreground' 
+                            : 'bg-accent text-accent-foreground'
+                        }`}>
+                          {message.type === 'user' ? (
+                            <User className="w-4 h-4" />
+                          ) : (
+                            <Bot className="w-4 h-4" />
+                          )}
+                        </div>
+                        <div className={`rounded-lg p-3 ${
+                          message.type === 'user' 
+                            ? 'bg-primary text-primary-foreground' 
+                            : 'bg-muted'
+                        }`}>
+                          <p className="text-sm leading-relaxed">{message.content}</p>
+                          <div className="text-xs opacity-70 mt-1">
+                            {message.timestamp.toLocaleTimeString('pt-BR', { 
+                              hour: '2-digit', 
+                              minute: '2-digit' 
+                            })}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                  {isLoading && (
+                    <div className="flex gap-3 justify-start">
+                      <div className="flex gap-2 max-w-[80%]">
+                        <div className="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 bg-accent text-accent-foreground">
+                          <Bot className="w-4 h-4" />
+                        </div>
+                        <div className="rounded-lg p-3 bg-muted">
+                          <div className="flex items-center gap-2">
+                            <Loader2 className="w-4 h-4 animate-spin" />
+                            <span className="text-sm">MultiBrain IA está analisando...</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+                  <div ref={messagesEndRef} />
+                </div>
+              )}
+              
+              <Textarea 
+                placeholder="Ex: Preciso de investimento para minha startup de tecnologia, ou estou buscando mentoria para escalar meu negócio..." 
+                value={chatMessage} 
+                onChange={e => setChatMessage(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' && !e.shiftKey) {
+                    e.preventDefault();
+                    handleSendMessage();
+                  }
+                }}
+                className="min-h-32 bg-background/50 border-primary/20 focus:border-primary" 
+                disabled={isLoading}
+              />
+              <div className="flex justify-between items-center">
+                <div className="text-xs text-muted-foreground">
+                  Pressione Enter para enviar, Shift+Enter para nova linha
+                </div>
+                <div className="flex gap-2">
+                  {messages.length > 0 && (
+                    <Button 
+                      variant="outline" 
+                      onClick={() => setMessages([])}
+                      size="sm"
+                    >
+                      Limpar Chat
+                    </Button>
+                  )}
+                  <Button 
+                    onClick={handleSendMessage} 
+                    variant="cyber" 
+                    disabled={!chatMessage.trim() || isLoading} 
+                    className="min-w-32"
+                  >
+                    {isLoading ? (
+                      <>
+                        <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                        Enviando...
+                      </>
+                    ) : (
+                      <>
+                        <Send className="w-4 h-4 mr-2" />
+                        Enviar
+                      </>
+                    )}
+                  </Button>
+                </div>
               </div>
             </CardContent>
           </Card>
