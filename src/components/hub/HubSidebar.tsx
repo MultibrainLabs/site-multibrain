@@ -1,5 +1,7 @@
 import { Home, BookOpen, Users, MessageCircle, Calendar, User, Settings, LogOut } from "lucide-react";
-import { NavLink, useLocation } from "react-router-dom";
+import { NavLink, useLocation, useNavigate } from "react-router-dom";
+import { useAuth } from "@/hooks/useAuth";
+import { useToast } from "@/hooks/use-toast";
 import {
   Sidebar,
   SidebarContent,
@@ -32,6 +34,9 @@ export function HubSidebar() {
   const { state } = useSidebar();
   const collapsed = state === "collapsed";
   const location = useLocation();
+  const navigate = useNavigate();
+  const { user, signOut } = useAuth();
+  const { toast } = useToast();
   const currentPath = location.pathname;
 
   const isActive = (path: string) => {
@@ -45,6 +50,23 @@ export function HubSidebar() {
     return isActive(path) 
       ? "bg-sidebar-accent text-sidebar-primary font-medium border-r-2 border-sidebar-primary" 
       : "hover:bg-sidebar-accent/50 text-sidebar-foreground";
+  };
+
+  const handleSignOut = async () => {
+    try {
+      await signOut();
+      toast({
+        title: "Logout realizado",
+        description: "Você foi desconectado com sucesso.",
+      });
+      navigate("/");
+    } catch (error) {
+      toast({
+        title: "Erro ao fazer logout",
+        description: "Tente novamente.",
+        variant: "destructive",
+      });
+    }
   };
 
   return (
@@ -110,15 +132,16 @@ export function HubSidebar() {
           {!collapsed && (
             <div className="flex items-center gap-3">
               <Avatar className="h-8 w-8">
-                <AvatarImage src="/placeholder-avatar.jpg" alt="User" />
-                <AvatarFallback className="bg-primary text-primary-foreground">U</AvatarFallback>
+                <AvatarFallback className="bg-primary text-primary-foreground">
+                  {user?.email?.charAt(0).toUpperCase() || "U"}
+                </AvatarFallback>
               </Avatar>
               <div className="flex-1 min-w-0">
                 <p className="text-sm font-medium text-sidebar-foreground truncate">
-                  João Silva
+                  {user?.user_metadata?.full_name || "Usuário"}
                 </p>
                 <p className="text-xs text-sidebar-foreground/70 truncate">
-                  joao@email.com
+                  {user?.email}
                 </p>
               </div>
             </div>
@@ -128,6 +151,8 @@ export function HubSidebar() {
             variant="ghost" 
             size={collapsed ? "icon" : "sm"}
             className="w-full text-sidebar-foreground hover:bg-sidebar-accent/50"
+            onClick={handleSignOut}
+            title="Sair"
           >
             <LogOut className="h-4 w-4" />
             {!collapsed && <span className="ml-2">Sair</span>}

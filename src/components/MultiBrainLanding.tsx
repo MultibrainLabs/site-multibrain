@@ -3,7 +3,9 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Textarea } from "@/components/ui/textarea";
-import { Brain, Zap, TrendingUp, Users, MessageCircle, Send, Sparkles, Rocket, Target, DollarSign, Loader2, Bot, User } from "lucide-react";
+import { Brain, Zap, TrendingUp, Users, MessageCircle, Send, Sparkles, Rocket, Target, DollarSign, Loader2, Bot, User, ArrowRight } from "lucide-react";
+import { Link } from "react-router-dom";
+import { useAuth } from "@/hooks/useAuth";
 import { useToast } from "@/hooks/use-toast";
 import heroImage from "@/assets/multibrain-hero.jpg";
 import expertLogo from "@/assets/expert-solucoes-logo.png";
@@ -22,6 +24,7 @@ const MultiBrainLanding = () => {
   const [isLoading, setIsLoading] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const { toast } = useToast();
+  const { user } = useAuth();
   const pilares = [{
     icon: Brain,
     title: "Smart Money",
@@ -166,10 +169,21 @@ const MultiBrainLanding = () => {
           <p className="text-xl md:text-2xl mb-8 text-muted-foreground max-w-3xl mx-auto leading-relaxed">Conectamos mentes brilhantes para acelerar o crescimento do seu negócio através de inteligência estratégica e investimento.</p>
           
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-12">
-            <Button variant="cyber" size="xl" onClick={scrollToConecte}>
-              <Sparkles className="mr-2" />
-              Conectar ao Ecossistema
-            </Button>
+            {user ? (
+              <Button variant="cyber" size="xl" asChild>
+                <Link to="/hub">
+                  <Sparkles className="mr-2" />
+                  Acessar Hub
+                </Link>
+              </Button>
+            ) : (
+              <Button variant="cyber" size="xl" asChild>
+                <Link to="/auth">
+                  <ArrowRight className="mr-2" />
+                  Entrar no Hub
+                </Link>
+              </Button>
+            )}
             <Button variant="neural" size="xl" onClick={scrollToPilares}>
               <Brain className="mr-2" />
               Explorar Pilares
