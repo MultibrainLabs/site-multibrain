@@ -41,6 +41,27 @@ export const useCreateCourse = () => {
 
     setLoading(true);
     try {
+      // Buscar categorias para validação se necessário
+      let categoryId = courseData.category_id;
+      
+      // Se category_id não é um UUID válido, buscar por nome
+      if (categoryId && !categoryId.match(/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i)) {
+        const { data: categories, error: categoryError } = await supabase
+          .from('course_categories')
+          .select('id')
+          .ilike('name', categoryId)
+          .limit(1);
+        
+        if (categoryError) {
+          console.error('Error fetching category:', categoryError);
+          categoryId = null;
+        } else if (categories && categories.length > 0) {
+          categoryId = categories[0].id;
+        } else {
+          categoryId = null;
+        }
+      }
+
       // Criar o curso
       const { data: course, error: courseError } = await supabase
         .from('courses')
@@ -48,7 +69,7 @@ export const useCreateCourse = () => {
           title: courseData.title,
           description: courseData.description,
           instructor_id: user.id,
-          category_id: courseData.category_id,
+          category_id: categoryId,
           price: courseData.price,
           duration_hours: courseData.duration_hours,
           level: courseData.level,

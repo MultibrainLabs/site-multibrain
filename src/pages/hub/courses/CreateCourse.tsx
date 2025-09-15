@@ -10,9 +10,11 @@ import { Badge } from "@/components/ui/badge";
 import { ArrowLeft, Youtube, Upload, Plus, Trash2 } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useCreateCourse, CourseLesson, CourseData } from "@/hooks/useCreateCourse";
+import { useCourseCategories } from "@/hooks/useCourseCategories";
 
 const CreateCourse = () => {
   const { saveCourse, loading } = useCreateCourse();
+  const { categories, loading: categoriesLoading } = useCourseCategories();
   const [lessons, setLessons] = useState<CourseLesson[]>([
     { id: 1, title: "", duration: "", type: "youtube", url: "" }
   ]);
@@ -108,11 +110,17 @@ const CreateCourse = () => {
                         <SelectValue placeholder="Selecione uma categoria" />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="tecnologia">Tecnologia</SelectItem>
-                        <SelectItem value="marketing">Marketing</SelectItem>
-                        <SelectItem value="empreendedorismo">Empreendedorismo</SelectItem>
-                        <SelectItem value="financas">Finanças</SelectItem>
-                        <SelectItem value="gestao">Gestão</SelectItem>
+                        {categoriesLoading ? (
+                          <SelectItem value="" disabled>Carregando categorias...</SelectItem>
+                        ) : categories.length > 0 ? (
+                          categories.map((category) => (
+                            <SelectItem key={category.id} value={category.id}>
+                              {category.name}
+                            </SelectItem>
+                          ))
+                        ) : (
+                          <SelectItem value="" disabled>Nenhuma categoria disponível</SelectItem>
+                        )}
                       </SelectContent>
                     </Select>
                   </div>

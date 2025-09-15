@@ -4,59 +4,51 @@ import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Heart, MessageCircle, Share2, Plus, TrendingUp, Users, Calendar } from "lucide-react";
 import { Link } from "react-router-dom";
+import { useCommunity } from "@/hooks/useCommunity";
+import { useAuth } from "@/hooks/useAuth";
+import { formatDistanceToNow } from "date-fns";
+import { ptBR } from "date-fns/locale";
+import { useMemo } from "react";
 
 const CommunityFeed = () => {
-  const posts = [
-    {
-      id: 1,
-      author: "Maria Silva",
-      avatar: "/placeholder-avatar.jpg",
-      role: "Empreendedora",
-      timestamp: "2h atrás",
-      content: "Acabei de implementar uma solução de IA para automatizar o atendimento da minha startup. Os resultados foram incríveis - 80% de redução no tempo de resposta! Alguém mais aqui já experimentou chatbots inteligentes?",
-      likes: 24,
-      comments: 8,
-      shares: 3,
-      tags: ["IA", "Automação", "Startup"]
-    },
-    {
-      id: 2,
-      author: "João Santos",
-      avatar: "/placeholder-avatar.jpg",
-      role: "Mentor",
-      timestamp: "4h atrás",
-      content: "💡 Dica do dia: A melhor forma de validar uma ideia de negócio é conversando com potenciais clientes, não criando funcionalidades. O feedback real vale mais que qualquer plano de negócios perfeito.",
-      likes: 45,
-      comments: 12,
-      shares: 8,
-      tags: ["Empreendedorismo", "Validação", "Dicas"]
-    },
-    {
-      id: 3,
-      author: "Ana Costa",
-      avatar: "/placeholder-avatar.jpg",
-      role: "Especialista em Marketing",
-      timestamp: "6h atrás",
-      content: "Estou organizando um grupo de estudos sobre Marketing Digital com IA. Quem tem interesse em participar? A ideia é nos reunirmos semanalmente para discutir cases práticos e trocar experiências.",
-      likes: 32,
-      comments: 15,
-      shares: 5,
-      tags: ["Marketing", "IA", "Grupo de Estudos"]
-    }
-  ];
+  const { posts, groups, loading } = useCommunity();
+  const { user } = useAuth();
 
-  const trendingTopics = [
-    { tag: "IA Generativa", posts: 45 },
-    { tag: "Startups", posts: 32 },
-    { tag: "Investimentos", posts: 28 },
-    { tag: "Marketing Digital", posts: 24 }
-  ];
+  // Calcula trending topics baseado nos posts reais
+  const trendingTopics = useMemo(() => {
+    const tagCounts: Record<string, number> = {};
+    
+    posts.forEach(post => {
+      // Extrai hashtags do conteúdo
+      const hashtags = post.content.match(/#\w+/g);
+      if (hashtags) {
+        hashtags.forEach(tag => {
+          const cleanTag = tag.substring(1);
+          tagCounts[cleanTag] = (tagCounts[cleanTag] || 0) + 1;
+        });
+      }
+    });
 
-  const suggestedGroups = [
-    { name: "Empreendedores IA", members: 234, category: "Tecnologia" },
-    { name: "Marketing Digital", members: 189, category: "Marketing" },
-    { name: "Investimentos", members: 156, category: "Finanças" }
-  ];
+    return Object.entries(tagCounts)
+      .sort(([, a], [, b]) => b - a)
+      .slice(0, 4)
+      .map(([tag, count]) => ({ tag, posts: count }));
+  }, [posts]);
+
+  const suggestedGroups = groups.slice(0, 3);
+
+  if (loading) {
+    return (
+      <div className="container mx-auto p-6">
+        <div className="flex items-center justify-center h-64">
+          <div className="text-center">
+            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto mb-4"></div>
+            <p className="text-muted-foreground">Carregando feed...</p>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="container mx-auto p-6">
@@ -90,22 +82,30 @@ const CommunityFeed = () => {
               </h3>
             </CardHeader>
             <CardContent className="space-y-3">
-              {suggestedGroups.map((group, index) => (
-                <div key={index} className="space-y-2">
-                  <div className="flex justify-between items-start">
-                    <div>
-                      <p className="font-medium text-sm">{group.name}</p>
-                      <p className="text-xs text-muted-foreground">{group.members} membros</p>
+              {suggestedGroups.length > 0 ? (
+                suggestedGroups.map((group) => (
+                  <div key={group.id} className="space-y-2">
+                    <div className="flex justify-between items-start">
+                      <div>
+                        <p className="font-medium text-sm">{group.name}</p>
+                        <p className="text-xs text-muted-foreground">{group.member_count} membros</p>
+                      </div>
+                      {group.category && (
+                        <Badge variant="outline" className="text-xs">
+                          {group.category}
+                        </Badge>
+                      )}
                     </div>
-                    <Badge variant="outline" className="text-xs">
-                      {group.category}
-                    </Badge>
+                    <Button size="sm" variant="outline" className="w-full">
+                      Participar
+                    </Button>
                   </div>
-                  <Button size="sm" variant="outline" className="w-full">
-                    Participar
-                  </Button>
-                </div>
-              ))}
+                ))
+              ) : (
+                <p className="text-xs text-muted-foreground text-center py-4">
+                  Nenhum grupo disponível
+                </p>
+              )}
             </CardContent>
           </Card>
         </div>
@@ -126,55 +126,81 @@ const CommunityFeed = () => {
           </div>
 
           {/* Posts */}
-          {posts.map((post) => (
-            <Card key={post.id} className="bg-card/50 backdrop-blur-sm">
-              <CardHeader>
-                <div className="flex items-start gap-3">
-                  <Avatar>
-                    <AvatarImage src={post.avatar} alt={post.author} />
-                    <AvatarFallback>{post.author.split(' ').map(n => n[0]).join('')}</AvatarFallback>
-                  </Avatar>
-                  <div className="flex-1">
-                    <div className="flex items-center gap-2">
-                      <h4 className="font-semibold">{post.author}</h4>
-                      <Badge variant="secondary" className="text-xs">
-                        {post.role}
-                      </Badge>
+          {posts.length > 0 ? (
+            posts.map((post) => {
+              const authorName = `${post.user?.first_name || ''} ${post.user?.last_name || ''}`.trim() || 'Usuário';
+              const timeAgo = formatDistanceToNow(new Date(post.created_at), { locale: ptBR, addSuffix: true });
+              
+              return (
+                <Card key={post.id} className="bg-card/50 backdrop-blur-sm">
+                  <CardHeader>
+                    <div className="flex items-start gap-3">
+                      <Avatar>
+                        <AvatarImage src={post.user?.avatar_url} alt={authorName} />
+                        <AvatarFallback>
+                          {authorName.split(' ').map(n => n[0]).join('').toUpperCase() || 'U'}
+                        </AvatarFallback>
+                      </Avatar>
+                      <div className="flex-1">
+                        <div className="flex items-center gap-2">
+                          <h4 className="font-semibold">{authorName}</h4>
+                          <Badge variant="secondary" className="text-xs">
+                            {post.post_type}
+                          </Badge>
+                        </div>
+                        <p className="text-sm text-muted-foreground">{timeAgo}</p>
+                      </div>
                     </div>
-                    <p className="text-sm text-muted-foreground">{post.timestamp}</p>
-                  </div>
-                </div>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <p className="text-sm leading-relaxed">{post.content}</p>
-                
-                <div className="flex flex-wrap gap-2">
-                  {post.tags.map((tag, index) => (
-                    <Badge key={index} variant="outline" className="text-xs">
-                      #{tag}
-                    </Badge>
-                  ))}
-                </div>
+                  </CardHeader>
+                  <CardContent className="space-y-4">
+                    <p className="text-sm leading-relaxed">{post.content}</p>
+                    
+                    {/* Extrai e exibe hashtags do conteúdo */}
+                    {(() => {
+                      const hashtags = post.content.match(/#\w+/g);
+                      return hashtags && hashtags.length > 0 ? (
+                        <div className="flex flex-wrap gap-2">
+                          {hashtags.map((tag, index) => (
+                            <Badge key={index} variant="outline" className="text-xs">
+                              {tag}
+                            </Badge>
+                          ))}
+                        </div>
+                      ) : null;
+                    })()}
 
-                <div className="flex items-center justify-between pt-4 border-t border-border/40">
-                  <div className="flex items-center gap-4">
-                    <Button variant="ghost" size="sm" className="gap-2">
-                      <Heart className="h-4 w-4" />
-                      {post.likes}
-                    </Button>
-                    <Button variant="ghost" size="sm" className="gap-2">
-                      <MessageCircle className="h-4 w-4" />
-                      {post.comments}
-                    </Button>
-                    <Button variant="ghost" size="sm" className="gap-2">
-                      <Share2 className="h-4 w-4" />
-                      {post.shares}
-                    </Button>
-                  </div>
-                </div>
+                    <div className="flex items-center justify-between pt-4 border-t border-border/40">
+                      <div className="flex items-center gap-4">
+                        <Button variant="ghost" size="sm" className="gap-2">
+                          <Heart className="h-4 w-4" />
+                          {post.likes_count}
+                        </Button>
+                        <Button variant="ghost" size="sm" className="gap-2">
+                          <MessageCircle className="h-4 w-4" />
+                          {post.comments_count}
+                        </Button>
+                        <Button variant="ghost" size="sm" className="gap-2">
+                          <Share2 className="h-4 w-4" />
+                          0
+                        </Button>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              );
+            })
+          ) : (
+            <Card className="bg-card/50 backdrop-blur-sm">
+              <CardContent className="text-center py-12">
+                <p className="text-muted-foreground mb-4">Nenhum post encontrado na comunidade.</p>
+                <Button asChild variant="outline">
+                  <Link to="/hub/community/create-post">
+                    Seja o primeiro a postar!
+                  </Link>
+                </Button>
               </CardContent>
             </Card>
-          ))}
+          )}
         </div>
 
         {/* Sidebar Direita */}
