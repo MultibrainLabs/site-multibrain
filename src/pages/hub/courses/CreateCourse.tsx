@@ -111,7 +111,9 @@ const CreateCourse = () => {
                       </SelectTrigger>
                       <SelectContent>
                         {categoriesLoading ? (
-                          <SelectItem value="" disabled>Carregando categorias...</SelectItem>
+                          <div className="px-2 py-1.5 text-sm text-muted-foreground">
+                            Carregando categorias...
+                          </div>
                         ) : categories.length > 0 ? (
                           categories.map((category) => (
                             <SelectItem key={category.id} value={category.id}>
@@ -119,7 +121,9 @@ const CreateCourse = () => {
                             </SelectItem>
                           ))
                         ) : (
-                          <SelectItem value="" disabled>Nenhuma categoria disponível</SelectItem>
+                          <div className="px-2 py-1.5 text-sm text-muted-foreground">
+                            Nenhuma categoria disponível
+                          </div>
                         )}
                       </SelectContent>
                     </Select>
