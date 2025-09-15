@@ -55,7 +55,7 @@ const FindMentors = () => {
                 <SelectValue placeholder="Área de Expertise" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="">Todas as áreas</SelectItem>
+                <SelectItem value="all">Todas as áreas</SelectItem>
                 <SelectItem value="ai">Inteligência Artificial</SelectItem>
                 <SelectItem value="marketing">Marketing Digital</SelectItem>
                 <SelectItem value="startups">Startups</SelectItem>
@@ -68,7 +68,7 @@ const FindMentors = () => {
                 <SelectValue placeholder="Faixa de Preço" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="">Qualquer preço</SelectItem>
+                <SelectItem value="any">Qualquer preço</SelectItem>
                 <SelectItem value="0-100">R$ 0 - R$ 100</SelectItem>
                 <SelectItem value="100-150">R$ 100 - R$ 150</SelectItem>
                 <SelectItem value="150-200">R$ 150 - R$ 200</SelectItem>
@@ -80,7 +80,7 @@ const FindMentors = () => {
                 <SelectValue placeholder="Disponibilidade" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="">Qualquer horário</SelectItem>
+                <SelectItem value="any">Qualquer horário</SelectItem>
                 <SelectItem value="today">Hoje</SelectItem>
                 <SelectItem value="tomorrow">Amanhã</SelectItem>
                 <SelectItem value="week">Esta semana</SelectItem>

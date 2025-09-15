@@ -32,9 +32,9 @@ export const useMentors = () => {
   const [loading, setLoading] = useState(true);
   const [filters, setFilters] = useState<MentorFilters>({
     search: '',
-    expertise: '',
-    priceRange: '',
-    availability: ''
+    expertise: 'all',
+    priceRange: 'any',
+    availability: 'any'
   });
 
   const fetchMentors = async () => {
@@ -83,7 +83,7 @@ export const useMentors = () => {
     }
 
     // Filtro de expertise
-    if (filters.expertise) {
+    if (filters.expertise && filters.expertise !== 'all') {
       filtered = filtered.filter(mentor => 
         mentor.specialties.some(specialty => 
           specialty.toLowerCase().includes(filters.expertise.toLowerCase())
@@ -92,7 +92,7 @@ export const useMentors = () => {
     }
 
     // Filtro de preço
-    if (filters.priceRange) {
+    if (filters.priceRange && filters.priceRange !== 'any') {
       filtered = filtered.filter(mentor => {
         if (!mentor.hourly_rate) return false;
         
