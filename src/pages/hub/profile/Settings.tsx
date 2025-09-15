@@ -1,3 +1,4 @@
+import { useState, useEffect } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -6,10 +7,62 @@ import { Textarea } from "@/components/ui/textarea";
 import { Switch } from "@/components/ui/switch";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Separator } from "@/components/ui/separator";
-import { ArrowLeft, Bell, Shield, User, Palette } from "lucide-react";
+import { ArrowLeft, Bell, Shield, User, Palette, Save, Instagram, Linkedin, Globe } from "lucide-react";
 import { Link } from "react-router-dom";
+import { useProfile } from "@/hooks/useProfile";
+import { useToast } from "@/hooks/use-toast";
 
 const Settings = () => {
+  const { profile, loading, updateProfile } = useProfile();
+  const { toast } = useToast();
+  
+  const [formData, setFormData] = useState({
+    first_name: "",
+    last_name: "",
+    bio: "",
+    location: "",
+    instagram_url: "",
+    linkedin_url: "",
+    website_url: "",
+  });
+
+  useEffect(() => {
+    if (profile) {
+      setFormData({
+        first_name: profile.first_name || "",
+        last_name: profile.last_name || "",
+        bio: profile.bio || "",
+        location: profile.location || "",
+        instagram_url: profile.instagram_url || "",
+        linkedin_url: profile.linkedin_url || "",
+        website_url: profile.website_url || "",
+      });
+    }
+  }, [profile]);
+
+  const handleSave = async () => {
+    const success = await updateProfile(formData);
+    if (success) {
+      toast({
+        title: "Configurações salvas",
+        description: "Suas configurações foram atualizadas com sucesso.",
+      });
+    }
+  };
+
+  if (loading) {
+    return (
+      <div className="container mx-auto p-6">
+        <div className="max-w-2xl mx-auto">
+          <div className="animate-pulse space-y-4">
+            <div className="h-8 bg-muted rounded w-48"></div>
+            <div className="h-96 bg-muted rounded"></div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="container mx-auto p-6">
       <div className="max-w-2xl mx-auto space-y-8">
@@ -40,40 +93,94 @@ const Settings = () => {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="space-y-2">
                 <Label htmlFor="firstName">Nome</Label>
-                <Input id="firstName" defaultValue="João" />
+                <Input 
+                  id="firstName" 
+                  value={formData.first_name}
+                  onChange={(e) => setFormData({...formData, first_name: e.target.value})}
+                />
               </div>
               <div className="space-y-2">
                 <Label htmlFor="lastName">Sobrenome</Label>
-                <Input id="lastName" defaultValue="Silva" />
+                <Input 
+                  id="lastName" 
+                  value={formData.last_name}
+                  onChange={(e) => setFormData({...formData, last_name: e.target.value})}
+                />
               </div>
-            </div>
-            
-            <div className="space-y-2">
-              <Label htmlFor="email">E-mail</Label>
-              <Input id="email" type="email" defaultValue="joao@email.com" />
             </div>
             
             <div className="space-y-2">
               <Label htmlFor="bio">Bio</Label>
               <Textarea 
                 id="bio" 
-                defaultValue="Empreendedor apaixonado por tecnologia e inovação. Fundador de uma startup de IA aplicada ao agronegócio."
+                value={formData.bio}
+                onChange={(e) => setFormData({...formData, bio: e.target.value})}
+                placeholder="Conte um pouco sobre você..."
                 rows={3}
               />
             </div>
             
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div className="space-y-2">
-                <Label htmlFor="location">Localização</Label>
-                <Input id="location" defaultValue="São Paulo, SP" />
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="title">Título Profissional</Label>
-                <Input id="title" defaultValue="Empreendedor" />
+            <div className="space-y-2">
+              <Label htmlFor="location">Localização</Label>
+              <Input 
+                id="location" 
+                value={formData.location}
+                onChange={(e) => setFormData({...formData, location: e.target.value})}
+                placeholder="Cidade, Estado"
+              />
+            </div>
+            
+            <Separator />
+            
+            <div className="space-y-4">
+              <h4 className="text-sm font-medium flex items-center gap-2">
+                <Globe className="h-4 w-4" />
+                Redes Sociais
+              </h4>
+              <div className="space-y-3">
+                <div className="space-y-2">
+                  <Label htmlFor="instagram" className="flex items-center gap-2">
+                    <Instagram className="h-4 w-4" />
+                    Instagram
+                  </Label>
+                  <Input
+                    id="instagram"
+                    value={formData.instagram_url}
+                    onChange={(e) => setFormData({...formData, instagram_url: e.target.value})}
+                    placeholder="https://instagram.com/seuusuario"
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="linkedin" className="flex items-center gap-2">
+                    <Linkedin className="h-4 w-4" />
+                    LinkedIn
+                  </Label>
+                  <Input
+                    id="linkedin"
+                    value={formData.linkedin_url}
+                    onChange={(e) => setFormData({...formData, linkedin_url: e.target.value})}
+                    placeholder="https://linkedin.com/in/seuusuario"
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="website" className="flex items-center gap-2">
+                    <Globe className="h-4 w-4" />
+                    Website
+                  </Label>
+                  <Input
+                    id="website"
+                    value={formData.website_url}
+                    onChange={(e) => setFormData({...formData, website_url: e.target.value})}
+                    placeholder="https://seusite.com"
+                  />
+                </div>
               </div>
             </div>
             
-            <Button>Salvar Alterações</Button>
+            <Button onClick={handleSave} disabled={loading} className="w-full">
+              <Save className="mr-2 h-4 w-4" />
+              {loading ? "Salvando..." : "Salvar Alterações"}
+            </Button>
           </CardContent>
         </Card>
 
