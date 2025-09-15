@@ -169,9 +169,9 @@ const CreateCourse = () => {
                         <SelectValue placeholder="Selecione o nível" />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="iniciante">Iniciante</SelectItem>
-                        <SelectItem value="intermediario">Intermediário</SelectItem>
-                        <SelectItem value="avancado">Avançado</SelectItem>
+                        <SelectItem value="Iniciante">Iniciante</SelectItem>
+                        <SelectItem value="Intermediário">Intermediário</SelectItem>
+                        <SelectItem value="Avançado">Avançado</SelectItem>
                       </SelectContent>
                     </Select>
                   </div>
