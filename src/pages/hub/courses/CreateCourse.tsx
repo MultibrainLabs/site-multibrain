@@ -9,18 +9,30 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
 import { ArrowLeft, Youtube, Upload, Plus, Trash2 } from "lucide-react";
 import { Link } from "react-router-dom";
+import { useCreateCourse, CourseLesson, CourseData } from "@/hooks/useCreateCourse";
 
 const CreateCourse = () => {
-  const [lessons, setLessons] = useState([
+  const { saveCourse, loading } = useCreateCourse();
+  const [lessons, setLessons] = useState<CourseLesson[]>([
     { id: 1, title: "", duration: "", type: "youtube", url: "" }
   ]);
+  
+  // Form state
+  const [courseData, setCourseData] = useState<CourseData>({
+    title: "",
+    description: "",
+    category_id: "",
+    price: 0,
+    duration_hours: 0,
+    level: ""
+  });
 
   const addLesson = () => {
-    const newLesson = {
+    const newLesson: CourseLesson = {
       id: Date.now(),
       title: "",
       duration: "",
-      type: "youtube",
+      type: "youtube" as const,
       url: ""
     };
     setLessons([...lessons, newLesson]);
@@ -34,6 +46,18 @@ const CreateCourse = () => {
     setLessons(lessons.map(lesson => 
       lesson.id === id ? { ...lesson, [field]: value } : lesson
     ));
+  };
+
+  const updateCourseData = (field: keyof CourseData, value: string | number) => {
+    setCourseData(prev => ({ ...prev, [field]: value }));
+  };
+
+  const handleSaveDraft = () => {
+    saveCourse(courseData, lessons, false);
+  };
+
+  const handlePublish = () => {
+    saveCourse(courseData, lessons, true);
   };
 
   return (
@@ -70,11 +94,16 @@ const CreateCourse = () => {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div className="space-y-2">
                     <Label htmlFor="title">Título do Curso</Label>
-                    <Input id="title" placeholder="Ex: IA para Negócios" />
+                    <Input 
+                      id="title" 
+                      placeholder="Ex: IA para Negócios" 
+                      value={courseData.title}
+                      onChange={(e) => updateCourseData('title', e.target.value)}
+                    />
                   </div>
                   <div className="space-y-2">
                     <Label htmlFor="category">Categoria</Label>
-                    <Select>
+                    <Select value={courseData.category_id} onValueChange={(value) => updateCourseData('category_id', value)}>
                       <SelectTrigger>
                         <SelectValue placeholder="Selecione uma categoria" />
                       </SelectTrigger>
@@ -95,21 +124,35 @@ const CreateCourse = () => {
                     id="description" 
                     placeholder="Descreva o que os alunos vão aprender neste curso..."
                     rows={4}
+                    value={courseData.description}
+                    onChange={(e) => updateCourseData('description', e.target.value)}
                   />
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                   <div className="space-y-2">
                     <Label htmlFor="price">Preço (R$)</Label>
-                    <Input id="price" type="number" placeholder="199" />
+                    <Input 
+                      id="price" 
+                      type="number" 
+                      placeholder="199" 
+                      value={courseData.price}
+                      onChange={(e) => updateCourseData('price', Number(e.target.value))}
+                    />
                   </div>
                   <div className="space-y-2">
-                    <Label htmlFor="duration">Duração Total</Label>
-                    <Input id="duration" placeholder="Ex: 4h 30min" />
+                    <Label htmlFor="duration">Duração Total (horas)</Label>
+                    <Input 
+                      id="duration" 
+                      type="number" 
+                      placeholder="4.5" 
+                      value={courseData.duration_hours}
+                      onChange={(e) => updateCourseData('duration_hours', Number(e.target.value))}
+                    />
                   </div>
                   <div className="space-y-2">
                     <Label htmlFor="level">Nível</Label>
-                    <Select>
+                    <Select value={courseData.level} onValueChange={(value) => updateCourseData('level', value)}>
                       <SelectTrigger>
                         <SelectValue placeholder="Selecione o nível" />
                       </SelectTrigger>
@@ -269,11 +312,20 @@ const CreateCourse = () => {
                 </div>
 
                 <div className="flex gap-4 pt-4">
-                  <Button variant="outline" className="flex-1">
-                    Salvar como Rascunho
+                  <Button 
+                    variant="outline" 
+                    className="flex-1"
+                    onClick={handleSaveDraft}
+                    disabled={loading}
+                  >
+                    {loading ? "Salvando..." : "Salvar como Rascunho"}
                   </Button>
-                  <Button className="flex-1">
-                    Publicar Curso
+                  <Button 
+                    className="flex-1"
+                    onClick={handlePublish}
+                    disabled={loading}
+                  >
+                    {loading ? "Publicando..." : "Publicar Curso"}
                   </Button>
                 </div>
               </CardContent>

@@ -8,11 +8,22 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Badge } from "@/components/ui/badge";
 import { ArrowLeft, Image, Link as LinkIcon, X } from "lucide-react";
 import { Link } from "react-router-dom";
+import { useCreatePost, PostData } from "@/hooks/useCreatePost";
 
 const CreatePost = () => {
+  const { savePost, loading } = useCreatePost();
   const [postType, setPostType] = useState("discussion");
   const [tags, setTags] = useState<string[]>([]);
   const [newTag, setNewTag] = useState("");
+  
+  // Form state
+  const [postData, setPostData] = useState<PostData>({
+    title: "",
+    content: "",
+    post_type: "discussion",
+    tags: [],
+    visibility: "public"
+  });
 
   const addTag = () => {
     if (newTag.trim() && !tags.includes(newTag.trim())) {
@@ -30,6 +41,20 @@ const CreatePost = () => {
       e.preventDefault();
       addTag();
     }
+  };
+
+  const updatePostData = (field: keyof PostData, value: string | string[]) => {
+    setPostData(prev => ({ ...prev, [field]: value }));
+  };
+
+  const handleSaveDraft = () => {
+    const finalPostData = { ...postData, tags, post_type: postType };
+    savePost(finalPostData, false);
+  };
+
+  const handlePublish = () => {
+    const finalPostData = { ...postData, tags, post_type: postType };
+    savePost(finalPostData, true);
   };
 
   return (
@@ -104,6 +129,8 @@ const CreatePost = () => {
                   postType === 'event' ? 'Workshop: IA para Iniciantes' :
                   'Vamos discutir sobre...'
                 }
+                value={postData.title}
+                onChange={(e) => updatePostData('title', e.target.value)}
               />
             </div>
 
@@ -125,6 +152,8 @@ const CreatePost = () => {
                   postType === 'event' ? 'Data, horário, local e como participar...' :
                   'Compartilhe seus pensamentos, experiências ou insights...'
                 }
+                value={postData.content}
+                onChange={(e) => updatePostData('content', e.target.value)}
               />
             </div>
 
@@ -136,6 +165,8 @@ const CreatePost = () => {
                   id="resource-link" 
                   placeholder="https://exemplo.com/ferramenta"
                   type="url"
+                  value={postData.resource_link || ""}
+                  onChange={(e) => updatePostData('resource_link', e.target.value)}
                 />
               </div>
             )}
@@ -190,7 +221,7 @@ const CreatePost = () => {
             {/* Opções de Privacidade */}
             <div className="space-y-2">
               <Label>Visibilidade</Label>
-              <Select defaultValue="public">
+              <Select value={postData.visibility} onValueChange={(value) => updatePostData('visibility', value)}>
                 <SelectTrigger>
                   <SelectValue />
                 </SelectTrigger>
@@ -204,11 +235,20 @@ const CreatePost = () => {
 
             {/* Ações */}
             <div className="flex gap-4 pt-4">
-              <Button variant="outline" className="flex-1">
-                Salvar como Rascunho
+              <Button 
+                variant="outline" 
+                className="flex-1"
+                onClick={handleSaveDraft}
+                disabled={loading}
+              >
+                {loading ? "Salvando..." : "Salvar como Rascunho"}
               </Button>
-              <Button className="flex-1">
-                Publicar
+              <Button 
+                className="flex-1"
+                onClick={handlePublish}
+                disabled={loading}
+              >
+                {loading ? "Publicando..." : "Publicar"}
               </Button>
             </div>
           </CardContent>
