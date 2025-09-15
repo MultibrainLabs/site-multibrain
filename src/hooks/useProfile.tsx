@@ -9,7 +9,7 @@ export interface Profile {
   last_name?: string;
   bio?: string;
   location?: string;
-  role?: string;
+  role?: 'admin' | 'moderator' | 'instructor' | 'user';
   instagram_url?: string;
   linkedin_url?: string;
   website_url?: string;

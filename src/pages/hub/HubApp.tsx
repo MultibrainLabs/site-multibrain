@@ -6,6 +6,7 @@ import CoursesRoutes from "./courses/CoursesRoutes";
 import CommunityRoutes from "./community/CommunityRoutes";
 import MentorshipRoutes from "./mentorship/MentorshipRoutes";
 import ProfileRoutes from "./profile/ProfileRoutes";
+import AdminRoutes from "./admin/AdminRoutes";
 
 const HubApp = () => {
   return (
@@ -18,6 +19,7 @@ const HubApp = () => {
             <Route path="/community/*" element={<CommunityRoutes />} />
             <Route path="/mentorship/*" element={<MentorshipRoutes />} />
             <Route path="/profile/*" element={<ProfileRoutes />} />
+            <Route path="/admin/*" element={<AdminRoutes />} />
           </Routes>
         </HubLayout>
       </div>

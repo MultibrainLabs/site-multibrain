@@ -1,7 +1,8 @@
-import { Home, BookOpen, Users, MessageCircle, Calendar, User, Settings, LogOut } from "lucide-react";
+import { Home, BookOpen, Users, MessageCircle, Calendar, User, Settings, LogOut, Shield } from "lucide-react";
 import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
 import { useToast } from "@/hooks/use-toast";
+import { useAdmin } from "@/hooks/useAdmin";
 import {
   Sidebar,
   SidebarContent,
@@ -25,9 +26,10 @@ const mainNavItems = [
   { title: "Mentoria", url: "/hub/mentorship", icon: Calendar },
 ];
 
-const secondaryNavItems = [
+const getSecondaryNavItems = (isAdmin: boolean) => [
   { title: "Perfil", url: "/hub/profile", icon: User },
-  { title: "Configurações", url: "/hub/settings", icon: Settings },
+  { title: "Configurações", url: "/hub/profile/settings", icon: Settings },
+  ...(isAdmin ? [{ title: "Admin", url: "/hub/admin", icon: Shield }] : []),
 ];
 
 export function HubSidebar() {
@@ -37,7 +39,10 @@ export function HubSidebar() {
   const navigate = useNavigate();
   const { user, signOut } = useAuth();
   const { toast } = useToast();
+  const { isAdmin } = useAdmin();
   const currentPath = location.pathname;
+  
+  const secondaryNavItems = getSecondaryNavItems(isAdmin);
 
   const isActive = (path: string) => {
     if (path === "/hub") {
