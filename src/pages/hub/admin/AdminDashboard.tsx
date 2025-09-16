@@ -1,6 +1,8 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
 import { useAdmin } from "@/hooks/useAdmin";
-import { Users, BookOpen, MessageSquare, Calendar, TrendingUp } from "lucide-react";
+import { Users, BookOpen, MessageSquare, Calendar, TrendingUp, Settings, UserCog } from "lucide-react";
+import { Link } from "react-router-dom";
 
 const AdminDashboard = () => {
   const { stats } = useAdmin();
@@ -60,6 +62,38 @@ const AdminDashboard = () => {
           </Card>
         ))}
       </div>
+
+      {/* Ações Administrativas */}
+      <Card>
+        <CardHeader>
+          <CardTitle>Ações Administrativas</CardTitle>
+          <CardDescription>
+            Acesso rápido às principais funcionalidades administrativas
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <Button asChild variant="outline" className="h-20 flex flex-col gap-2">
+              <Link to="/hub/admin/users">
+                <UserCog className="h-6 w-6" />
+                <span>Gerenciar Usuários</span>
+              </Link>
+            </Button>
+            <Button asChild variant="outline" className="h-20 flex flex-col gap-2">
+              <Link to="/hub/admin/courses">
+                <BookOpen className="h-6 w-6" />
+                <span>Gerenciar Cursos</span>
+              </Link>
+            </Button>
+            <Button asChild variant="outline" className="h-20 flex flex-col gap-2">
+              <Link to="/hub/admin">
+                <Settings className="h-6 w-6" />
+                <span>Configurações</span>
+              </Link>
+            </Button>
+          </div>
+        </CardContent>
+      </Card>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <Card>

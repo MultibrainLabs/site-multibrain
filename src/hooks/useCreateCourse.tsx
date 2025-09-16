@@ -83,15 +83,26 @@ export const useCreateCourse = () => {
 
       // Criar as aulas
       if (lessons.length > 0) {
-        const lessonsData = lessons.map((lesson, index) => ({
-          course_id: course.id,
-          title: lesson.title,
-          content: lesson.content || '',
-          video_url: lesson.url,
-          duration_minutes: parseInt(lesson.duration) || 0,
-          order_index: index + 1,
-          is_preview: index === 0 // Primeira aula como preview
-        }));
+        const lessonsData = lessons.map((lesson, index) => {
+          // Parse duration from string like "15min" to number
+          let durationMinutes = 0;
+          if (lesson.duration) {
+            const match = lesson.duration.match(/(\d+)/);
+            if (match) {
+              durationMinutes = parseInt(match[1]);
+            }
+          }
+
+          return {
+            course_id: course.id,
+            title: lesson.title,
+            content: lesson.content || '',
+            video_url: lesson.url,
+            duration_minutes: durationMinutes,
+            order_index: index + 1,
+            is_preview: index === 0 // Primeira aula como preview
+          };
+        });
 
         const { error: lessonsError } = await supabase
           .from('course_lessons')
