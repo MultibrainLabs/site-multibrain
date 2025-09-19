@@ -371,6 +371,90 @@ export type Database = {
           },
         ]
       }
+      event_participants: {
+        Row: {
+          attended: boolean | null
+          event_id: string
+          id: string
+          registered_at: string
+          user_id: string
+        }
+        Insert: {
+          attended?: boolean | null
+          event_id: string
+          id?: string
+          registered_at?: string
+          user_id: string
+        }
+        Update: {
+          attended?: boolean | null
+          event_id?: string
+          id?: string
+          registered_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      events: {
+        Row: {
+          address: string | null
+          city: string | null
+          country: string | null
+          created_at: string
+          creator_id: string
+          description: string | null
+          end_date: string
+          event_type: Database["public"]["Enums"]["event_type"]
+          id: string
+          is_published: boolean | null
+          location: string | null
+          max_participants: number | null
+          meeting_url: string | null
+          start_date: string
+          state: string | null
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          address?: string | null
+          city?: string | null
+          country?: string | null
+          created_at?: string
+          creator_id: string
+          description?: string | null
+          end_date: string
+          event_type: Database["public"]["Enums"]["event_type"]
+          id?: string
+          is_published?: boolean | null
+          location?: string | null
+          max_participants?: number | null
+          meeting_url?: string | null
+          start_date: string
+          state?: string | null
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          address?: string | null
+          city?: string | null
+          country?: string | null
+          created_at?: string
+          creator_id?: string
+          description?: string | null
+          end_date?: string
+          event_type?: Database["public"]["Enums"]["event_type"]
+          id?: string
+          is_published?: boolean | null
+          location?: string | null
+          max_participants?: number | null
+          meeting_url?: string | null
+          start_date?: string
+          state?: string | null
+          title?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       mentor_profiles: {
         Row: {
           availability: string | null
@@ -498,6 +582,75 @@ export type Database = {
             referencedColumns: ["user_id"]
           },
         ]
+      }
+      post_comments: {
+        Row: {
+          content: string
+          created_at: string
+          id: string
+          post_id: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          content: string
+          created_at?: string
+          id?: string
+          post_id: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          content?: string
+          created_at?: string
+          id?: string
+          post_id?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      post_likes: {
+        Row: {
+          created_at: string
+          id: string
+          post_id: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          post_id: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          post_id?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      post_shares: {
+        Row: {
+          created_at: string
+          id: string
+          post_id: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          post_id: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          post_id?: string
+          user_id?: string
+        }
+        Relationships: []
       }
       profiles: {
         Row: {
@@ -675,6 +828,7 @@ export type Database = {
       }
     }
     Enums: {
+      event_type: "online" | "presencial"
       user_role: "admin" | "moderator" | "instructor" | "user"
     }
     CompositeTypes: {
@@ -803,6 +957,7 @@ export type CompositeTypes<
 export const Constants = {
   public: {
     Enums: {
+      event_type: ["online", "presencial"],
       user_role: ["admin", "moderator", "instructor", "user"],
     },
   },
