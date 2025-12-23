@@ -87,6 +87,7 @@ const portfolioData = {
     products: [
       { name: "CopyBuilder", desc: "Estúdio de copywriting com IA (Claude integrada)" },
       { name: "PIPO/Dualis", desc: "Chatbot com múltiplas personalidades de IA" },
+      { name: "LinkAgente", desc: "Assistente conversacional para agentes e corretores" },
     ],
   },
   Healthtech: {
@@ -109,14 +110,19 @@ const portfolioData = {
     color: "text-sky-400",
     products: [{ name: "AutoStacker", desc: "Automação de infraestrutura e DevOps" }],
   },
-  "Construtech / Govtech / Franchisetech": {
+  "Construtech / Franchisetech": {
     icon: HardHat,
     color: "text-electric-orange",
     products: [
       { name: "LinkObras", desc: "Gestão de obras e construção" },
-      { name: "LinkAgente", desc: "CRM para agentes e corretores" },
-      { name: "LinkLicita", desc: "Gestão de licitações públicas" },
       { name: "Expert Franquias", desc: "Gestão de franquias" },
+    ],
+  },
+  "Govtech": {
+    icon: Building2,
+    color: "text-cyan-400",
+    products: [
+      { name: "LinkLicita", desc: "Gestão de licitações públicas" },
     ],
   },
 };
@@ -884,22 +890,15 @@ const Home = () => {
               <span className="text-xl font-bold">MultiBrain</span>
             </div>
 
-            <div className="flex flex-col sm:flex-row gap-6 text-center sm:text-left">
-              <a
-                href="tel:+5551993410110"
-                className="flex items-center gap-2 text-muted-foreground hover:text-primary transition-colors"
-              >
-                <Phone className="w-4 h-4" />
-                +55 51 993410110
-              </a>
-              <a
-                href="mailto:charles@multibrain.com.br"
-                className="flex items-center gap-2 text-muted-foreground hover:text-primary transition-colors"
-              >
-                <Mail className="w-4 h-4" />
-                charles@multibrain.com.br
-              </a>
-            </div>
+            <Button 
+              variant="ghost" 
+              size="sm" 
+              onClick={scrollToForm} 
+              className="text-muted-foreground hover:text-primary"
+            >
+              <MessageSquare className="w-4 h-4 mr-2" />
+              Entre em Contato
+            </Button>
           </div>
 
           <div className="mt-8 pt-8 border-t border-border/50 text-center">
