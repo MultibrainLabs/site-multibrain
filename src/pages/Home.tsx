@@ -1,19 +1,18 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { 
-  Brain, 
-  Rocket, 
-  Code, 
-  TrendingUp, 
-  Users, 
-  Zap, 
-  Target, 
+import {
+  Brain,
+  Rocket,
+  Code,
+  TrendingUp,
+  Users,
+  Zap,
+  Target,
   Shield,
   Clock,
   DollarSign,
@@ -36,7 +35,7 @@ import {
   Sparkles,
   Globe,
   Calendar,
-  Cloud
+  Cloud,
 } from "lucide-react";
 
 // Animated counter component
@@ -48,7 +47,7 @@ const AnimatedCounter = ({ end, suffix = "", prefix = "" }: { end: number; suffi
     const steps = 60;
     const increment = end / steps;
     let current = 0;
-    
+
     const timer = setInterval(() => {
       current += increment;
       if (current >= end) {
@@ -62,7 +61,13 @@ const AnimatedCounter = ({ end, suffix = "", prefix = "" }: { end: number; suffi
     return () => clearInterval(timer);
   }, [end]);
 
-  return <span>{prefix}{count}{suffix}</span>;
+  return (
+    <span>
+      {prefix}
+      {count}
+      {suffix}
+    </span>
+  );
 };
 
 // Portfolio data organized by vertical
@@ -74,7 +79,7 @@ const portfolioData = {
       { name: "Cloaker Pro", desc: "Sistema de cloaking para campanhas" },
       { name: "UTMTrack", desc: "Analytics de marketing com integração Meta Ads" },
       { name: "InstaTracker Pro", desc: "Analytics para Instagram" },
-    ]
+    ],
   },
   "AItech (GenAI / Conversational)": {
     icon: Bot,
@@ -82,69 +87,49 @@ const portfolioData = {
     products: [
       { name: "CopyBuilder", desc: "Estúdio de copywriting com IA (Claude integrada)" },
       { name: "PIPO/Dualis", desc: "Chatbot com múltiplas personalidades de IA" },
-      { name: "LinkAgente", desc: "Assistente conversacional para agentes e corretores" },
-    ]
+    ],
   },
-  "Healthtech": {
+  Healthtech: {
     icon: Heart,
     color: "text-cyber-pink",
-    products: [
-      { name: "VitaSync", desc: "Plataforma de gestão de saúde pessoal" },
-    ]
+    products: [{ name: "VitaSync", desc: "Plataforma de gestão de saúde pessoal" }],
   },
-  "Traveltech": {
+  Traveltech: {
     icon: Plane,
     color: "text-accent",
-    products: [
-      { name: "ChecklistTrip", desc: "Planejamento de viagens com IA" },
-    ]
+    products: [{ name: "ChecklistTrip", desc: "Planejamento de viagens com IA" }],
   },
   "DataTech / Analytics": {
     icon: PieChart,
     color: "text-neon-green",
-    products: [
-      { name: "MegaSena Analyzer", desc: "Análise estatística de loterias" },
-    ]
+    products: [{ name: "MegaSena Analyzer", desc: "Análise estatística de loterias" }],
   },
   "Cloudtech (DevOps / Infra Tools)": {
     icon: Cloud,
     color: "text-sky-400",
-    products: [
-      { name: "AutoStacker", desc: "Automação de infraestrutura e DevOps" },
-    ]
+    products: [{ name: "AutoStacker", desc: "Automação de infraestrutura e DevOps" }],
   },
-  "Construtech / Franchisetech": {
+  "Construtech / Govtech / Franchisetech": {
     icon: HardHat,
     color: "text-electric-orange",
     products: [
       { name: "LinkObras", desc: "Gestão de obras e construção" },
-      { name: "Expert Franquias", desc: "Gestão de franquias" },
-    ]
-  },
-  "Govtech": {
-    icon: Building2,
-    color: "text-cyan-400",
-    products: [
+      { name: "LinkAgente", desc: "CRM para agentes e corretores" },
       { name: "LinkLicita", desc: "Gestão de licitações públicas" },
-    ]
-  }
+      { name: "Expert Franquias", desc: "Gestão de franquias" },
+    ],
+  },
 };
-
-// Web3Forms access key - será substituída pela chave real
-const WEB3FORMS_ACCESS_KEY = "907ebcbd-8d1b-415e-9cc1-7e232d709561";
 
 const Home = () => {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
     name: "",
     email: "",
-    whatsapp: "",
     company: "",
     segment: "",
-    message: ""
+    message: "",
   });
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [submitSuccess, setSubmitSuccess] = useState(false);
 
   const scrollToForm = () => {
     document.getElementById("application-form")?.scrollIntoView({ behavior: "smooth" });
@@ -152,53 +137,6 @@ const Home = () => {
 
   const scrollToConsultoria = () => {
     document.getElementById("consultoria")?.scrollIntoView({ behavior: "smooth" });
-  };
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    
-    // Validação básica
-    if (!formData.name || !formData.email || !formData.segment) {
-      toast.error("Por favor, preencha os campos obrigatórios: Nome, Email e o que você busca.");
-      return;
-    }
-
-    setIsSubmitting(true);
-
-    try {
-      const response = await fetch("https://api.web3forms.com/submit", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          access_key: WEB3FORMS_ACCESS_KEY,
-          name: formData.name,
-          email: formData.email,
-          whatsapp: formData.whatsapp || "Não informado",
-          company: formData.company || "Não informado",
-          segment: formData.segment,
-          message: formData.message || "Sem mensagem adicional",
-          subject: `Nova aplicação MultiBrain: ${formData.segment}`,
-          from_name: "MultiBrain Website",
-        }),
-      });
-
-      const result = await response.json();
-
-      if (result.success) {
-        setSubmitSuccess(true);
-        setFormData({ name: "", email: "", whatsapp: "", company: "", segment: "", message: "" });
-        toast.success("Aplicação enviada com sucesso! Entraremos em contato em breve.");
-      } else {
-        throw new Error(result.message || "Erro ao enviar formulário");
-      }
-    } catch (error) {
-      console.error("Erro ao enviar formulário:", error);
-      toast.error("Erro ao enviar aplicação. Tente novamente ou entre em contato por email.");
-    } finally {
-      setIsSubmitting(false);
-    }
   };
 
   return (
@@ -209,7 +147,10 @@ const Home = () => {
         <div className="absolute inset-0 overflow-hidden">
           <div className="absolute inset-0 bg-gradient-neural opacity-80" />
           <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-primary/10 rounded-full blur-3xl animate-neural-pulse" />
-          <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-cyber-blue/10 rounded-full blur-3xl animate-neural-pulse" style={{ animationDelay: "1s" }} />
+          <div
+            className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-cyber-blue/10 rounded-full blur-3xl animate-neural-pulse"
+            style={{ animationDelay: "1s" }}
+          />
         </div>
 
         <div className="relative z-10 container mx-auto text-center max-w-5xl">
@@ -234,27 +175,18 @@ const Home = () => {
 
           {/* Subheadline */}
           <p className="text-lg md:text-xl text-muted-foreground mb-10 max-w-3xl mx-auto">
-            Software personalizado + Investimento + Execução. <span className="text-primary font-semibold">Tudo em um só lugar.</span>
+            Software personalizado + Investimento + Execução.{" "}
+            <span className="text-primary font-semibold">Tudo em um só lugar.</span>
           </p>
 
           {/* CTAs */}
           <div className="flex flex-col sm:flex-row gap-4 justify-center mb-16">
-            <Button 
-              size="xl" 
-              variant="cyber" 
-              onClick={scrollToForm}
-              className="group"
-            >
+            <Button size="xl" variant="cyber" onClick={scrollToForm} className="group">
               <Rocket className="w-5 h-5 mr-2 group-hover:animate-float" />
               Quero receber Investimento
               <ArrowRight className="w-5 h-5 ml-2 transition-transform group-hover:translate-x-1" />
             </Button>
-            <Button 
-              size="xl" 
-              variant="neon" 
-              onClick={scrollToForm}
-              className="group"
-            >
+            <Button size="xl" variant="neon" onClick={scrollToForm} className="group">
               <Code className="w-5 h-5 mr-2" />
               Quero Criar Meu Software em 48h
               <ArrowRight className="w-5 h-5 ml-2 transition-transform group-hover:translate-x-1" />
@@ -304,7 +236,8 @@ const Home = () => {
                 </div>
                 <h3 className="text-2xl font-bold mb-4">Founders & Startups</h3>
                 <p className="text-muted-foreground mb-6">
-                  Você tem uma ideia inovadora ou uma startup early-stage buscando capital inteligente e execução técnica para escalar.
+                  Você tem uma ideia inovadora ou uma startup early-stage buscando capital inteligente e execução
+                  técnica para escalar.
                 </p>
                 <ul className="space-y-3 mb-8">
                   <li className="flex items-center gap-3">
@@ -335,7 +268,8 @@ const Home = () => {
                 </div>
                 <h3 className="text-2xl font-bold mb-4">Empresários & Corporações</h3>
                 <p className="text-muted-foreground mb-6">
-                  Você precisa de soluções tecnológicas rápidas ou liderança executiva sob demanda para acelerar resultados.
+                  Você precisa de soluções tecnológicas rápidas ou liderança executiva sob demanda para acelerar
+                  resultados.
                 </p>
                 <ul className="space-y-3 mb-8">
                   <li className="flex items-center gap-3">
@@ -351,7 +285,11 @@ const Home = () => {
                     <span>Consultoria executiva on-demand</span>
                   </li>
                 </ul>
-                <Button variant="neon" className="w-full bg-accent/10 border-accent text-accent hover:bg-accent hover:text-background" onClick={scrollToForm}>
+                <Button
+                  variant="neon"
+                  className="w-full bg-accent/10 border-accent text-accent hover:bg-accent hover:text-background"
+                  onClick={scrollToForm}
+                >
                   Criar Meu Software
                   <ArrowRight className="w-4 h-4 ml-2" />
                 </Button>
@@ -373,8 +311,9 @@ const Home = () => {
               O Que É a <span className="text-primary">MultiBrain</span>?
             </h2>
             <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-              Não somos apenas investidores. Somos <span className="text-primary font-semibold">Builders & Operators</span> — 
-              executivos que investem, constroem e operam junto com você.
+              Não somos apenas investidores. Somos{" "}
+              <span className="text-primary font-semibold">Builders & Operators</span> — executivos que investem,
+              constroem e operam junto com você.
             </p>
           </div>
 
@@ -425,7 +364,8 @@ const Home = () => {
                 Software Funcional em <span className="text-neon-green">48 Horas</span>
               </h2>
               <p className="text-lg text-muted-foreground mb-8">
-                Enquanto software houses levam meses e cobram fortunas, nós entregamos seu MVP ou sistema interno funcionando em até 48 horas.
+                Enquanto software houses levam meses e cobram fortunas, nós entregamos seu MVP ou sistema interno
+                funcionando em até 48 horas.
               </p>
 
               <div className="space-y-4 mb-8">
@@ -478,7 +418,7 @@ const Home = () => {
                       <span>3-6 meses de desenvolvimento</span>
                     </div>
                   </div>
-                  
+
                   <div className="p-4 rounded-lg bg-neon-green/10 border border-neon-green/30">
                     <div className="flex justify-between items-center mb-2">
                       <span className="font-semibold">MultiBrain 48h</span>
@@ -519,12 +459,12 @@ const Home = () => {
             <Card className="bg-card border-border/50 p-6 text-center hover:border-primary/50 transition-all">
               <DollarSign className="w-12 h-12 text-primary mx-auto mb-4" />
               <h3 className="font-bold mb-2">Capital</h3>
-              <p className="text-sm text-muted-foreground">Tickets de R$ 100K a R$ 2M</p>
+              <p className="text-sm text-muted-foreground">Tickets de R$ 10K a R$ 100k</p>
             </Card>
             <Card className="bg-card border-border/50 p-6 text-center hover:border-cyber-blue/50 transition-all">
               <Users className="w-12 h-12 text-cyber-blue mx-auto mb-4" />
               <h3 className="font-bold mb-2">Smart Money</h3>
-              <p className="text-sm text-muted-foreground">Rede de 500+ investidores</p>
+              <p className="text-sm text-muted-foreground">Rede de 10+ investidores</p>
             </Card>
             <Card className="bg-card border-border/50 p-6 text-center hover:border-accent/50 transition-all">
               <Code className="w-12 h-12 text-accent mx-auto mb-4" />
@@ -565,7 +505,10 @@ const Home = () => {
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
             {Object.entries(portfolioData).map(([vertical, data]) => (
-              <Card key={vertical} className="bg-card border-border/50 hover:border-primary/30 transition-all duration-300 group">
+              <Card
+                key={vertical}
+                className="bg-card border-border/50 hover:border-primary/30 transition-all duration-300 group"
+              >
                 <CardContent className="p-6">
                   <div className="flex items-center gap-3 mb-4">
                     <div className={`w-10 h-10 rounded-lg bg-secondary flex items-center justify-center ${data.color}`}>
@@ -575,7 +518,10 @@ const Home = () => {
                   </div>
                   <div className="space-y-3">
                     {data.products.map((product) => (
-                      <div key={product.name} className="p-3 rounded-lg bg-secondary/50 hover:bg-secondary transition-colors">
+                      <div
+                        key={product.name}
+                        className="p-3 rounded-lg bg-secondary/50 hover:bg-secondary transition-colors"
+                      >
                         <h4 className={`font-semibold text-sm ${data.color}`}>{product.name}</h4>
                         <p className="text-xs text-muted-foreground">{product.desc}</p>
                       </div>
@@ -614,8 +560,8 @@ const Home = () => {
                 <h3 className="text-2xl font-bold mb-2">Director as a Service</h3>
                 <p className="text-primary font-semibold mb-4">DaaS</p>
                 <p className="text-muted-foreground mb-6 text-sm">
-                  Direção Estratégica Sem o Overhead de uma Contratação Permanente. 
-                  C-Levels poliglotas com 15+ anos de experiência.
+                  Direção Estratégica Sem o Overhead de uma Contratação Permanente. C-Levels poliglotas com 15+ anos de
+                  experiência.
                 </p>
                 <div className="space-y-2 mb-6">
                   <p className="text-xs font-semibold text-muted-foreground uppercase">Ideal para:</p>
@@ -640,7 +586,9 @@ const Home = () => {
                 </div>
                 <div className="p-4 rounded-lg bg-primary/10 mb-6">
                   <p className="text-xs text-muted-foreground">A partir de</p>
-                  <p className="text-2xl font-bold text-primary">R$ 45.000<span className="text-sm font-normal">/mês</span></p>
+                  <p className="text-2xl font-bold text-primary">
+                    R$ 45.000<span className="text-sm font-normal">/mês</span>
+                  </p>
                   <p className="text-xs text-muted-foreground">Dedicação parcial</p>
                 </div>
                 <Button variant="cyber" className="w-full" onClick={scrollToForm}>
@@ -658,8 +606,7 @@ const Home = () => {
                 <h3 className="text-2xl font-bold mb-2">Manager as a Service</h3>
                 <p className="text-cyber-blue font-semibold mb-4">MaaS</p>
                 <p className="text-muted-foreground mb-6 text-sm">
-                  Gestão Especializada para Resultados Imediatos. 
-                  Metodologias ágeis, OKRs e gestão por resultados.
+                  Gestão Especializada para Resultados Imediatos. Metodologias ágeis, OKRs e gestão por resultados.
                 </p>
                 <div className="space-y-2 mb-6">
                   <p className="text-xs font-semibold text-muted-foreground uppercase">Aplicações:</p>
@@ -684,10 +631,15 @@ const Home = () => {
                 </div>
                 <div className="p-4 rounded-lg bg-cyber-blue/10 mb-6">
                   <p className="text-xs text-muted-foreground">A partir de</p>
-                  <p className="text-2xl font-bold text-cyber-blue">R$ 20.000<span className="text-sm font-normal">/mês</span></p>
+                  <p className="text-2xl font-bold text-cyber-blue">
+                    R$ 20.000<span className="text-sm font-normal">/mês</span>
+                  </p>
                   <p className="text-xs text-muted-foreground">Modelo flexível</p>
                 </div>
-                <Button className="w-full bg-cyber-blue/10 border border-cyber-blue text-cyber-blue hover:bg-cyber-blue hover:text-background" onClick={scrollToForm}>
+                <Button
+                  className="w-full bg-cyber-blue/10 border border-cyber-blue text-cyber-blue hover:bg-cyber-blue hover:text-background"
+                  onClick={scrollToForm}
+                >
                   Solicite uma Proposta
                   <ArrowRight className="w-4 h-4 ml-2" />
                 </Button>
@@ -702,8 +654,7 @@ const Home = () => {
                 <h3 className="text-2xl font-bold mb-2">FastLaunch Sprint</h3>
                 <p className="text-accent font-semibold mb-4">Diagnóstico + Tração</p>
                 <p className="text-muted-foreground mb-6 text-sm">
-                  Resultados Tangíveis em 4 Semanas. 
-                  Metodologia proprietária com +200 empresas aceleradas.
+                  Resultados Tangíveis em 4 Semanas. Metodologia proprietária com +200 empresas aceleradas.
                 </p>
                 <div className="space-y-2 mb-6">
                   <p className="text-xs font-semibold text-muted-foreground uppercase">Entregáveis:</p>
@@ -731,7 +682,10 @@ const Home = () => {
                   <p className="text-2xl font-bold text-accent">R$ 45.000</p>
                   <p className="text-xs text-muted-foreground">Pagamento único</p>
                 </div>
-                <Button className="w-full bg-accent/10 border border-accent text-accent hover:bg-accent hover:text-background" onClick={scrollToForm}>
+                <Button
+                  className="w-full bg-accent/10 border border-accent text-accent hover:bg-accent hover:text-background"
+                  onClick={scrollToForm}
+                >
                   Reserve Sua Sprint
                   <Calendar className="w-4 h-4 ml-2" />
                 </Button>
@@ -768,14 +722,21 @@ const Home = () => {
             <Shield className="w-12 h-12 text-primary mx-auto mb-4" />
             <h3 className="text-xl font-bold mb-2">Garantia MultiBrain</h3>
             <p className="text-muted-foreground mb-4">
-              Se em 15 dias você não perceber valor tangível, <span className="text-primary font-semibold">devolvemos 100% do investimento.</span>
+              Se em 15 dias você não perceber valor tangível,{" "}
+              <span className="text-primary font-semibold">devolvemos 100% do investimento.</span>
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-              <a href="tel:+5551993410110" className="flex items-center gap-2 text-muted-foreground hover:text-primary transition-colors">
+              <a
+                href="tel:+5551993410110"
+                className="flex items-center gap-2 text-muted-foreground hover:text-primary transition-colors"
+              >
                 <Phone className="w-4 h-4" />
                 +55 51 993410110
               </a>
-              <a href="mailto:charles@multibrain.com.br" className="flex items-center gap-2 text-muted-foreground hover:text-primary transition-colors">
+              <a
+                href="mailto:charles@multibrain.com.br"
+                className="flex items-center gap-2 text-muted-foreground hover:text-primary transition-colors"
+              >
                 <Mail className="w-4 h-4" />
                 charles@multibrain.com.br
               </a>
@@ -791,9 +752,7 @@ const Home = () => {
             <h2 className="text-3xl md:text-5xl font-bold mb-6">
               Nosso <span className="text-primary">Manifesto</span>
             </h2>
-            <p className="text-xl text-muted-foreground">
-              Os princípios que guiam tudo que fazemos
-            </p>
+            <p className="text-xl text-muted-foreground">Os princípios que guiam tudo que fazemos</p>
           </div>
 
           <div className="grid md:grid-cols-2 gap-8">
@@ -840,127 +799,78 @@ const Home = () => {
             <h2 className="text-3xl md:text-5xl font-bold mb-4">
               Vamos <span className="text-primary">Conversar</span>?
             </h2>
-            <p className="text-muted-foreground">
-              Preencha o formulário e nossa equipe entrará em contato em até 24h
-            </p>
+            <p className="text-muted-foreground">Preencha o formulário e nossa equipe entrará em contato em até 24h</p>
           </div>
 
           <Card className="bg-card border-primary/30 p-8">
-            {submitSuccess ? (
-              <div className="text-center py-12">
-                <div className="w-20 h-20 bg-neon-green/20 rounded-full flex items-center justify-center mx-auto mb-6">
-                  <CheckCircle className="w-10 h-10 text-neon-green" />
-                </div>
-                <h3 className="text-2xl font-bold mb-4">Aplicação Enviada!</h3>
-                <p className="text-muted-foreground mb-6">
-                  Obrigado pelo seu interesse! Nossa equipe entrará em contato em até 24h úteis.
-                </p>
-                <Button 
-                  variant="outline" 
-                  onClick={() => setSubmitSuccess(false)}
-                >
-                  Enviar nova aplicação
-                </Button>
-              </div>
-            ) : (
-              <form onSubmit={handleSubmit} className="space-y-6">
-                <div className="grid md:grid-cols-3 gap-4">
-                  <div>
-                    <label className="block text-sm font-medium mb-2">Nome Completo *</label>
-                    <Input 
-                      placeholder="Seu nome" 
-                      value={formData.name}
-                      onChange={(e) => setFormData({...formData, name: e.target.value})}
-                      className="bg-secondary border-border"
-                      required
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium mb-2">Email *</label>
-                    <Input 
-                      type="email"
-                      placeholder="seu@email.com" 
-                      value={formData.email}
-                      onChange={(e) => setFormData({...formData, email: e.target.value})}
-                      className="bg-secondary border-border"
-                      required
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium mb-2">WhatsApp</label>
-                    <Input 
-                      type="tel"
-                      placeholder="(11) 99999-9999" 
-                      value={formData.whatsapp}
-                      onChange={(e) => setFormData({...formData, whatsapp: e.target.value})}
-                      className="bg-secondary border-border"
-                    />
-                  </div>
-                </div>
-
+            <form className="space-y-6">
+              <div className="grid md:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-sm font-medium mb-2">Empresa / Startup</label>
-                  <Input 
-                    placeholder="Nome da sua empresa" 
-                    value={formData.company}
-                    onChange={(e) => setFormData({...formData, company: e.target.value})}
+                  <label className="block text-sm font-medium mb-2">Nome Completo</label>
+                  <Input
+                    placeholder="Seu nome"
+                    value={formData.name}
+                    onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                     className="bg-secondary border-border"
                   />
                 </div>
-
                 <div>
-                  <label className="block text-sm font-medium mb-2">O que você busca? *</label>
-                  <select 
-                    className="w-full p-3 rounded-lg bg-secondary border border-border text-foreground"
-                    value={formData.segment}
-                    onChange={(e) => setFormData({...formData, segment: e.target.value})}
-                    required
-                  >
-                    <option value="">Selecione uma opção</option>
-                    <option value="investimento">Quero receber Investimento</option>
-                    <option value="software">Quero criar meu Software em 48h</option>
-                    <option value="consultoria">Quero Consultoria Executiva (DaaS/MaaS)</option>
-                    <option value="fastlaunch">Quero o FastLaunch Sprint (30 dias)</option>
-                    <option value="outro">Outro</option>
-                  </select>
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium mb-2">Conte-nos mais sobre seu projeto</label>
-                  <Textarea 
-                    placeholder="Descreva brevemente sua ideia, desafio ou necessidade..." 
-                    value={formData.message}
-                    onChange={(e) => setFormData({...formData, message: e.target.value})}
-                    className="bg-secondary border-border min-h-[120px]"
+                  <label className="block text-sm font-medium mb-2">Email</label>
+                  <Input
+                    type="email"
+                    placeholder="seu@email.com"
+                    value={formData.email}
+                    onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                    className="bg-secondary border-border"
                   />
                 </div>
+              </div>
 
-                <Button 
-                  type="submit" 
-                  variant="cyber" 
-                  size="xl" 
-                  className="w-full"
-                  disabled={isSubmitting}
+              <div>
+                <label className="block text-sm font-medium mb-2">Empresa / Startup</label>
+                <Input
+                  placeholder="Nome da sua empresa"
+                  value={formData.company}
+                  onChange={(e) => setFormData({ ...formData, company: e.target.value })}
+                  className="bg-secondary border-border"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium mb-2">O que você busca?</label>
+                <select
+                  className="w-full p-3 rounded-lg bg-secondary border border-border text-foreground"
+                  value={formData.segment}
+                  onChange={(e) => setFormData({ ...formData, segment: e.target.value })}
                 >
-                  {isSubmitting ? (
-                    <>
-                      <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin mr-2" />
-                      Enviando...
-                    </>
-                  ) : (
-                    <>
-                      Enviar Aplicação
-                      <ArrowRight className="w-5 h-5 ml-2" />
-                    </>
-                  )}
-                </Button>
+                  <option value="">Selecione uma opção</option>
+                  <option value="investimento">Quero receber Investimento</option>
+                  <option value="software">Quero criar meu Software em 48h</option>
+                  <option value="consultoria">Quero Consultoria Executiva (DaaS/MaaS)</option>
+                  <option value="fastlaunch">Quero o FastLaunch Sprint (30 dias)</option>
+                  <option value="outro">Outro</option>
+                </select>
+              </div>
 
-                <p className="text-xs text-center text-muted-foreground">
-                  Ao enviar, você concorda com nossa política de privacidade. 
-                  Responderemos em até 24h úteis.
-                </p>
-              </form>
-            )}
+              <div>
+                <label className="block text-sm font-medium mb-2">Conte-nos mais sobre seu projeto</label>
+                <Textarea
+                  placeholder="Descreva brevemente sua ideia, desafio ou necessidade..."
+                  value={formData.message}
+                  onChange={(e) => setFormData({ ...formData, message: e.target.value })}
+                  className="bg-secondary border-border min-h-[120px]"
+                />
+              </div>
+
+              <Button variant="cyber" size="xl" className="w-full">
+                Enviar Aplicação
+                <ArrowRight className="w-5 h-5 ml-2" />
+              </Button>
+
+              <p className="text-xs text-center text-muted-foreground">
+                Ao enviar, você concorda com nossa política de privacidade. Responderemos em até 24h úteis.
+              </p>
+            </form>
           </Card>
         </div>
       </section>
@@ -973,22 +883,27 @@ const Home = () => {
               <Brain className="w-8 h-8 text-primary" />
               <span className="text-xl font-bold">MultiBrain</span>
             </div>
-            
-            <Button 
-              variant="ghost" 
-              size="sm" 
-              onClick={scrollToForm} 
-              className="text-muted-foreground hover:text-primary"
-            >
-              <MessageSquare className="w-4 h-4 mr-2" />
-              Entre em Contato
-            </Button>
+
+            <div className="flex flex-col sm:flex-row gap-6 text-center sm:text-left">
+              <a
+                href="tel:+5551993410110"
+                className="flex items-center gap-2 text-muted-foreground hover:text-primary transition-colors"
+              >
+                <Phone className="w-4 h-4" />
+                +55 51 993410110
+              </a>
+              <a
+                href="mailto:charles@multibrain.com.br"
+                className="flex items-center gap-2 text-muted-foreground hover:text-primary transition-colors"
+              >
+                <Mail className="w-4 h-4" />
+                charles@multibrain.com.br
+              </a>
+            </div>
           </div>
-          
+
           <div className="mt-8 pt-8 border-t border-border/50 text-center">
-            <p className="text-muted-foreground text-sm">
-              © 2024 MultiBrain. Builders & Operators.
-            </p>
+            <p className="text-muted-foreground text-sm">© 2024 MultiBrain. Builders & Operators.</p>
             <p className="text-xs text-muted-foreground/70 mt-2">
               Transformando ideias em produtos funcionais desde 2019.
             </p>
