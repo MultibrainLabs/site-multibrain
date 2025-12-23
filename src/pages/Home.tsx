@@ -132,6 +132,7 @@ const Home = () => {
   const [formData, setFormData] = useState({
     name: "",
     email: "",
+    whatsapp: "",
     company: "",
     segment: "",
     message: ""
@@ -168,6 +169,7 @@ const Home = () => {
           access_key: WEB3FORMS_ACCESS_KEY,
           name: formData.name,
           email: formData.email,
+          whatsapp: formData.whatsapp || "Não informado",
           company: formData.company || "Não informado",
           segment: formData.segment,
           message: formData.message || "Sem mensagem adicional",
@@ -180,7 +182,7 @@ const Home = () => {
 
       if (result.success) {
         setSubmitSuccess(true);
-        setFormData({ name: "", email: "", company: "", segment: "", message: "" });
+        setFormData({ name: "", email: "", whatsapp: "", company: "", segment: "", message: "" });
         toast.success("Aplicação enviada com sucesso! Entraremos em contato em breve.");
       } else {
         throw new Error(result.message || "Erro ao enviar formulário");
@@ -856,7 +858,7 @@ const Home = () => {
               </div>
             ) : (
               <form onSubmit={handleSubmit} className="space-y-6">
-                <div className="grid md:grid-cols-2 gap-4">
+                <div className="grid md:grid-cols-3 gap-4">
                   <div>
                     <label className="block text-sm font-medium mb-2">Nome Completo *</label>
                     <Input 
@@ -876,6 +878,16 @@ const Home = () => {
                       onChange={(e) => setFormData({...formData, email: e.target.value})}
                       className="bg-secondary border-border"
                       required
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium mb-2">WhatsApp</label>
+                    <Input 
+                      type="tel"
+                      placeholder="(11) 99999-9999" 
+                      value={formData.whatsapp}
+                      onChange={(e) => setFormData({...formData, whatsapp: e.target.value})}
+                      className="bg-secondary border-border"
                     />
                   </div>
                 </div>
