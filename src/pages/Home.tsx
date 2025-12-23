@@ -175,9 +175,13 @@ const Home = () => {
 
           {/* Subheadline */}
           <p className="text-lg md:text-xl text-muted-foreground mb-10 max-w-3xl mx-auto">
-            Software personalizado + Investimento + Execução. Conectamos mentes brilhantes para acelerar o crescimento
-            do seu negócio através de inteligência estratégica e investimento.{" "}
+            Software personalizado + Investimento + Execução.{" "}
             <span className="text-primary font-semibold">Tudo em um só lugar.</span>
+            <span className="text-primary font-semibold">
+              Conectamos mentes brilhantes para acelerar o crescimento do seu negócio através de inteligência
+              estratégica e investimento.{" "}
+            </span>
+            .
           </p>
 
           {/* CTAs */}
