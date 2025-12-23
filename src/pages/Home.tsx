@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -123,6 +124,9 @@ const portfolioData = {
   }
 };
 
+// Web3Forms access key - será substituída pela chave real
+const WEB3FORMS_ACCESS_KEY = "YOUR_ACCESS_KEY_HERE";
+
 const Home = () => {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
@@ -132,6 +136,8 @@ const Home = () => {
     segment: "",
     message: ""
   });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitSuccess, setSubmitSuccess] = useState(false);
 
   const scrollToForm = () => {
     document.getElementById("application-form")?.scrollIntoView({ behavior: "smooth" });
@@ -139,6 +145,52 @@ const Home = () => {
 
   const scrollToConsultoria = () => {
     document.getElementById("consultoria")?.scrollIntoView({ behavior: "smooth" });
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    // Validação básica
+    if (!formData.name || !formData.email || !formData.segment) {
+      toast.error("Por favor, preencha os campos obrigatórios: Nome, Email e o que você busca.");
+      return;
+    }
+
+    setIsSubmitting(true);
+
+    try {
+      const response = await fetch("https://api.web3forms.com/submit", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          access_key: WEB3FORMS_ACCESS_KEY,
+          name: formData.name,
+          email: formData.email,
+          company: formData.company || "Não informado",
+          segment: formData.segment,
+          message: formData.message || "Sem mensagem adicional",
+          subject: `Nova aplicação MultiBrain: ${formData.segment}`,
+          from_name: "MultiBrain Website",
+        }),
+      });
+
+      const result = await response.json();
+
+      if (result.success) {
+        setSubmitSuccess(true);
+        setFormData({ name: "", email: "", company: "", segment: "", message: "" });
+        toast.success("Aplicação enviada com sucesso! Entraremos em contato em breve.");
+      } else {
+        throw new Error(result.message || "Erro ao enviar formulário");
+      }
+    } catch (error) {
+      console.error("Erro ao enviar formulário:", error);
+      toast.error("Erro ao enviar aplicação. Tente novamente ou entre em contato por email.");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -786,75 +838,111 @@ const Home = () => {
           </div>
 
           <Card className="bg-card border-primary/30 p-8">
-            <form className="space-y-6">
-              <div className="grid md:grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-sm font-medium mb-2">Nome Completo</label>
-                  <Input 
-                    placeholder="Seu nome" 
-                    value={formData.name}
-                    onChange={(e) => setFormData({...formData, name: e.target.value})}
-                    className="bg-secondary border-border"
-                  />
+            {submitSuccess ? (
+              <div className="text-center py-12">
+                <div className="w-20 h-20 bg-neon-green/20 rounded-full flex items-center justify-center mx-auto mb-6">
+                  <CheckCircle className="w-10 h-10 text-neon-green" />
                 </div>
-                <div>
-                  <label className="block text-sm font-medium mb-2">Email</label>
-                  <Input 
-                    type="email"
-                    placeholder="seu@email.com" 
-                    value={formData.email}
-                    onChange={(e) => setFormData({...formData, email: e.target.value})}
-                    className="bg-secondary border-border"
-                  />
-                </div>
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium mb-2">Empresa / Startup</label>
-                <Input 
-                  placeholder="Nome da sua empresa" 
-                  value={formData.company}
-                  onChange={(e) => setFormData({...formData, company: e.target.value})}
-                  className="bg-secondary border-border"
-                />
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium mb-2">O que você busca?</label>
-                <select 
-                  className="w-full p-3 rounded-lg bg-secondary border border-border text-foreground"
-                  value={formData.segment}
-                  onChange={(e) => setFormData({...formData, segment: e.target.value})}
+                <h3 className="text-2xl font-bold mb-4">Aplicação Enviada!</h3>
+                <p className="text-muted-foreground mb-6">
+                  Obrigado pelo seu interesse! Nossa equipe entrará em contato em até 24h úteis.
+                </p>
+                <Button 
+                  variant="outline" 
+                  onClick={() => setSubmitSuccess(false)}
                 >
-                  <option value="">Selecione uma opção</option>
-                  <option value="investimento">Quero receber Investimento</option>
-                  <option value="software">Quero criar meu Software em 48h</option>
-                  <option value="consultoria">Quero Consultoria Executiva (DaaS/MaaS)</option>
-                  <option value="fastlaunch">Quero o FastLaunch Sprint (30 dias)</option>
-                  <option value="outro">Outro</option>
-                </select>
+                  Enviar nova aplicação
+                </Button>
               </div>
+            ) : (
+              <form onSubmit={handleSubmit} className="space-y-6">
+                <div className="grid md:grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-sm font-medium mb-2">Nome Completo *</label>
+                    <Input 
+                      placeholder="Seu nome" 
+                      value={formData.name}
+                      onChange={(e) => setFormData({...formData, name: e.target.value})}
+                      className="bg-secondary border-border"
+                      required
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium mb-2">Email *</label>
+                    <Input 
+                      type="email"
+                      placeholder="seu@email.com" 
+                      value={formData.email}
+                      onChange={(e) => setFormData({...formData, email: e.target.value})}
+                      className="bg-secondary border-border"
+                      required
+                    />
+                  </div>
+                </div>
 
-              <div>
-                <label className="block text-sm font-medium mb-2">Conte-nos mais sobre seu projeto</label>
-                <Textarea 
-                  placeholder="Descreva brevemente sua ideia, desafio ou necessidade..." 
-                  value={formData.message}
-                  onChange={(e) => setFormData({...formData, message: e.target.value})}
-                  className="bg-secondary border-border min-h-[120px]"
-                />
-              </div>
+                <div>
+                  <label className="block text-sm font-medium mb-2">Empresa / Startup</label>
+                  <Input 
+                    placeholder="Nome da sua empresa" 
+                    value={formData.company}
+                    onChange={(e) => setFormData({...formData, company: e.target.value})}
+                    className="bg-secondary border-border"
+                  />
+                </div>
 
-              <Button variant="cyber" size="xl" className="w-full">
-                Enviar Aplicação
-                <ArrowRight className="w-5 h-5 ml-2" />
-              </Button>
+                <div>
+                  <label className="block text-sm font-medium mb-2">O que você busca? *</label>
+                  <select 
+                    className="w-full p-3 rounded-lg bg-secondary border border-border text-foreground"
+                    value={formData.segment}
+                    onChange={(e) => setFormData({...formData, segment: e.target.value})}
+                    required
+                  >
+                    <option value="">Selecione uma opção</option>
+                    <option value="investimento">Quero receber Investimento</option>
+                    <option value="software">Quero criar meu Software em 48h</option>
+                    <option value="consultoria">Quero Consultoria Executiva (DaaS/MaaS)</option>
+                    <option value="fastlaunch">Quero o FastLaunch Sprint (30 dias)</option>
+                    <option value="outro">Outro</option>
+                  </select>
+                </div>
 
-              <p className="text-xs text-center text-muted-foreground">
-                Ao enviar, você concorda com nossa política de privacidade. 
-                Responderemos em até 24h úteis.
-              </p>
-            </form>
+                <div>
+                  <label className="block text-sm font-medium mb-2">Conte-nos mais sobre seu projeto</label>
+                  <Textarea 
+                    placeholder="Descreva brevemente sua ideia, desafio ou necessidade..." 
+                    value={formData.message}
+                    onChange={(e) => setFormData({...formData, message: e.target.value})}
+                    className="bg-secondary border-border min-h-[120px]"
+                  />
+                </div>
+
+                <Button 
+                  type="submit" 
+                  variant="cyber" 
+                  size="xl" 
+                  className="w-full"
+                  disabled={isSubmitting}
+                >
+                  {isSubmitting ? (
+                    <>
+                      <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin mr-2" />
+                      Enviando...
+                    </>
+                  ) : (
+                    <>
+                      Enviar Aplicação
+                      <ArrowRight className="w-5 h-5 ml-2" />
+                    </>
+                  )}
+                </Button>
+
+                <p className="text-xs text-center text-muted-foreground">
+                  Ao enviar, você concorda com nossa política de privacidade. 
+                  Responderemos em até 24h úteis.
+                </p>
+              </form>
+            )}
           </Card>
         </div>
       </section>
