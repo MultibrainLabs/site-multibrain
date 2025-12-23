@@ -34,7 +34,8 @@ import {
   ChevronRight,
   Sparkles,
   Globe,
-  Calendar
+  Calendar,
+  Cloud
 } from "lucide-react";
 
 // Animated counter component
@@ -103,6 +104,13 @@ const portfolioData = {
       { name: "MegaSena Analyzer", desc: "Análise estatística de loterias" },
     ]
   },
+  "Cloudtech (DevOps / Infra Tools)": {
+    icon: Cloud,
+    color: "text-sky-400",
+    products: [
+      { name: "AutoStacker", desc: "Automação de infraestrutura e DevOps" },
+    ]
+  },
   "Construtech / Govtech / Franchisetech": {
     icon: HardHat,
     color: "text-electric-orange",
@@ -110,7 +118,6 @@ const portfolioData = {
       { name: "LinkObras", desc: "Gestão de obras e construção" },
       { name: "LinkAgente", desc: "CRM para agentes e corretores" },
       { name: "LinkLicita", desc: "Gestão de licitações públicas" },
-      { name: "AutoStacker", desc: "Automação para estoque" },
       { name: "Expert Franquias", desc: "Gestão de franquias" },
     ]
   }
