@@ -125,7 +125,7 @@ const portfolioData = {
 };
 
 // Web3Forms access key - será substituída pela chave real
-const WEB3FORMS_ACCESS_KEY = "YOUR_ACCESS_KEY_HERE";
+const WEB3FORMS_ACCESS_KEY = "907ebcbd-8d1b-415e-9cc1-7e232d709561";
 
 const Home = () => {
   const navigate = useNavigate();
