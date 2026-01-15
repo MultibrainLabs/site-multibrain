@@ -1,17 +1,7 @@
-import { useEffect } from "react";
 import { DollarSign, Rocket, Users, Code, CheckCircle, ArrowRight, Brain } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 const Acelera = () => {
-  useEffect(() => {
-    if (!document.getElementById('respondi_src')) {
-      const script = document.createElement('script');
-      script.id = 'respondi_src';
-      script.src = 'https://embed.respondi.app/embed.js';
-      script.async = true;
-      document.body.appendChild(script);
-    }
-  }, []);
 
   const offerings = [
     {
@@ -165,12 +155,15 @@ const Acelera = () => {
             </p>
           </div>
           
-          <div className="bg-card rounded-2xl border border-border p-2 min-h-[600px]">
-            <div 
-              data-respondi-container=""
-              data-respondi-mode="inline"
-              data-respondi-src="https://form.respondi.app/MRtQPTx9"
-              className="w-full"
+          <div className="bg-card rounded-2xl border border-border overflow-hidden min-h-[600px]">
+            <iframe
+              src="https://form.respondi.app/MRtQPTx9"
+              width="100%"
+              height="600"
+              frameBorder="0"
+              style={{ minHeight: '600px', border: 'none' }}
+              allow="camera; microphone; autoplay; encrypted-media"
+              title="Formulário de Aplicação"
             />
           </div>
         </div>
