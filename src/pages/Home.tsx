@@ -50,6 +50,8 @@ const t = {
     consultH2a: "Consultoria", consultH2b: "Executiva",
     consultSub: "Liderança experiente sob demanda para acelerar seus resultados",
     lgpdCta: "Falar com Especialista →",
+    priceDaaS: "R$ 45.000", priceDaaSFreq: "/mês", priceMaaS: "R$ 20.000", priceMaaSFreq: "/mês",
+    priceFastLaunch: "R$ 45.000", priceLgpd: "R$ 40.000",
     casesTag: "Cases", casesH2a: "Engajamentos que", casesH2b: "construíram negócios reais",
     methodTag: "Metodologia", methodH2a: "Nossa abordagem", methodH2b: "de execução",
     m1Num: "01", m1Title: "Diagnóstico", m1Desc: "Análise aprofundada do negócio para mapear dores operacionais, oportunidades inexploradas e alavancas de crescimento.",
@@ -127,6 +129,8 @@ const t = {
     consultH2a: "Executive", consultH2b: "Consulting",
     consultSub: "Experienced leadership on demand to accelerate your results",
     lgpdCta: "Talk to a Specialist →",
+    priceDaaS: "$12,000", priceDaaSFreq: "/mo", priceMaaS: "$8,500", priceMaaSFreq: "/mo",
+    priceFastLaunch: "$10,000", priceLgpd: "$10,000",
     casesTag: "Cases", casesH2a: "Consulting engagements", casesH2b: "that built real businesses",
     methodTag: "Methodology", methodH2a: "Our execution", methodH2b: "approach",
     m1Num: "01", m1Title: "Diagnosis", m1Desc: "In-depth business analysis to map operational pain points, unexplored opportunities, growth levers.",
@@ -204,6 +208,8 @@ const t = {
     consultH2a: "Consultoría", consultH2b: "Ejecutiva",
     consultSub: "Liderazgo experimentado bajo demanda para acelerar sus resultados",
     lgpdCta: "Hablar con Especialista →",
+    priceDaaS: "$12.000", priceDaaSFreq: "/mes", priceMaaS: "$8.500", priceMaaSFreq: "/mes",
+    priceFastLaunch: "$10.000", priceLgpd: "$10.000",
     casesTag: "Cases", casesH2a: "Compromisos que", casesH2b: "construyeron negocios reales",
     methodTag: "Metodología", methodH2a: "Nuestro enfoque", methodH2b: "de ejecución",
     m1Num: "01", m1Title: "Diagnóstico", m1Desc: "Análisis profundo del negocio para mapear dolores operacionales, oportunidades inexploradas y palancas de crecimiento.",
@@ -521,7 +527,7 @@ const Home = () => {
             </ul>
             <div className="mb-consult-price-box">
               <div className="mb-consult-price-label">A partir de</div>
-              <div className="mb-consult-price">R$ 45.000<span className="mb-consult-price-freq">/mês</span></div>
+              <div className="mb-consult-price">{tx.priceDaaS}<span className="mb-consult-price-freq">{tx.priceDaaSFreq}</span></div>
               <div className="mb-consult-price-sub">Dedicação parcial</div>
             </div>
             <a href={tx.navCtaHref} className="mb-btn-primary" target="_blank" rel="noreferrer" style={{ display: "block", textAlign: "center" }}>
@@ -544,7 +550,7 @@ const Home = () => {
             </ul>
             <div className="mb-consult-price-box">
               <div className="mb-consult-price-label">A partir de</div>
-              <div className="mb-consult-price">R$ 20.000<span className="mb-consult-price-freq">/mês</span></div>
+              <div className="mb-consult-price">{tx.priceMaaS}<span className="mb-consult-price-freq">{tx.priceMaaSFreq}</span></div>
               <div className="mb-consult-price-sub">Modelo flexível</div>
             </div>
             <a href={tx.navCtaHref} className="mb-btn-primary" target="_blank" rel="noreferrer" style={{ display: "block", textAlign: "center" }}>
@@ -567,7 +573,7 @@ const Home = () => {
             </ul>
             <div className="mb-consult-price-box">
               <div className="mb-consult-price-label">Investimento único</div>
-              <div className="mb-consult-price" style={{ color: "#fbbf24" }}>R$ 45.000</div>
+              <div className="mb-consult-price" style={{ color: "#fbbf24" }}>{tx.priceFastLaunch}</div>
               <div className="mb-consult-price-sub">Pagamento único</div>
             </div>
             <a href={tx.navCtaHref} className="mb-btn-primary" target="_blank" rel="noreferrer" style={{ display: "block", textAlign: "center", background: "#d97706" }}>
@@ -593,7 +599,7 @@ const Home = () => {
             </ul>
             <div className="mb-consult-price-box mb-lgpd-price-box">
               <div className="mb-consult-price-label">Investimento único · Projeto fechado</div>
-              <div className="mb-consult-price mb-lgpd-price">R$ 40.000</div>
+              <div className="mb-consult-price mb-lgpd-price">{tx.priceLgpd}</div>
               <div className="mb-consult-price-sub">Prazo: 6 a 8 semanas</div>
             </div>
             <a href={LGPD_WA} className="mb-btn-primary mb-lgpd-btn" target="_blank" rel="noreferrer" style={{ display: "block", textAlign: "center" }}>
