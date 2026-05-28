@@ -302,6 +302,7 @@
 .mb-root[data-mb-theme="dark"] .mb-lgpd-price-box { background: rgba(167,139,250,0.08) !important; }
 .mb-lgpd-price { color: var(--mb-accent) !important; }
 .mb-lgpd-btn { background: var(--mb-accent) !important; box-shadow: 0 8px 24px rgba(139,60,247,0.35); }
+.mb-lgpd-credentials { font-size: 0.82rem !important; color: var(--mb-mid) !important; font-style: italic; border-left: 2px solid var(--mb-accent); padding-left: 10px; margin-top: 4px; }
 
 /* Garantia */
 .mb-garantia {

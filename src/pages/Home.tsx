@@ -581,6 +581,7 @@ const Home = () => {
             <h3>Compliance LGPD</h3>
             <div className="mb-consult-subtitle mb-lgpd-subtitle">Consultoria Executiva em Privacidade</div>
             <p className="mb-consult-desc">Estruturamos a base de governança, privacidade e proteção de dados da sua empresa com visão executiva e adequação prática à LGPD.</p>
+            <p className="mb-consult-desc mb-lgpd-credentials">Projeto executado em 6 a 8 semanas por consultores com mais de 20 anos de experiência, atuação em cargos de diretoria e C-Level em multinacionais, além de certificações em LGPD, ISO 27001, governança, segurança da informação e gestão de riscos corporativos.</p>
             <div className="mb-consult-tags-label">O projeto inclui:</div>
             <ul className="mb-consult-list">
               <li>Assessment Executivo e Matriz de Riscos</li>
