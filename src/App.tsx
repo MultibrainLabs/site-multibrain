@@ -7,6 +7,7 @@ import { AuthProvider } from "@/hooks/useAuth";
 import ProtectedRoute from "@/components/ProtectedRoute";
 import Home from "./pages/Home";
 import Acelera from "./pages/Acelera";
+import Prospecta from "./pages/Prospecta";
 import Auth from "./pages/Auth";
 import NotFound from "./pages/NotFound";
 import HubApp from "./pages/hub/HubApp";
@@ -23,6 +24,7 @@ const App = () => (
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/acelera" element={<Acelera />} />
+            <Route path="/prospecta" element={<Prospecta />} />
             <Route path="/auth" element={<Auth />} />
             <Route 
               path="/hub/*" 

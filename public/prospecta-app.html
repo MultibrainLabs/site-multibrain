@@ -1,0 +1,882 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Captação de Leads — MultiBrain</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<style>
+:root{--bg:#0a0a0f;--surface:#12121a;--surface2:#1a1a26;--border:rgba(255,255,255,0.07);--border-hover:rgba(255,255,255,0.15);--accent:#00e5a0;--accent2:#7c6bff;--text:#f0f0f8;--text-muted:#7a7a9a;--text-dim:#4a4a6a;--danger:#ff4d6d;--warn:#ffb347;--radius:12px;--radius-sm:8px}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;font-size:15px;line-height:1.6}
+header{border-bottom:1px solid var(--border);padding:1.25rem 2rem;display:flex;align-items:center;gap:1rem;position:sticky;top:0;background:rgba(10,10,15,0.92);backdrop-filter:blur(12px);z-index:100}
+.logo{font-family:'Syne',sans-serif;font-weight:700;font-size:1.1rem;color:var(--accent);letter-spacing:-0.02em}
+.logo span{color:var(--text-muted);font-weight:400}
+.header-badge{margin-left:auto;font-size:11px;color:var(--text-muted);border:1px solid var(--border);border-radius:20px;padding:3px 10px}
+.container{max-width:1200px;margin:0 auto;padding:2.5rem 2rem}
+.page-title{font-family:'Syne',sans-serif;font-size:2rem;font-weight:700;letter-spacing:-0.03em;margin-bottom:.4rem}
+.page-title em{color:var(--accent);font-style:normal}
+.page-sub{color:var(--text-muted);font-size:.9rem;margin-bottom:2.5rem}
+.steps{display:flex;gap:.5rem;margin-bottom:2.5rem;flex-wrap:wrap}
+.step-pill{font-size:12px;padding:4px 14px;border-radius:20px;border:1px solid var(--border);color:var(--text-dim);cursor:pointer;transition:all .2s;font-family:'Syne',sans-serif}
+.step-pill.active{border-color:var(--accent);color:var(--accent);background:rgba(0,229,160,.08)}
+.step-pill.done{border-color:var(--text-dim);color:var(--text-dim);background:rgba(255,255,255,.03)}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:1.75rem;margin-bottom:1.25rem}
+.card-title{font-family:'Syne',sans-serif;font-size:.85rem;font-weight:600;color:var(--text-muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:1.25rem;display:flex;align-items:center;gap:.5rem}
+.card-title .num{width:22px;height:22px;border-radius:50%;background:rgba(0,229,160,.12);color:var(--accent);font-size:11px;display:flex;align-items:center;justify-content:center}
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+.grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:1rem}
+.grid-4{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:1rem}
+@media(max-width:700px){.grid-2,.grid-3,.grid-4{grid-template-columns:1fr}.container{padding:1.5rem 1rem}}
+label{display:block;font-size:13px;color:var(--text-muted);margin-bottom:6px}
+input,select,textarea{width:100%;background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius-sm);color:var(--text);font-family:'DM Sans',sans-serif;font-size:14px;padding:10px 14px;outline:none;transition:border-color .2s}
+input:focus,select:focus,textarea:focus{border-color:var(--accent)}
+select option{background:var(--surface2)}
+textarea{resize:vertical;min-height:90px}
+.radio-tabs{display:flex;gap:.5rem;margin-bottom:1rem;flex-wrap:wrap}
+.radio-tab input{display:none}
+.radio-tab label{display:flex;align-items:center;gap:6px;padding:7px 14px;border:1px solid var(--border);border-radius:20px;cursor:pointer;font-size:13px;color:var(--text-muted);transition:all .2s;margin:0}
+.radio-tab input:checked+label{border-color:var(--accent2);color:var(--accent2);background:rgba(124,107,255,.08)}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:11px 22px;border-radius:var(--radius-sm);font-family:'Syne',sans-serif;font-size:14px;font-weight:600;cursor:pointer;transition:all .2s;border:none}
+.btn-primary{background:var(--accent);color:#0a0a0f}
+.btn-primary:hover{background:#00ffb0;transform:translateY(-1px)}
+.btn-primary:disabled{opacity:.4;cursor:not-allowed;transform:none}
+.btn-ghost{background:transparent;color:var(--text-muted);border:1px solid var(--border)}
+.btn-ghost:hover{border-color:var(--border-hover);color:var(--text)}
+.btn-accent2{background:var(--accent2);color:white}
+.btn-accent2:hover{background:#9d8fff;transform:translateY(-1px)}
+.btn-sm{padding:7px 14px;font-size:12px}
+.btn-row{display:flex;gap:.75rem;flex-wrap:wrap;margin-top:1.25rem}
+.progress-bar-wrap{background:var(--surface2);border-radius:4px;height:4px;margin:1rem 0;overflow:hidden}
+.progress-bar{height:100%;background:linear-gradient(90deg,var(--accent2),var(--accent));border-radius:4px;transition:width .4s;width:0%}
+.status-line{font-size:13px;color:var(--text-muted);display:flex;align-items:center;gap:8px;margin-top:.75rem}
+.dot{width:8px;height:8px;border-radius:50%;background:var(--text-dim)}
+.dot.active{background:var(--accent);animation:pulse 1.2s infinite}
+.dot.done{background:var(--accent)}
+.dot.error{background:var(--danger)}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+.table-wrap{overflow-x:auto;border:1px solid var(--border);border-radius:var(--radius);margin-top:1.25rem}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th{background:var(--surface2);color:var(--text-muted);font-family:'Syne',sans-serif;font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;padding:10px 14px;text-align:left;border-bottom:1px solid var(--border);white-space:nowrap}
+td{padding:10px 14px;border-bottom:1px solid var(--border);vertical-align:top;color:var(--text)}
+tr:last-child td{border-bottom:none}
+tr:hover td{background:rgba(255,255,255,.02)}
+tr.sent-row td{opacity:.5}
+tr.sent-row td:first-child{opacity:1}
+.cell-name{font-weight:500;font-size:13px}
+.cell-cat{font-size:11px;background:rgba(124,107,255,.12);color:var(--accent2);border-radius:20px;padding:2px 8px;display:inline-block}
+.cell-rating{color:var(--warn);font-size:12px;white-space:nowrap}
+.cell-msg{font-size:12px;color:var(--text-muted);max-width:220px;line-height:1.5;white-space:pre-wrap}
+.cell-msg.loading{color:var(--text-dim);font-style:italic}
+.wa-btn{display:inline-flex;align-items:center;gap:5px;padding:5px 10px;background:#25D366;color:white;border-radius:6px;font-size:12px;font-weight:600;text-decoration:none;white-space:nowrap;margin-bottom:4px}
+.wa-btn:hover{background:#20bd5a}
+.wa-btn svg{width:13px;height:13px;fill:white}
+.ig-btn{display:inline-flex;align-items:center;gap:5px;padding:5px 10px;background:linear-gradient(135deg,#833ab4,#fd1d1d,#fcb045);color:white;border-radius:6px;font-size:12px;font-weight:600;text-decoration:none;white-space:nowrap;margin-bottom:4px}
+.ig-btn:hover{opacity:.85}
+.check-btn{background:none;border:2px solid var(--border);color:var(--text-dim);border-radius:6px;padding:4px 8px;cursor:pointer;font-size:12px;transition:all .2s;white-space:nowrap}
+.check-btn.checked{border-color:var(--accent);color:var(--accent);background:rgba(0,229,160,.1)}
+.copy-btn{background:none;border:none;cursor:pointer;color:var(--text-dim);font-size:12px;padding:2px 6px;border-radius:4px;transition:color .2s}
+.copy-btn:hover{color:var(--accent)}
+.alert{padding:12px 16px;border-radius:var(--radius-sm);font-size:13px;display:flex;align-items:flex-start;gap:10px;margin-bottom:1rem}
+.alert-warn{background:rgba(255,179,71,.08);border:1px solid rgba(255,179,71,.2);color:var(--warn)}
+.alert-info{background:rgba(0,229,160,.06);border:1px solid rgba(0,229,160,.15);color:var(--accent)}
+.section{display:none}
+.section.visible{display:block}
+.toggle-wrap{display:flex;align-items:center;gap:10px}
+.toggle{position:relative;width:36px;height:20px}
+.toggle input{opacity:0;width:0;height:0}
+.toggle-slider{position:absolute;inset:0;background:var(--border);border-radius:20px;cursor:pointer;transition:.2s}
+.toggle-slider:before{content:'';position:absolute;width:14px;height:14px;left:3px;top:3px;background:var(--text-muted);border-radius:50%;transition:.2s}
+.toggle input:checked+.toggle-slider{background:var(--accent)}
+.toggle input:checked+.toggle-slider:before{transform:translateX(16px);background:white}
+.stats-row{display:flex;gap:1rem;flex-wrap:wrap;margin-bottom:1.5rem}
+.stat-chip{background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius-sm);padding:10px 16px;min-width:100px}
+.stat-num{font-family:'Syne',sans-serif;font-size:1.5rem;font-weight:700;color:var(--accent);line-height:1}
+.stat-lbl{font-size:11px;color:var(--text-muted);margin-top:2px}
+.file-input-wrap{position:relative;display:inline-flex;align-items:center}
+.file-input-wrap input[type=file]{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%}
+.file-label{display:inline-flex;align-items:center;gap:6px;padding:9px 16px;border:1px dashed var(--border-hover);border-radius:var(--radius-sm);font-size:13px;color:var(--text-muted);cursor:pointer;transition:all .2s}
+.file-label:hover{border-color:var(--accent);color:var(--accent)}
+footer{border-top:1px solid var(--border);padding:1.5rem 2rem;text-align:center;font-size:12px;color:var(--text-dim)}
+footer a{color:var(--text-muted);text-decoration:none}
+footer a:hover{color:var(--accent)}
+::-webkit-scrollbar{width:6px;height:6px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:var(--border-hover);border-radius:3px}
+.ai-provider-tab input{display:none}
+.ai-provider-tab label{display:flex;align-items:center;gap:6px;padding:6px 14px;border:1px solid var(--border);border-radius:20px;cursor:pointer;font-size:12px;color:var(--text-muted);transition:all .2s;margin:0}
+.ai-provider-tab input:checked+label{border-color:var(--accent);color:var(--accent);background:rgba(0,229,160,.08)}
+.platform-badge{display:inline-flex;align-items:center;gap:5px;background:rgba(0,229,160,.1);border:1px solid rgba(0,229,160,.3);color:var(--accent);border-radius:20px;padding:3px 10px;font-size:11px;font-weight:600}
+</style>
+</head>
+<body>
+<header>
+  <div class="logo">Multi<span>Brain</span> <span style="color:var(--accent)">·</span> Captação</div>
+  <div class="header-badge">v1.2</div>
+</header>
+<div class="container">
+  <h1 class="page-title">Extrator de <em>Leads</em> + WhatsApp</h1>
+  <p class="page-sub">Encontre clientes no Google Maps, gere mensagens com IA e envie direto pelo WhatsApp.</p>
+  <div class="steps">
+    <div class="step-pill active" id="pill-1">① Configuração</div>
+    <div class="step-pill" id="pill-2">② Buscar Leads</div>
+    <div class="step-pill" id="pill-3">③ Mensagem</div>
+    <div class="step-pill" id="pill-4">④ Resultados</div>
+  </div>
+
+  <!-- ══ STEP 1: CONFIG ══ -->
+  <div class="section visible" id="sec-1">
+    <div class="card">
+      <div class="card-title"><div class="num">1</div> Google Places API Key</div>
+      <div class="alert alert-info">📋 Ative <b>Places API (New)</b> e <b>Maps JavaScript API</b> no <a href="https://console.cloud.google.com/apis/library" target="_blank" style="color:var(--accent)">Google Cloud Console</a>. Para testar local, deixe a chave sem restrição de domínio.</div>
+      <div>
+        <label>Google Places API Key <a href="https://console.cloud.google.com/apis/credentials" target="_blank" style="color:var(--accent);font-size:11px;margin-left:6px">→ obter grátis</a></label>
+        <input type="password" id="google-key" placeholder="AIzaSy_XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX" autocomplete="off">
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><div class="num">2</div> IA para geração de mensagens</div>
+      <div style="display:flex;gap:.5rem;flex-wrap:wrap;margin-bottom:1.25rem">
+        <div class="ai-provider-tab"><input type="radio" name="ai-provider" id="ai-platform" value="platform" checked><label for="ai-platform"><span class="platform-badge" style="margin:0;padding:2px 8px;font-size:11px">✦ MultiBrain</span> Usar IA da plataforma</label></div>
+        <div class="ai-provider-tab"><input type="radio" name="ai-provider" id="ai-claude" value="claude"><label for="ai-claude">🤖 Claude (Anthropic)</label></div>
+        <div class="ai-provider-tab"><input type="radio" name="ai-provider" id="ai-openai" value="openai"><label for="ai-openai">💬 ChatGPT (OpenAI)</label></div>
+      </div>
+      <div id="keys-platform" class="alert alert-info" style="margin-bottom:0">✦ Usando IA da plataforma MultiBrain — nenhuma chave necessária.</div>
+      <div id="keys-claude" style="display:none">
+        <label>Claude API Key <a href="https://console.anthropic.com/settings/keys" target="_blank" style="color:var(--accent);font-size:11px;margin-left:6px">→ obter</a> <span id="claude-key-warn" style="display:none;color:var(--danger);font-size:11px">⚠ obrigatória</span></label>
+        <input type="password" id="claude-key" placeholder="sk-ant-XXXXXXXXXXXXXXXX" autocomplete="off" onblur="document.getElementById('claude-key-warn').style.display=this.value?'none':'inline'">
+      </div>
+      <div id="keys-openai" style="display:none">
+        <label>OpenAI API Key <a href="https://platform.openai.com/api-keys" target="_blank" style="color:var(--accent);font-size:11px;margin-left:6px">→ obter</a></label>
+        <input type="password" id="openai-key" placeholder="sk-XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX" autocomplete="off">
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><div class="num">3</div> Seu produto / serviço</div>
+      <textarea id="produto" placeholder="Ex: Sistema de gestão para clínicas odontológicas que reduz faltas em 40% com confirmações automáticas via WhatsApp. Planos a partir de R$197/mês." rows="3"></textarea>
+    </div>
+
+    <div style="margin-bottom:1rem">
+      <label style="display:flex;align-items:center;gap:8px;cursor:pointer;user-select:none">
+        <input type="checkbox" id="save-keys" style="width:auto;accent-color:var(--accent)">
+        <span style="font-size:13px;color:var(--text-muted)">Salvar chaves no navegador (localStorage)</span>
+      </label>
+    </div>
+    <div class="btn-row">
+      <button class="btn btn-primary" onclick="goStep1()">Avançar → Buscar Leads</button>
+    </div>
+  </div>
+
+  <!-- ══ STEP 2: BUSCA ══ -->
+  <div class="section" id="sec-2">
+    <div class="card">
+      <div class="card-title"><div class="num">4</div> Parâmetros de Busca</div>
+      <div class="grid-3">
+        <div>
+          <label>Nicho / Categoria</label>
+          <input type="text" id="nicho" placeholder="Ex: clínicas odontológicas">
+        </div>
+        <div>
+          <label>Cidade / Região</label>
+          <input type="text" id="cidade" placeholder="Ex: Porto Alegre, RS">
+        </div>
+        <div>
+          <label>Qtd. de leads (máx. 60)</label>
+          <input type="number" id="qtd" value="20" min="1" max="60">
+        </div>
+      </div>
+      <div class="grid-3" style="margin-top:1rem">
+        <div>
+          <label>Avaliação mínima</label>
+          <select id="min-rating">
+            <option value="0">Qualquer</option>
+            <option value="3">3+</option>
+            <option value="4" selected>4+</option>
+            <option value="4.5">4.5+</option>
+          </select>
+        </div>
+        <div>
+          <label>Tem telefone</label>
+          <select id="has-phone">
+            <option value="true" selected>Obrigatório</option>
+            <option value="false">Opcional</option>
+          </select>
+        </div>
+        <div>
+          <label>Ordem dos resultados</label>
+          <select id="sort-order">
+            <option value="rating">Melhor avaliação</option>
+            <option value="reviews">Mais avaliações</option>
+            <option value="default">Relevância Google</option>
+          </select>
+        </div>
+      </div>
+    </div>
+    <div id="search-progress" style="display:none">
+      <div class="progress-bar-wrap"><div class="progress-bar" id="prog-bar"></div></div>
+      <div class="status-line"><div class="dot active" id="status-dot"></div><span id="status-txt">Buscando...</span></div>
+    </div>
+    <div class="btn-row">
+      <button class="btn btn-ghost btn-sm" onclick="goStep(1)">← Voltar</button>
+      <button class="btn btn-primary" id="btn-search" onclick="startSearch()">🔍 Buscar Leads</button>
+    </div>
+  </div>
+
+  <!-- ══ STEP 3: MENSAGEM ══ -->
+  <div class="section" id="sec-3">
+    <div class="card">
+      <div class="card-title"><div class="num">5</div> Tipo de Mensagem</div>
+      <div class="radio-tabs">
+        <div class="radio-tab"><input type="radio" name="msg-type" id="mt-ai" value="ai" checked><label for="mt-ai">🤖 Gerar com IA</label></div>
+        <div class="radio-tab"><input type="radio" name="msg-type" id="mt-manual" value="manual"><label for="mt-manual">✍️ Escrever manualmente</label></div>
+      </div>
+      <div id="ai-options">
+        <div class="grid-2" style="margin-bottom:1rem">
+          <div>
+            <label>Técnica de vendas</label>
+            <select id="tecnica">
+              <option value="spin">SPIN Selling — perguntas que revelam a dor</option>
+              <option value="aida">AIDA — Atenção, Interesse, Desejo, Ação</option>
+              <option value="gatilhos">Gatilhos Mentais — urgência, escassez, prova social</option>
+              <option value="pas">PAS — Problema, Agitação, Solução</option>
+              <option value="cialdini">Princípios de Cialdini — reciprocidade, autoridade</option>
+              <option value="combo">Combo Avançado (SPIN + Gatilhos + PAS)</option>
+            </select>
+          </div>
+          <div>
+            <label>Tom da mensagem</label>
+            <select id="tom">
+              <option value="casual">Casual e direto (WhatsApp)</option>
+              <option value="profissional">Profissional e consultivo</option>
+              <option value="amigavel">Amigável e próximo</option>
+              <option value="curioso">Curioso / intrigante (abre com pergunta)</option>
+            </select>
+          </div>
+        </div>
+        <div class="grid-2" style="margin-bottom:1rem">
+          <div>
+            <label>Seu nome (como assinar)</label>
+            <input type="text" id="sender-name" placeholder="Ex: Charles">
+          </div>
+          <div>
+            <label>Sua empresa</label>
+            <input type="text" id="sender-company" placeholder="Ex: MultiBrain">
+          </div>
+        </div>
+        <div>
+          <label>Saudação de abertura</label>
+          <select id="saudacao">
+            <option value="auto">Automático (IA decide)</option>
+            <option value="ola_nome">Olá [Nome da empresa]!</option>
+            <option value="bom_dia">Bom dia, [Nome]!</option>
+            <option value="oi">Oi, [Nome]!</option>
+            <option value="custom">Personalizada (digitar abaixo)</option>
+          </select>
+        </div>
+        <div id="saudacao-custom" style="display:none;margin-top:.75rem">
+          <label>Saudação personalizada <small style="color:var(--text-dim)">(use {nome} para o nome da empresa)</small></label>
+          <input type="text" id="saudacao-text" placeholder="Ex: Olá {nome}, tudo bem?">
+        </div>
+        <div style="margin-top:1rem">
+          <div class="toggle-wrap">
+            <label class="toggle"><input type="checkbox" id="personalize" checked><div class="toggle-slider"></div></label>
+            <span style="font-size:13px;color:var(--text-muted)">Personalizar com nome, categoria e avaliação do lead</span>
+          </div>
+        </div>
+      </div>
+      <div id="manual-options" style="display:none;margin-top:1rem">
+        <div class="grid-2" style="margin-bottom:1rem">
+          <div>
+            <label>Seu nome</label>
+            <input type="text" id="sender-name-m" placeholder="Ex: Charles">
+          </div>
+          <div>
+            <label>Sua empresa</label>
+            <input type="text" id="sender-company-m" placeholder="Ex: MultiBrain">
+          </div>
+        </div>
+        <label>Sua mensagem <small style="color:var(--text-dim)">(use {nome} para o nome do lead, {seuNome}, {suaEmpresa})</small></label>
+        <textarea id="msg-manual" rows="6" placeholder="Ex: Olá {nome}! Sou {seuNome} da {suaEmpresa}. Vi que vocês têm ótimas avaliações no Google..."></textarea>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><div class="num">6</div> Material de apoio (opcional)</div>
+      <div class="grid-2">
+        <div>
+          <label>Link de material (PDF, vídeo, catálogo)</label>
+          <input type="url" id="link-material" placeholder="https://drive.google.com/...">
+          <p style="font-size:11px;color:var(--text-dim);margin-top:4px">Incluído automaticamente na mensagem</p>
+        </div>
+        <div>
+          <label>Arquivo para lembrete de anexo</label>
+          <div class="file-input-wrap">
+            <div class="file-label" id="file-label-display">📎 Selecionar arquivo...</div>
+            <input type="file" id="anexo-file" onchange="handleFile(this)">
+          </div>
+          <p style="font-size:11px;color:var(--text-dim);margin-top:4px">Lembrete aparecerá na mensagem</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="btn-row">
+      <button class="btn btn-ghost btn-sm" onclick="goStep(2)">← Voltar</button>
+      <button class="btn btn-accent2" id="btn-generate" onclick="generateMessages()">✨ Gerar Mensagens com IA</button>
+    </div>
+  </div>
+
+  <!-- ══ STEP 4: RESULTS ══ -->
+  <div class="section" id="sec-4">
+    <div class="stats-row" id="stats-row"></div>
+    <div style="display:flex;gap:.75rem;flex-wrap:wrap;margin-bottom:1rem;align-items:center">
+      <span style="font-size:13px;color:var(--text-muted)">Leads:</span>
+      <div id="results-chips"></div>
+      <div style="margin-left:auto;display:flex;gap:.5rem;flex-wrap:wrap">
+        <button class="btn btn-ghost btn-sm" onclick="exportCSV()">⬇ CSV</button>
+        <button class="btn btn-ghost btn-sm" onclick="exportXLSX()">⬇ Excel</button>
+        <button class="btn btn-ghost btn-sm" onclick="filterSent()" id="btn-filter-sent">👁 Ocultar enviados</button>
+      </div>
+    </div>
+    <div id="gen-progress" style="display:none">
+      <div class="progress-bar-wrap"><div class="progress-bar" id="gen-bar"></div></div>
+      <div class="status-line"><div class="dot active"></div><span id="gen-status-txt">Gerando mensagens...</span></div>
+    </div>
+    <div class="table-wrap">
+      <table id="leads-table">
+        <thead>
+          <tr>
+            <th style="width:32px"><input type="checkbox" id="check-all" onchange="toggleAllSent(this.checked)" style="width:auto;accent-color:var(--accent)"></th>
+            <th>#</th>
+            <th>Negócio</th>
+            <th>Categoria</th>
+            <th>⭐ / Aval.</th>
+            <th>Endereço</th>
+            <th>Telefone</th>
+            <th>Mensagem</th>
+            <th>Ação</th>
+          </tr>
+        </thead>
+        <tbody id="leads-tbody"></tbody>
+      </table>
+    </div>
+    <div class="btn-row">
+      <button class="btn btn-ghost btn-sm" onclick="goStep(3)">← Ajustar mensagens</button>
+      <button class="btn btn-ghost btn-sm" onclick="goStep(2)">🔄 Nova busca</button>
+    </div>
+  </div>
+</div>
+<footer><p>MultiBrain · <a href="https://multibrain.com.br" target="_blank">multibrain.com.br</a> · Ferramenta experimental · Use com responsabilidade</p></footer>
+
+<script>
+// ═══════════════ STATE ═══════════════
+var leads = [];
+var anexoFileName = '';
+var hideSent = false;
+
+// ═══════════════ INIT ═══════════════
+(function init() {
+  var gk = localStorage.getItem('mb_google');
+  var ck = localStorage.getItem('mb_claude');
+  var ok = localStorage.getItem('mb_openai');
+  var pr = localStorage.getItem('mb_provider');
+  if (gk) { document.getElementById('google-key').value = gk; document.getElementById('save-keys').checked = true; }
+  if (ck) { document.getElementById('claude-key').value = ck; }
+  if (ok) { document.getElementById('openai-key').value = ok; }
+  if (pr) {
+    var el = document.getElementById('ai-' + pr);
+    if (el) { el.checked = true; showProviderKeys(pr); }
+  }
+  document.querySelectorAll('input[name="ai-provider"]').forEach(function(r) {
+    r.addEventListener('change', function() { showProviderKeys(this.value); });
+  });
+  document.querySelectorAll('input[name="msg-type"]').forEach(function(r) {
+    r.addEventListener('change', function() {
+      document.getElementById('ai-options').style.display = this.value === 'ai' ? 'block' : 'none';
+      document.getElementById('manual-options').style.display = this.value === 'manual' ? 'block' : 'none';
+      document.getElementById('btn-generate').textContent = this.value === 'ai' ? '✨ Gerar Mensagens com IA' : '➡ Usar Esta Mensagem';
+    });
+  });
+  document.getElementById('saudacao').addEventListener('change', function() {
+    document.getElementById('saudacao-custom').style.display = this.value === 'custom' ? 'block' : 'none';
+  });
+})();
+
+function showProviderKeys(v) {
+  document.getElementById('keys-platform').style.display = v === 'platform' ? 'block' : 'none';
+  document.getElementById('keys-claude').style.display   = v === 'claude'   ? 'block' : 'none';
+  document.getElementById('keys-openai').style.display   = v === 'openai'   ? 'block' : 'none';
+}
+
+// ═══════════════ NAVIGATION ═══════════════
+function goStep(n) {
+  for (var i = 1; i <= 4; i++) {
+    var sec  = document.getElementById('sec-' + i);
+    var pill = document.getElementById('pill-' + i);
+    if (sec)  sec.classList.toggle('visible', i === n);
+    if (pill) { pill.classList.remove('active','done'); if (i === n) pill.classList.add('active'); else if (i < n) pill.classList.add('done'); }
+  }
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+
+function goStep1() {
+  var produto = document.getElementById('produto').value.trim();
+  if (!produto) { alert('Descreva seu produto/serviço antes de continuar.'); return; }
+  if (document.getElementById('save-keys').checked) {
+    localStorage.setItem('mb_google',   document.getElementById('google-key').value.trim());
+    localStorage.setItem('mb_claude',   document.getElementById('claude-key').value.trim());
+    localStorage.setItem('mb_openai',   document.getElementById('openai-key').value.trim());
+    localStorage.setItem('mb_provider', document.querySelector('input[name="ai-provider"]:checked').value);
+  }
+  goStep(2);
+}
+
+// ═══════════════ FILE HANDLE ═══════════════
+function handleFile(input) {
+  if (input.files && input.files[0]) {
+    anexoFileName = input.files[0].name;
+    document.getElementById('file-label-display').textContent = '📎 ' + anexoFileName;
+  }
+}
+
+// ═══════════════ SEARCH — Google Places API v1 ═══════════════
+async function startSearch() {
+  var googleKey = document.getElementById('google-key').value.trim();
+  if (!googleKey) { alert('Insira sua Google Places API Key na etapa de configuração.'); return; }
+  var nicho   = document.getElementById('nicho').value.trim();
+  var cidade  = document.getElementById('cidade').value.trim();
+  var produto = document.getElementById('produto').value.trim();
+  if (!nicho || !cidade) { alert('Preencha nicho e cidade.'); return; }
+  if (!produto)           { alert('Volte e descreva seu produto/serviço.'); return; }
+
+  var qtd       = Math.min(parseInt(document.getElementById('qtd').value) || 20, 60);
+  var minRating = parseFloat(document.getElementById('min-rating').value) || 0;
+  var hasPhone  = document.getElementById('has-phone').value === 'true';
+  var sortOrder = document.getElementById('sort-order').value;
+
+  if (document.getElementById('save-keys').checked) localStorage.setItem('mb_google', googleKey);
+
+  var btn = document.getElementById('btn-search');
+  btn.disabled = true; btn.textContent = 'Buscando...';
+  document.getElementById('search-progress').style.display = 'block';
+  setProgress('prog-bar', 5);
+  setStatus('status-dot', 'active');
+  setStatusTxt('status-txt', 'Buscando no Google Maps...');
+
+  try {
+    leads = [];
+    var pageToken = null;
+    var page = 0;
+    var maxPages = Math.ceil(qtd / 20);
+
+    while (leads.length < qtd && page < maxPages) {
+      page++;
+      setStatusTxt('status-txt', 'Buscando página ' + page + '... (' + leads.length + ' leads até agora)');
+      setProgress('prog-bar', Math.min(5 + (page / maxPages) * 80, 85));
+
+      var body = {
+        textQuery: nicho + ' em ' + cidade,
+        languageCode: 'pt-BR',
+        regionCode: 'BR',
+        maxResultCount: 20
+      };
+      if (pageToken) body.pageToken = pageToken;
+
+      var res = await fetch('https://places.googleapis.com/v1/places:searchText', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-Goog-Api-Key': googleKey,
+          'X-Goog-FieldMask': 'places.id,places.displayName,places.formattedAddress,places.primaryTypeDisplayName,places.rating,places.userRatingCount,places.nationalPhoneNumber,places.internationalPhoneNumber,places.websiteUri,places.types'
+        },
+        body: JSON.stringify(body)
+      });
+
+      if (!res.ok) {
+        var errData = await res.json().catch(function(){return{};});
+        var msg = (errData.error && errData.error.message) || ('HTTP ' + res.status);
+        throw new Error('Google Places erro: ' + msg + '. Certifique-se de que a "Places API (New)" está ativada.');
+      }
+
+      var data = await res.json();
+      var places = data.places || [];
+      pageToken = data.nextPageToken || null;
+
+      for (var i = 0; i < places.length; i++) {
+        var p = places[i];
+        var phone = p.nationalPhoneNumber || p.internationalPhoneNumber || '';
+        if (hasPhone && !phone) continue;
+        var rating = p.rating ? parseFloat(p.rating) : 0;
+        if (minRating > 0 && rating < minRating) continue;
+
+        leads.push({
+          idx: leads.length + 1,
+          name: (p.displayName && p.displayName.text) || 'Sem nome',
+          category: p.primaryTypeDisplayName ? (p.primaryTypeDisplayName.text || 'Negócio') : ((p.types && p.types[0]) || 'Negócio'),
+          rating: rating ? rating.toFixed(1) : '--',
+          reviews: p.userRatingCount || 0,
+          address: p.formattedAddress || '--',
+          phone: phone,
+          website: p.websiteUri || '',
+          instagram: extractInstagram(p),
+          msg: '',
+          msgStatus: 'pending',
+          sent: false
+        });
+        if (leads.length >= qtd) break;
+      }
+
+      if (!pageToken) break;
+      if (leads.length < qtd) await sleep(300);
+    }
+
+    // Sort
+    if (sortOrder === 'rating') leads.sort(function(a,b){ return parseFloat(b.rating||0) - parseFloat(a.rating||0); });
+    else if (sortOrder === 'reviews') leads.sort(function(a,b){ return b.reviews - a.reviews; });
+    leads.forEach(function(l,i){ l.idx = i+1; });
+
+    if (!leads.length) throw new Error('Nenhum lead encontrado com os filtros aplicados. Tente reduzir a avaliação mínima ou desativar o filtro de telefone.');
+
+    setProgress('prog-bar', 100);
+    setStatus('status-dot', 'done');
+    setStatusTxt('status-txt', '✅ ' + leads.length + ' leads encontrados!');
+    await sleep(500);
+    goStep(3);
+  } catch(err) {
+    setStatus('status-dot', 'error');
+    setStatusTxt('status-txt', '❌ ' + err.message);
+    console.error(err);
+  } finally {
+    btn.disabled = false; btn.textContent = '🔍 Buscar Leads';
+  }
+}
+
+function extractInstagram(place) {
+  // Google Places API v1 doesn't return social links directly
+  // We store website and check if it looks like instagram
+  var web = place.websiteUri || '';
+  if (web.indexOf('instagram.com') !== -1) return web;
+  return '';
+}
+
+// ═══════════════ GENERATE MESSAGES ═══════════════
+async function generateMessages() {
+  var msgType = document.querySelector('input[name="msg-type"]:checked').value;
+  var provider = document.querySelector('input[name="ai-provider"]:checked').value;
+
+  if (msgType === 'ai' && provider !== 'platform') {
+    var keyId = provider === 'claude' ? 'claude-key' : 'openai-key';
+    var keyVal = document.getElementById(keyId).value.trim();
+    if (!keyVal) {
+      var go = confirm('Chave de API da IA não preenchida.\n\nClique OK para voltar à Configuração ou Cancelar para usar mensagem manual.');
+      if (go) { goStep(1); } else {
+        document.getElementById('mt-manual').checked = true;
+        document.getElementById('ai-options').style.display = 'none';
+        document.getElementById('manual-options').style.display = 'block';
+        msgType = 'manual';
+      }
+      return;
+    }
+  }
+
+  var produto       = document.getElementById('produto').value.trim();
+  var linkMaterial  = document.getElementById('link-material').value.trim();
+  var senderName    = msgType === 'ai' ? document.getElementById('sender-name').value.trim() : document.getElementById('sender-name-m').value.trim();
+  var senderCompany = msgType === 'ai' ? document.getElementById('sender-company').value.trim() : document.getElementById('sender-company-m').value.trim();
+
+  goStep(4);
+  renderTable(true);
+  renderStats();
+
+  if (msgType === 'manual') {
+    var template = document.getElementById('msg-manual').value.trim();
+    leads.forEach(function(l) {
+      var msg = template
+        .replace(/{nome}/g, l.name)
+        .replace(/{seuNome}/g, senderName)
+        .replace(/{suaEmpresa}/g, senderCompany);
+      l.msg = appendExtras(msg, linkMaterial, anexoFileName);
+      l.msgStatus = 'done';
+    });
+    renderTable(false);
+    return;
+  }
+
+  // AI generation
+  var tecnica   = document.getElementById('tecnica').value;
+  var tom       = document.getElementById('tom').value;
+  var personalize = document.getElementById('personalize').checked;
+  var saudacao  = document.getElementById('saudacao').value;
+  var saudacaoText = saudacao === 'custom' ? document.getElementById('saudacao-text').value.trim() : '';
+
+  document.getElementById('gen-progress').style.display = 'block';
+
+  for (var i = 0; i < leads.length; i++) {
+    var lead = leads[i];
+    document.getElementById('gen-status-txt').textContent = 'Gerando ' + (i+1) + '/' + leads.length + ': ' + lead.name + '...';
+    setProgress('gen-bar', Math.round(((i+1)/leads.length)*100));
+    try {
+      lead.msg = await callAI(provider, lead, produto, tecnica, tom, personalize, linkMaterial, anexoFileName, senderName, senderCompany, saudacao, saudacaoText);
+      lead.msgStatus = 'done';
+    } catch(err) {
+      // Try fallback provider
+      lead.msg = '❌ ' + err.message;
+      lead.msgStatus = 'error';
+    }
+    renderTable(false);
+    if (i < leads.length - 1) await sleep(300);
+  }
+  document.getElementById('gen-status-txt').textContent = '✅ ' + leads.length + ' mensagens geradas!';
+}
+
+// ═══════════════ AI CALL (Claude / OpenAI / Platform) ═══════════════
+async function callAI(provider, lead, produto, tecnica, tom, personalize, linkMaterial, anexo, senderName, senderCompany, saudacao, saudacaoText) {
+  var prompt = buildPrompt(lead, produto, tecnica, tom, personalize, linkMaterial, anexo, senderName, senderCompany, saudacao, saudacaoText);
+
+  // Platform uses Claude under the hood (admin-configured key)
+  if (provider === 'platform' || provider === 'claude') {
+    var apiKey = provider === 'claude' ? document.getElementById('claude-key').value.trim() : 'PLATFORM_KEY';
+    var res = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'x-api-key': apiKey,
+        'anthropic-version': '2023-06-01',
+        'anthropic-dangerous-direct-browser-access': 'true'
+      },
+      body: JSON.stringify({ model: 'claude-sonnet-4-20250514', max_tokens: 700, messages: [{role:'user',content:prompt}] })
+    });
+    if (!res.ok) {
+      var e = await res.json().catch(function(){return{};});
+      var m = (e.error && e.error.message) || ('HTTP ' + res.status);
+      if (res.status === 401) throw new Error('Claude Key inválida (401)');
+      if (res.status === 429) throw new Error('Limite Claude atingido (429) — aguarde');
+      throw new Error('Claude: ' + m);
+    }
+    var d = await res.json();
+    return appendExtras(d.content[0].text.trim(), linkMaterial, anexo);
+  }
+
+  if (provider === 'openai') {
+    var oaiKey = document.getElementById('openai-key').value.trim();
+    var res2 = await fetch('https://api.openai.com/v1/chat/completions', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + oaiKey },
+      body: JSON.stringify({ model: 'gpt-4o-mini', max_tokens: 700, messages: [{role:'user',content:prompt}] })
+    });
+    if (!res2.ok) {
+      var e2 = await res2.json().catch(function(){return{};});
+      var m2 = (e2.error && e2.error.message) || ('HTTP ' + res2.status);
+      if (res2.status === 401) throw new Error('OpenAI Key inválida (401)');
+      if (res2.status === 429) throw new Error('Limite OpenAI atingido (429)');
+      throw new Error('OpenAI: ' + m2);
+    }
+    var d2 = await res2.json();
+    return appendExtras(d2.choices[0].message.content.trim(), linkMaterial, anexo);
+  }
+
+  throw new Error('Provedor desconhecido: ' + provider);
+}
+
+function buildPrompt(lead, produto, tecnica, tom, personalize, linkMaterial, anexo, senderName, senderCompany, saudacao, saudacaoText) {
+  var tecnicas = {
+    spin: 'SPIN Selling: faça uma pergunta de Situação sobre o negócio, toque na Dor implícita, sugira a Implicação do problema e apresente o Benefício da solução sem vender diretamente',
+    aida: 'AIDA: capture Atenção com um fato relevante sobre o negócio, gere Interesse com um insight, crie Desejo mostrando o resultado, finalize com Ação clara',
+    gatilhos: 'Gatilhos Mentais: use especificidade (dados reais do negócio), prova social implícita, escassez suave e reciprocidade (ofereça algo de valor)',
+    pas: 'PAS: identifique o Problema específico desse tipo de negócio, Agite a dor mostrando o custo de não resolver, apresente a Solução',
+    cialdini: 'Princípios de Cialdini: use Autoridade (mostre expertise), Reciprocidade (ofereça valor primeiro) e Pertencimento',
+    combo: 'Combo Avançado: comece com pergunta SPIN que revela dor, agite com PAS em 1 frase, aplique gatilho de especificidade, finalize com CTA de baixo atrito'
+  };
+  var tons = {
+    casual: 'tom casual e próximo, como mensagem de amigo, linguagem simples, máximo 3 parágrafos curtos',
+    profissional: 'tom profissional e consultivo, respeitoso mas não formal demais',
+    amigavel: 'tom amigável e entusiasmado',
+    curioso: 'abra com uma pergunta intrigante que gere curiosidade imediata'
+  };
+
+  var leadInfo = personalize
+    ? 'Nome: ' + lead.name + ' | Categoria: ' + lead.category + ' | Avaliação: ' + lead.rating + '★ (' + lead.reviews + ' avaliações) | Endereço: ' + lead.address
+    : 'Categoria: ' + lead.category;
+
+  var saudacaoInstr = '';
+  if (saudacao === 'ola_nome')  saudacaoInstr = 'Abra EXATAMENTE com: "Olá ' + lead.name + '!"';
+  else if (saudacao === 'bom_dia') saudacaoInstr = 'Abra EXATAMENTE com: "Bom dia, ' + lead.name + '!"';
+  else if (saudacao === 'oi')   saudacaoInstr = 'Abra EXATAMENTE com: "Oi, ' + lead.name + '!"';
+  else if (saudacao === 'custom' && saudacaoText) saudacaoInstr = 'Abra EXATAMENTE com: "' + saudacaoText.replace('{nome}', lead.name) + '"';
+
+  var assinatura = '';
+  if (senderName || senderCompany) {
+    assinatura = 'Assine ao final como: ' + (senderName || '') + (senderCompany ? ' da ' + senderCompany : '');
+  }
+
+  var extras = [];
+  if (linkMaterial) extras.push('Inclua naturalmente este link no final: ' + linkMaterial);
+  if (anexo) extras.push('Adicione ao final: "📎 [Lembre de anexar: ' + anexo + ']"');
+  if (!linkMaterial && !anexo) extras.push('Finalize com CTA de baixo atrito (ex: "posso te mandar mais detalhes?" ou "tenho 5 min pra te mostrar?")');
+
+  return 'Você é especialista em prospecção ativa e copywriting de vendas para WhatsApp.\n\n' +
+    'Escreva UMA mensagem de prospecção usando: ' + tecnicas[tecnica] + '\n\n' +
+    'LEAD:\n' + leadInfo + '\n\n' +
+    'MEU PRODUTO/SERVIÇO:\n' + produto + '\n\n' +
+    'TOM: ' + tons[tom] + '\n\n' +
+    (saudacaoInstr ? 'SAUDAÇÃO: ' + saudacaoInstr + '\n\n' : '') +
+    (assinatura ? 'ASSINATURA: ' + assinatura + '\n\n' : '') +
+    'REGRAS:\n' +
+    '- Máximo 5 parágrafos curtos\n' +
+    '- Sem bullet points\n' +
+    '- Pareça escrita por humano real, não IA\n' +
+    '- Sem markdown, apenas texto puro\n' +
+    extras.map(function(e){ return '- ' + e; }).join('\n') + '\n\n' +
+    'Escreva apenas a mensagem, sem explicações.';
+}
+
+function appendExtras(msg, link, anexo) {
+  if (link) msg += '\n\n👉 ' + link;
+  if (anexo) msg += '\n\n📎 [Lembre de anexar: ' + anexo + ']';
+  return msg;
+}
+
+// ═══════════════ RENDER TABLE ═══════════════
+function renderTable(showLoading) {
+  var tbody = document.getElementById('leads-tbody');
+  tbody.innerHTML = leads.map(function(l) {
+    var phone   = l.phone ? l.phone.replace(/\D/g,'') : '';
+    var msgText = (showLoading && l.msgStatus === 'pending') ? '⏳ Gerando...' : (l.msg || '—');
+    var waLink  = phone ? 'https://wa.me/55' + phone.replace(/^0/,'') + '?text=' + encodeURIComponent(l.msg || '') : null;
+    var igLink  = l.instagram || '';
+
+    var waBtn = waLink
+      ? '<a class="wa-btn" href="' + waLink + '" target="_blank"><svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>WA</a>'
+      : '<span style="font-size:11px;color:var(--text-dim)">Sem tel.</span>';
+
+    var igBtn = igLink ? '<br><a class="ig-btn" href="' + igLink + '" target="_blank">📷 Instagram</a>' : '';
+    var copyBtn = l.msg ? '<button class="copy-btn" onclick="copyMsg(' + (l.idx-1) + ')">📋</button>' : '';
+    var checkCls = l.sent ? 'check-btn checked' : 'check-btn';
+    var checkTxt = l.sent ? '✅ Enviado' : '○ Marcar';
+    var rowCls = l.sent ? 'sent-row' : '';
+
+    return '<tr class="' + rowCls + '" id="row-' + l.idx + '">' +
+      '<td><input type="checkbox" ' + (l.sent?'checked':'') + ' onchange="toggleSent(' + (l.idx-1) + ',this.checked)" style="width:auto;accent-color:var(--accent)"></td>' +
+      '<td style="color:var(--text-dim)">' + l.idx + '</td>' +
+      '<td class="cell-name">' + escHtml(l.name) + '</td>' +
+      '<td><span class="cell-cat">' + escHtml(l.category) + '</span></td>' +
+      '<td class="cell-rating">★ ' + l.rating + '<br><span style="font-size:11px;color:var(--text-dim)">' + l.reviews + ' aval.</span></td>' +
+      '<td style="font-size:12px;color:var(--text-muted);max-width:140px">' + escHtml(l.address) + '</td>' +
+      '<td style="font-size:12px;white-space:nowrap">' + escHtml(l.phone || '—') + '</td>' +
+      '<td><div class="cell-msg' + ((showLoading && l.msgStatus === 'pending') ? ' loading' : '') + '">' + escHtml(msgText) + '</div>' + copyBtn + '</td>' +
+      '<td style="min-width:100px">' + waBtn + igBtn + '<br><button class="' + checkCls + '" onclick="toggleSent(' + (l.idx-1) + ',!' + l.sent + ')">' + checkTxt + '</button></td>' +
+      '</tr>';
+  }).join('');
+}
+
+function renderStats() {
+  var withPhone = leads.filter(function(l){return l.phone;}).length;
+  var sent = leads.filter(function(l){return l.sent;}).length;
+  var ratings = leads.map(function(l){return parseFloat(l.rating)||0;}).filter(function(r){return r>0;});
+  var avg = ratings.length ? (ratings.reduce(function(a,b){return a+b;},0)/ratings.length).toFixed(1) : '--';
+
+  document.getElementById('stats-row').innerHTML =
+    stat(leads.length, 'Leads') +
+    stat(withPhone, 'Com telefone') +
+    stat(avg, 'Avaliação média') +
+    stat(leads.filter(function(l){return l.instagram;}).length, 'Instagram') +
+    stat(sent, 'Enviados ✅');
+
+  document.getElementById('results-chips').innerHTML = leads.map(function(l,i) {
+    return '<span style="font-size:11px;padding:2px 7px;border-radius:20px;margin:2px;cursor:pointer;display:inline-block;background:' +
+      (l.sent ? 'rgba(0,229,160,.15);color:var(--accent)' : 'rgba(124,107,255,.12);color:var(--accent2)') +
+      '" onclick="scrollToRow(' + i + ')">' + l.idx + '</span>';
+  }).join('');
+}
+
+function stat(n, lbl) {
+  return '<div class="stat-chip"><div class="stat-num">' + n + '</div><div class="stat-lbl">' + lbl + '</div></div>';
+}
+
+// ═══════════════ SENT / CHECK ═══════════════
+function toggleSent(idx, val) {
+  leads[idx].sent = val;
+  renderTable(false);
+  renderStats();
+}
+
+function toggleAllSent(val) {
+  leads.forEach(function(l){ l.sent = val; });
+  renderTable(false);
+  renderStats();
+}
+
+function filterSent() {
+  hideSent = !hideSent;
+  document.getElementById('btn-filter-sent').textContent = hideSent ? '👁 Mostrar todos' : '👁 Ocultar enviados';
+  document.querySelectorAll('#leads-tbody tr').forEach(function(row) {
+    if (row.classList.contains('sent-row')) row.style.display = hideSent ? 'none' : '';
+  });
+}
+
+function scrollToRow(idx) {
+  var row = document.getElementById('row-' + (idx+1));
+  if (row) row.scrollIntoView({behavior:'smooth', block:'center'});
+}
+
+// ═══════════════ COPY ═══════════════
+function copyMsg(idx) {
+  if (leads[idx] && leads[idx].msg) {
+    navigator.clipboard.writeText(leads[idx].msg).then(function() {
+      var btns = document.querySelectorAll('.copy-btn');
+      if (btns[idx]) { btns[idx].textContent = '✅'; setTimeout(function(){ btns[idx].textContent = '📋'; }, 1500); }
+    });
+  }
+}
+
+// ═══════════════ EXPORT CSV ═══════════════
+function exportCSV() {
+  if (!leads.length) { alert('Nenhum lead para exportar.'); return; }
+  var cols = ['#','Nome','Categoria','Avaliação','Avaliações','Endereço','Telefone','Website','Instagram','Mensagem','Link WhatsApp','Enviado'];
+  var rows = leads.map(function(l) {
+    var phone = l.phone ? l.phone.replace(/\D/g,'') : '';
+    var waLink = phone ? 'https://wa.me/55' + phone.replace(/^0/,'') + '?text=' + encodeURIComponent(l.msg||'') : '';
+    return [l.idx, l.name, l.category, l.rating, l.reviews, l.address, l.phone||'', l.website||'', l.instagram||'', l.msg||'', waLink, l.sent?'Sim':'Não']
+      .map(function(v){ return '"' + String(v).replace(/"/g,'""') + '"'; }).join(',');
+  });
+  var csv = [cols.join(',')].concat(rows).join('\n');
+  downloadBlob('\uFEFF' + csv, 'leads-multibrain.csv', 'text/csv;charset=utf-8;');
+}
+
+// ═══════════════ EXPORT XLSX ═══════════════
+function exportXLSX() {
+  if (!leads.length) { alert('Nenhum lead para exportar.'); return; }
+  var rows = [['#','Nome','Categoria','Avaliação','Avaliações','Endereço','Telefone','Website','Instagram','Mensagem','Link WhatsApp','Enviado']];
+  leads.forEach(function(l) {
+    var phone = l.phone ? l.phone.replace(/\D/g,'') : '';
+    var waLink = phone ? 'https://wa.me/55' + phone.replace(/^0/,'') + '?text=' + encodeURIComponent(l.msg||'') : '';
+    rows.push([l.idx, l.name, l.category, parseFloat(l.rating)||0, l.reviews, l.address, l.phone||'', l.website||'', l.instagram||'', l.msg||'', waLink, l.sent?'Sim':'Não']);
+  });
+  var ws = XLSX.utils.aoa_to_sheet(rows);
+  // Column widths
+  ws['!cols'] = [5,30,20,10,10,35,18,30,30,60,60,10].map(function(w){return{wch:w};});
+  // Style header row
+  var wb = XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(wb, ws, 'Leads');
+  XLSX.writeFile(wb, 'leads-multibrain.xlsx');
+}
+
+// ═══════════════ HELPERS ═══════════════
+function downloadBlob(content, filename, type) {
+  var blob = new Blob([content], {type: type});
+  var url  = URL.createObjectURL(blob);
+  var a    = document.createElement('a'); a.href = url; a.download = filename; a.click();
+  URL.revokeObjectURL(url);
+}
+function setProgress(id, pct) { document.getElementById(id).style.width = pct + '%'; }
+function setStatus(id, state) { document.getElementById(id).className = 'dot ' + state; }
+function setStatusTxt(id, txt) { document.getElementById(id).textContent = txt; }
+function sleep(ms) { return new Promise(function(r){ setTimeout(r, ms); }); }
+function escHtml(str) {
+  return String(str||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+</script>
+</body>
+</html>
