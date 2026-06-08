@@ -2,5 +2,8 @@
   "buildCommand": "npm run build",
   "installCommand": "npm install --legacy-peer-deps",
   "framework": "vite",
-  "outputDirectory": "dist"
+  "outputDirectory": "dist",
+  "rewrites": [
+    { "source": "/((?!prospecta-app\\.html).*)", "destination": "/index.html" }
+  ]
 }
