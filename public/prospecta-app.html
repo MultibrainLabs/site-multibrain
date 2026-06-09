@@ -199,10 +199,9 @@ footer a:hover{color:var(--accent)}
           </select>
         </div>
         <div>
-          <label>Tem telefone</label>
-          <select id="has-phone">
-            <option value="true" selected>Obrigatório</option>
-            <option value="false">Opcional</option>
+          <label>Telefone</label>
+          <select id="has-phone" disabled style="opacity:.5;cursor:not-allowed">
+            <option value="true" selected>Apenas celular (obrigatório)</option>
           </select>
         </div>
         <div>
@@ -507,7 +506,7 @@ async function startSearch() {
       for (var i = 0; i < places.length; i++) {
         var p = places[i];
         var phone = p.nationalPhoneNumber || p.internationalPhoneNumber || '';
-        if (hasPhone && !phone) continue;
+        if (!phone || !isMobile(phone)) continue;
         var rating = p.rating ? parseFloat(p.rating) : 0;
         if (minRating > 0 && rating < minRating) continue;
 
@@ -551,6 +550,13 @@ async function startSearch() {
   } finally {
     btn.disabled = false; btn.textContent = '🔍 Buscar Leads';
   }
+}
+
+function isMobile(phone) {
+  var d = phone.replace(/\D/g, '');
+  if (d.length > 11 && d.slice(0,2) === '55') d = d.slice(2); // remove +55
+  // BR mobile: DDD (2) + 9 + 8 digits = 11 digits, 3rd digit must be 9
+  return d.length === 11 && d[2] === '9';
 }
 
 function extractInstagram(place) {
