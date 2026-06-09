@@ -113,7 +113,7 @@ footer a:hover{color:var(--accent)}
 <body>
 <header>
   <div class="logo">Multi<span>Brain</span> <span style="color:var(--accent)">·</span> Captação</div>
-  <div class="header-badge">v1.2</div>
+  <div class="header-badge">v1.6</div>
 </header>
 <div class="container">
   <h1 class="page-title">Extrator de <em>Leads</em> + WhatsApp</h1>
@@ -156,7 +156,32 @@ footer a:hover{color:var(--accent)}
 
     <div class="card">
       <div class="card-title"><div class="num">3</div> Seu produto / serviço</div>
-      <textarea id="produto" placeholder="Ex: Sistema de gestão para clínicas odontológicas que reduz faltas em 40% com confirmações automáticas via WhatsApp. Planos a partir de R$197/mês." rows="3"></textarea>
+      <div class="radio-tabs" style="margin-bottom:1rem">
+        <div class="radio-tab"><input type="radio" name="produto-mode" id="pm-manual" value="manual" checked><label for="pm-manual">✍️ Descrever manualmente</label></div>
+        <div class="radio-tab"><input type="radio" name="produto-mode" id="pm-url" value="url"><label for="pm-url">🌐 Gerar via site</label></div>
+        <div class="radio-tab"><input type="radio" name="produto-mode" id="pm-file" value="file"><label for="pm-file">📎 Gerar via PDF / PPT</label></div>
+      </div>
+      <div id="pm-manual-block">
+        <textarea id="produto" placeholder="Ex: Sistema de gestão para clínicas odontológicas que reduz faltas em 40% com confirmações automáticas via WhatsApp. Planos a partir de R$197/mês." rows="3"></textarea>
+      </div>
+      <div id="pm-url-block" style="display:none">
+        <label>URL do site da empresa</label>
+        <div style="display:flex;gap:.75rem">
+          <input type="url" id="produto-url" placeholder="https://suaempresa.com.br" style="flex:1">
+          <button class="btn btn-accent2 btn-sm" onclick="gerarProdutoViaUrl()">✨ Analisar site</button>
+        </div>
+        <div id="url-status" style="font-size:12px;color:var(--text-muted);margin-top:.5rem;display:none"></div>
+        <textarea id="produto-url-text" placeholder="O texto será gerado aqui pela IA..." rows="3" style="margin-top:.75rem"></textarea>
+      </div>
+      <div id="pm-file-block" style="display:none">
+        <label>Anexar PDF ou PPT de apresentação</label>
+        <div class="file-input-wrap" style="width:100%">
+          <div class="file-label" id="produto-file-label" style="width:100%;justify-content:center">📎 Clique para selecionar PDF ou PPT...</div>
+          <input type="file" id="produto-file" accept=".pdf,.ppt,.pptx" onchange="handleProdutoFile(this)">
+        </div>
+        <div id="file-status" style="font-size:12px;color:var(--text-muted);margin-top:.5rem;display:none"></div>
+        <textarea id="produto-file-text" placeholder="O texto será gerado aqui pela IA após análise do arquivo..." rows="3" style="margin-top:.75rem"></textarea>
+      </div>
     </div>
 
     <div style="margin-bottom:1rem">
@@ -173,54 +198,109 @@ footer a:hover{color:var(--accent)}
   <!-- ══ STEP 2: BUSCA ══ -->
   <div class="section" id="sec-2">
     <div class="card">
-      <div class="card-title"><div class="num">4</div> Parâmetros de Busca</div>
-      <div class="grid-3">
-        <div>
-          <label>Nicho / Categoria</label>
-          <input type="text" id="nicho" placeholder="Ex: clínicas odontológicas">
+      <div class="card-title"><div class="num">4</div> Origem dos Leads</div>
+      <div class="radio-tabs" style="margin-bottom:1.25rem">
+        <div class="radio-tab"><input type="radio" name="lead-source" id="ls-maps" value="maps" checked><label for="ls-maps">🗺 Google Maps</label></div>
+        <div class="radio-tab"><input type="radio" name="lead-source" id="ls-manual" value="manual"><label for="ls-manual">📱 Número manual</label></div>
+        <div class="radio-tab"><input type="radio" name="lead-source" id="ls-list" value="list"><label for="ls-list">📋 Lista de contatos</label></div>
+      </div>
+
+      <!-- MAPS -->
+      <div id="ls-maps-block">
+        <div class="grid-3">
+          <div><label>Nicho / Categoria</label><input type="text" id="nicho" placeholder="Ex: clínicas odontológicas"></div>
+          <div><label>Cidade / Região</label><input type="text" id="cidade" placeholder="Ex: Porto Alegre, RS"></div>
+          <div><label>Qtd. de leads (máx. 60)</label><input type="number" id="qtd" value="20" min="1" max="60"></div>
         </div>
-        <div>
-          <label>Cidade / Região</label>
-          <input type="text" id="cidade" placeholder="Ex: Porto Alegre, RS">
-        </div>
-        <div>
-          <label>Qtd. de leads (máx. 60)</label>
-          <input type="number" id="qtd" value="20" min="1" max="60">
+        <div class="grid-3" style="margin-top:1rem">
+          <div>
+            <label>Avaliação mínima</label>
+            <select id="min-rating">
+              <option value="0">Qualquer</option>
+              <option value="3">3+</option>
+              <option value="4" selected>4+</option>
+              <option value="4.5">4.5+</option>
+            </select>
+          </div>
+          <div>
+            <label>Telefone</label>
+            <select id="has-phone" disabled style="opacity:.5;cursor:not-allowed">
+              <option value="true" selected>Apenas celular (obrigatório)</option>
+            </select>
+          </div>
+          <div>
+            <label>Ordem dos resultados</label>
+            <select id="sort-order">
+              <option value="rating">Melhor avaliação</option>
+              <option value="reviews">Mais avaliações</option>
+              <option value="default">Relevância Google</option>
+            </select>
+          </div>
         </div>
       </div>
-      <div class="grid-3" style="margin-top:1rem">
-        <div>
-          <label>Avaliação mínima</label>
-          <select id="min-rating">
-            <option value="0">Qualquer</option>
-            <option value="3">3+</option>
-            <option value="4" selected>4+</option>
-            <option value="4.5">4.5+</option>
-          </select>
+
+      <!-- MANUAL -->
+      <div id="ls-manual-block" style="display:none">
+        <div class="alert alert-info" style="margin-bottom:1rem">📱 Informe um número e nome para gerar mensagem personalizada e enviar direto pelo WhatsApp.</div>
+        <div class="grid-3">
+          <div>
+            <label>Nome / Empresa</label>
+            <input type="text" id="manual-nome" placeholder="Ex: João - Clínica Saúde">
+          </div>
+          <div>
+            <label>Número WhatsApp <small style="color:var(--text-dim)">(somente números)</small></label>
+            <input type="tel" id="manual-phone" placeholder="Ex: 51987654321">
+          </div>
+          <div>
+            <label>Categoria / Segmento</label>
+            <input type="text" id="manual-cat" placeholder="Ex: Clínica odontológica">
+          </div>
         </div>
-        <div>
-          <label>Telefone</label>
-          <select id="has-phone" disabled style="opacity:.5;cursor:not-allowed">
-            <option value="true" selected>Apenas celular (obrigatório)</option>
-          </select>
+        <div style="margin-top:1rem">
+          <button class="btn btn-ghost btn-sm" onclick="addManualLead()" style="color:var(--accent);border-color:var(--accent)">+ Adicionar à lista</button>
         </div>
-        <div>
-          <label>Ordem dos resultados</label>
-          <select id="sort-order">
-            <option value="rating">Melhor avaliação</option>
-            <option value="reviews">Mais avaliações</option>
-            <option value="default">Relevância Google</option>
-          </select>
+        <div id="manual-list-preview" style="margin-top:1rem;display:none">
+          <div style="font-size:12px;color:var(--text-muted);margin-bottom:.5rem">Leads adicionados:</div>
+          <div id="manual-list-items"></div>
+        </div>
+      </div>
+
+      <!-- LIST -->
+      <div id="ls-list-block" style="display:none">
+        <div class="alert alert-info" style="margin-bottom:1rem">📋 Cole uma lista de contatos ou importe um CSV. Formato por linha: <code style="background:var(--surface2);padding:1px 6px;border-radius:4px">Nome, Número, Categoria</code></div>
+        <div style="display:flex;gap:.75rem;margin-bottom:.75rem;flex-wrap:wrap">
+          <div class="file-input-wrap">
+            <div class="file-label">📂 Importar CSV</div>
+            <input type="file" accept=".csv,.txt" onchange="importCSVLeads(this)">
+          </div>
+          <button class="btn btn-ghost btn-sm" onclick="document.getElementById('list-textarea').value=''">🗑 Limpar</button>
+        </div>
+        <textarea id="list-textarea" rows="6" placeholder="João Silva, 51987654321, Dentista&#10;Maria Santos, 51998765432, Advogada&#10;Pedro Costa, 51911223344, Restaurante"></textarea>
+        <div style="font-size:11px;color:var(--text-dim);margin-top:.5rem">Cada linha = 1 lead. Colunas: Nome, Telefone, Categoria (separadas por vírgula)</div>
+      </div>
+    </div>
+
+    <!-- Dedup options (only for Maps mode) -->
+    <div id="dedup-options" class="card" style="margin-top:0;padding:1rem 1.75rem">
+      <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:.75rem">
+        <div class="toggle-wrap">
+          <label class="toggle"><input type="checkbox" id="skip-sent-toggle" checked><div class="toggle-slider"></div></label>
+          <span style="font-size:13px;color:var(--text-muted)">Ignorar leads já vistos em buscas anteriores</span>
+        </div>
+        <div style="display:flex;gap:.75rem;align-items:center">
+          <span id="seen-counter" style="font-size:12px;color:var(--text-dim)"></span>
+          <button class="btn btn-ghost btn-sm" onclick="clearSeenIds()" style="font-size:11px">🗑 Limpar histórico</button>
         </div>
       </div>
     </div>
+
     <div id="search-progress" style="display:none">
       <div class="progress-bar-wrap"><div class="progress-bar" id="prog-bar"></div></div>
       <div class="status-line"><div class="dot active" id="status-dot"></div><span id="status-txt">Buscando...</span></div>
     </div>
     <div class="btn-row">
       <button class="btn btn-ghost btn-sm" onclick="goStep(1)">← Voltar</button>
-      <button class="btn btn-primary" id="btn-search" onclick="startSearch()">🔍 Buscar Leads</button>
+      <button class="btn btn-primary" id="btn-search" onclick="handleLeadSource()">🔍 Buscar / Confirmar Leads</button>
     </div>
   </div>
 
@@ -374,6 +454,7 @@ footer a:hover{color:var(--accent)}
 var leads = [];
 var anexoFileName = '';
 var hideSent = false;
+var manualLeads = [];
 
 // ═══════════════ INIT ═══════════════
 (function init() {
@@ -401,6 +482,28 @@ var hideSent = false;
   document.getElementById('saudacao').addEventListener('change', function() {
     document.getElementById('saudacao-custom').style.display = this.value === 'custom' ? 'block' : 'none';
   });
+
+  // Produto mode tabs
+  document.querySelectorAll('input[name="produto-mode"]').forEach(function(r) {
+    r.addEventListener('change', function() {
+      document.getElementById('pm-manual-block').style.display = this.value === 'manual' ? 'block' : 'none';
+      document.getElementById('pm-url-block').style.display    = this.value === 'url'    ? 'block' : 'none';
+      document.getElementById('pm-file-block').style.display   = this.value === 'file'   ? 'block' : 'none';
+    });
+  });
+
+  // Lead source tabs
+  document.querySelectorAll('input[name="lead-source"]').forEach(function(r) {
+    r.addEventListener('change', function() {
+      document.getElementById('ls-maps-block').style.display   = this.value === 'maps'   ? 'block' : 'none';
+      document.getElementById('ls-manual-block').style.display = this.value === 'manual' ? 'block' : 'none';
+      document.getElementById('ls-list-block').style.display   = this.value === 'list'   ? 'block' : 'none';
+      document.getElementById('dedup-options').style.display   = this.value === 'maps'   ? 'block' : 'none';
+      var btn = document.getElementById('btn-search');
+      btn.textContent = this.value === 'maps' ? '🔍 Buscar Leads' : '➡ Confirmar Leads';
+    });
+  });
+  updateSeenCounter();
 })();
 
 function showProviderKeys(v) {
@@ -420,9 +523,18 @@ function goStep(n) {
   window.scrollTo({top:0, behavior:'smooth'});
 }
 
+function getProduto() {
+  var mode = document.querySelector('input[name="produto-mode"]:checked').value;
+  if (mode === 'url')  return document.getElementById('produto-url-text').value.trim();
+  if (mode === 'file') return document.getElementById('produto-file-text').value.trim();
+  return document.getElementById('produto').value.trim();
+}
+
 function goStep1() {
-  var produto = document.getElementById('produto').value.trim();
-  if (!produto) { alert('Descreva seu produto/serviço antes de continuar.'); return; }
+  var produto = getProduto();
+  var pmode = document.querySelector('input[name="produto-mode"]:checked').value;
+  if (!produto && pmode === 'manual') { alert('Descreva seu produto/serviço antes de continuar.'); return; }
+  if (!produto && pmode !== 'manual') { alert('Gere o texto do produto antes de continuar.'); return; }
   if (document.getElementById('save-keys').checked) {
     localStorage.setItem('mb_google',   document.getElementById('google-key').value.trim());
     localStorage.setItem('mb_claude',   document.getElementById('claude-key').value.trim());
@@ -440,19 +552,205 @@ function handleFile(input) {
   }
 }
 
+// ═══════════════ LEAD SOURCE ROUTER ═══════════════
+function handleLeadSource() {
+  var src = document.querySelector('input[name="lead-source"]:checked').value;
+  if (src === 'maps')   return startSearch();
+  if (src === 'manual') return confirmManualLeads();
+  if (src === 'list')   return confirmListLeads();
+}
+
+// ── Manual single lead ──────────────────────────────
+function addManualLead() {
+  var nome  = document.getElementById('manual-nome').value.trim();
+  var phone = document.getElementById('manual-phone').value.replace(/\D/g,'');
+  var cat   = document.getElementById('manual-cat').value.trim() || 'Contato';
+  if (!nome)  { alert('Informe o nome/empresa.'); return; }
+  if (!phone) { alert('Informe o número.'); return; }
+  manualLeads.push({ nome: nome, phone: phone, cat: cat });
+  renderManualList();
+  document.getElementById('manual-nome').value  = '';
+  document.getElementById('manual-phone').value = '';
+  document.getElementById('manual-cat').value   = '';
+}
+
+function renderManualList() {
+  var wrap = document.getElementById('manual-list-preview');
+  var items = document.getElementById('manual-list-items');
+  wrap.style.display = manualLeads.length ? 'block' : 'none';
+  items.innerHTML = manualLeads.map(function(l, i) {
+    return '<div style="display:flex;align-items:center;gap:.75rem;padding:6px 10px;background:var(--surface2);border-radius:6px;margin-bottom:4px;font-size:13px">' +
+      '<span style="flex:1">' + escHtml(l.nome) + '</span>' +
+      '<span style="color:var(--text-muted)">' + l.phone + '</span>' +
+      '<span style="font-size:11px;color:var(--accent2)">' + escHtml(l.cat) + '</span>' +
+      '<button onclick="removeManualLead(' + i + ')" style="background:none;border:none;color:var(--danger);cursor:pointer;font-size:14px">×</button>' +
+    '</div>';
+  }).join('');
+}
+
+function removeManualLead(i) { manualLeads.splice(i,1); renderManualList(); }
+
+function confirmManualLeads() {
+  var nome  = document.getElementById('manual-nome').value.trim();
+  var phone = document.getElementById('manual-phone').value.replace(/\D/g,'');
+  var cat   = document.getElementById('manual-cat').value.trim() || 'Contato';
+  if (nome && phone) { manualLeads.push({ nome: nome, phone: phone, cat: cat }); }
+  if (!manualLeads.length) { alert('Adicione ao menos um contato.'); return; }
+  leads = manualLeads.map(function(l, i) {
+    return { idx: i+1, name: l.nome, category: l.cat, rating: '--', reviews: 0,
+      address: '--', phone: l.phone, website: '', instagram: '', msg: '', msgStatus: 'pending', sent: false };
+  });
+  manualLeads = [];
+  renderManualList();
+  goStep(3);
+}
+
+// ── List / CSV ──────────────────────────────────────
+function importCSVLeads(input) {
+  if (!input.files || !input.files[0]) return;
+  var reader = new FileReader();
+  reader.onload = function(e) { document.getElementById('list-textarea').value = e.target.result; };
+  reader.readAsText(input.files[0], 'UTF-8');
+}
+
+function confirmListLeads() {
+  var raw = document.getElementById('list-textarea').value.trim();
+  if (!raw) { alert('Cole ou importe uma lista de contatos.'); return; }
+  var lines = raw.split('\n').filter(function(l){ return l.trim(); });
+  var parsed = [];
+  lines.forEach(function(line) {
+    var parts = line.split(',').map(function(p){ return p.trim(); });
+    var nome  = parts[0] || 'Sem nome';
+    var phone = (parts[1] || '').replace(/\D/g,'');
+    var cat   = parts[2] || 'Contato';
+    if (!phone) return;
+    parsed.push({ idx: parsed.length+1, name: nome, category: cat, rating: '--', reviews: 0,
+      address: '--', phone: phone, website: '', instagram: '', msg: '', msgStatus: 'pending', sent: false });
+  });
+  if (!parsed.length) { alert('Nenhum contato válido encontrado. Verifique o formato: Nome, Telefone, Categoria'); return; }
+  leads = parsed;
+  goStep(3);
+}
+
+// ═══════════════ PRODUTO via URL / FILE ═══════════════
+async function gerarProdutoViaUrl() {
+  var url = document.getElementById('produto-url').value.trim();
+  if (!url) { alert('Informe a URL do site.'); return; }
+  var provider = document.querySelector('input[name="ai-provider"]:checked').value;
+  var status = document.getElementById('url-status');
+  status.style.display = 'block';
+  status.textContent = '⏳ Analisando site...';
+  try {
+    var prompt = 'Acesse e analise o site: ' + url + '\n\n' +
+      'Extraia todas as informações relevantes e escreva um texto completo e detalhado para descrever o produto/serviço dessa empresa, ' +
+      'a ser usado como contexto para geração de mensagens de prospecção personalizadas via WhatsApp.\n\n' +
+      'O texto deve cobrir TODOS os pontos que encontrar:\n' +
+      '- Nome da empresa e o que ela faz\n- Produtos/serviços oferecidos (liste cada um)\n' +
+      '- Problema(s) que resolve para o cliente\n- Diferenciais e benefícios concretos\n' +
+      '- Público-alvo ideal\n- Resultados ou cases que apareçam no site\n' +
+      '- Preços, planos ou investimento (se disponível)\n- Qualquer dado, número ou prova social relevante\n\n' +
+      'Escreva em formato de texto corrido, rico e detalhado. Sem títulos ou bullet points. Máximo 10 linhas.';
+    var result = await callAIRaw(provider, prompt);
+    document.getElementById('produto-url-text').value = result;
+    status.textContent = '✅ Texto gerado com sucesso!';
+    status.style.color = 'var(--accent)';
+  } catch(err) {
+    status.textContent = '❌ ' + err.message;
+    status.style.color = 'var(--danger)';
+  }
+}
+
+async function handleProdutoFile(input) {
+  if (!input.files || !input.files[0]) return;
+  var file = input.files[0];
+  document.getElementById('produto-file-label').textContent = '📎 ' + file.name;
+  var status = document.getElementById('file-status');
+  status.style.display = 'block';
+  status.textContent = '⏳ Lendo arquivo...';
+  try {
+    var base64 = await fileToBase64(file);
+    var provider = document.querySelector('input[name="ai-provider"]:checked').value;
+    var prompt = 'Analise este arquivo de apresentação da empresa com atenção a todos os detalhes.\n\n' +
+      'Extraia e consolide em um texto completo e detalhado tudo que for relevante para prospecção comercial:\n' +
+      '- Nome da empresa e segmento de atuação\n- Produtos e/ou serviços oferecidos (todos que aparecerem)\n' +
+      '- Problemas que resolve e benefícios entregues\n- Diferenciais competitivos\n' +
+      '- Público-alvo e perfil de cliente ideal\n- Resultados, cases, depoimentos ou números mencionados\n' +
+      '- Preços, planos ou modelo de negócio (se houver)\n\n' +
+      'Escreva em texto corrido, rico e detalhado, sem títulos ou bullet points. Máximo 10 linhas.';
+    var result = await callAIWithFile(provider, prompt, base64, file.type || 'application/pdf');
+    document.getElementById('produto-file-text').value = result;
+    status.textContent = '✅ Texto gerado com sucesso!';
+    status.style.color = 'var(--accent)';
+  } catch(err) {
+    status.textContent = '❌ ' + err.message;
+    status.style.color = 'var(--danger)';
+  }
+}
+
+function fileToBase64(file) {
+  return new Promise(function(resolve, reject) {
+    var reader = new FileReader();
+    reader.onload  = function(e) { resolve(e.target.result.split(',')[1]); };
+    reader.onerror = function()  { reject(new Error('Erro ao ler arquivo.')); };
+    reader.readAsDataURL(file);
+  });
+}
+
+async function callAIRaw(provider, prompt) {
+  if (provider === 'platform' || provider === 'claude') {
+    var apiKey = provider === 'claude' ? document.getElementById('claude-key').value.trim() : 'PLATFORM_KEY';
+    var res = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: { 'Content-Type':'application/json','x-api-key':apiKey,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true' },
+      body: JSON.stringify({ model:'claude-sonnet-4-20250514', max_tokens:500, messages:[{role:'user',content:prompt}] })
+    });
+    if (!res.ok) { var e=await res.json().catch(function(){return{};}); throw new Error((e.error&&e.error.message)||('HTTP '+res.status)); }
+    var d = await res.json(); return d.content[0].text.trim();
+  }
+  if (provider === 'openai') {
+    var okey = document.getElementById('openai-key').value.trim();
+    var res2 = await fetch('https://api.openai.com/v1/chat/completions', {
+      method:'POST', headers:{'Content-Type':'application/json','Authorization':'Bearer '+okey},
+      body: JSON.stringify({ model:'gpt-4o-mini', max_tokens:500, messages:[{role:'user',content:prompt}] })
+    });
+    if (!res2.ok) { var e2=await res2.json().catch(function(){return{};}); throw new Error((e2.error&&e2.error.message)||('HTTP '+res2.status)); }
+    var d2=await res2.json(); return d2.choices[0].message.content.trim();
+  }
+  throw new Error('Configure uma IA na etapa de configuração.');
+}
+
+async function callAIWithFile(provider, prompt, base64data, mimeType) {
+  if (provider === 'platform' || provider === 'claude') {
+    var apiKey = provider === 'claude' ? document.getElementById('claude-key').value.trim() : 'PLATFORM_KEY';
+    var res = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: { 'Content-Type':'application/json','x-api-key':apiKey,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true' },
+      body: JSON.stringify({
+        model:'claude-sonnet-4-20250514', max_tokens:500,
+        messages:[{ role:'user', content:[
+          { type:'document', source:{ type:'base64', media_type:'application/pdf', data: base64data } },
+          { type:'text', text: prompt }
+        ]}]
+      })
+    });
+    if (!res.ok) { var e=await res.json().catch(function(){return{};}); throw new Error((e.error&&e.error.message)||('HTTP '+res.status)); }
+    var d=await res.json(); return d.content[0].text.trim();
+  }
+  return callAIRaw(provider, prompt);
+}
+
 // ═══════════════ SEARCH — Google Places API v1 ═══════════════
 async function startSearch() {
   var googleKey = document.getElementById('google-key').value.trim();
   if (!googleKey) { alert('Insira sua Google Places API Key na etapa de configuração.'); return; }
   var nicho   = document.getElementById('nicho').value.trim();
   var cidade  = document.getElementById('cidade').value.trim();
-  var produto = document.getElementById('produto').value.trim();
+  var produto = getProduto();
   if (!nicho || !cidade) { alert('Preencha nicho e cidade.'); return; }
-  if (!produto)           { alert('Volte e descreva seu produto/serviço.'); return; }
+  if (!produto) { alert('Volte e descreva seu produto/serviço.'); return; }
 
   var qtd       = Math.min(parseInt(document.getElementById('qtd').value) || 20, 60);
   var minRating = parseFloat(document.getElementById('min-rating').value) || 0;
-  var hasPhone  = document.getElementById('has-phone').value === 'true';
   var sortOrder = document.getElementById('sort-order').value;
 
   if (document.getElementById('save-keys').checked) localStorage.setItem('mb_google', googleKey);
@@ -466,14 +764,22 @@ async function startSearch() {
 
   try {
     leads = [];
+
+    var seenKey = 'mb_seen_' + nicho.toLowerCase().replace(/\s+/g,'_') + '_' + cidade.toLowerCase().replace(/\s+/g,'_');
+    var seenIds = {};
+    try { seenIds = JSON.parse(localStorage.getItem(seenKey) || '{}'); } catch(_) { seenIds = {}; }
+    var skipSent = document.getElementById('skip-sent-toggle') && document.getElementById('skip-sent-toggle').checked;
+    var skippedCount = 0;
+
     var pageToken = null;
     var page = 0;
-    var maxPages = Math.ceil(qtd / 20);
+    var maxFetched = 0;
+    var MAX_API_PAGES = 5;
 
-    while (leads.length < qtd && page < maxPages) {
+    while (leads.length < qtd && page < MAX_API_PAGES) {
       page++;
-      setStatusTxt('status-txt', 'Buscando página ' + page + '... (' + leads.length + ' leads até agora)');
-      setProgress('prog-bar', Math.min(5 + (page / maxPages) * 80, 85));
+      setStatusTxt('status-txt', 'Página ' + page + ' do Maps... (' + leads.length + ' leads novos, ' + skippedCount + ' já vistos ignorados)');
+      setProgress('prog-bar', Math.min(5 + (page / MAX_API_PAGES) * 75, 80));
 
       var body = {
         textQuery: nicho + ' em ' + cidade,
@@ -488,7 +794,7 @@ async function startSearch() {
         headers: {
           'Content-Type': 'application/json',
           'X-Goog-Api-Key': googleKey,
-          'X-Goog-FieldMask': 'places.id,places.displayName,places.formattedAddress,places.primaryTypeDisplayName,places.rating,places.userRatingCount,places.nationalPhoneNumber,places.internationalPhoneNumber,places.websiteUri,places.types'
+          'X-Goog-FieldMask': 'places.id,places.displayName,places.formattedAddress,places.primaryTypeDisplayName,places.rating,places.userRatingCount,places.nationalPhoneNumber,places.internationalPhoneNumber,places.websiteUri,places.types,nextPageToken'
         },
         body: JSON.stringify(body)
       });
@@ -502,16 +808,26 @@ async function startSearch() {
       var data = await res.json();
       var places = data.places || [];
       pageToken = data.nextPageToken || null;
+      maxFetched += places.length;
 
       for (var i = 0; i < places.length; i++) {
         var p = places[i];
+        var placeId = p.id || p.name || '';
+
+        if (skipSent && seenIds[placeId]) { skippedCount++; continue; }
+
         var phone = p.nationalPhoneNumber || p.internationalPhoneNumber || '';
-        if (!phone || !isMobile(phone)) continue;
+        var phoneMobile = isMobile(phone);
+        // Always require mobile — landlines and no-phone entries are skipped
+        if (!phoneMobile) continue;
+        phone = phoneMobile;
+
         var rating = p.rating ? parseFloat(p.rating) : 0;
         if (minRating > 0 && rating < minRating) continue;
 
         leads.push({
           idx: leads.length + 1,
+          placeId: placeId,
           name: (p.displayName && p.displayName.text) || 'Sem nome',
           category: p.primaryTypeDisplayName ? (p.primaryTypeDisplayName.text || 'Negócio') : ((p.types && p.types[0]) || 'Negócio'),
           rating: rating ? rating.toFixed(1) : '--',
@@ -527,16 +843,24 @@ async function startSearch() {
         if (leads.length >= qtd) break;
       }
 
-      if (!pageToken) break;
-      if (leads.length < qtd) await sleep(300);
+      if (!pageToken) {
+        setStatusTxt('status-txt', 'Google Maps não tem mais resultados para esta busca (' + maxFetched + ' totais, ' + skippedCount + ' já vistos ignorados).');
+        break;
+      }
+      if (leads.length < qtd) await sleep(500);
     }
 
-    // Sort
     if (sortOrder === 'rating') leads.sort(function(a,b){ return parseFloat(b.rating||0) - parseFloat(a.rating||0); });
     else if (sortOrder === 'reviews') leads.sort(function(a,b){ return b.reviews - a.reviews; });
     leads.forEach(function(l,i){ l.idx = i+1; });
 
-    if (!leads.length) throw new Error('Nenhum lead encontrado com os filtros aplicados. Tente reduzir a avaliação mínima ou desativar o filtro de telefone.');
+    if (!leads.length) {
+      if (skippedCount > 0) throw new Error('Todos os ' + skippedCount + ' resultados já foram vistos anteriormente. Desative "Ignorar já vistos" ou tente outro nicho/cidade.');
+      throw new Error('Nenhum lead encontrado com os filtros aplicados. Tente reduzir a avaliação mínima.');
+    }
+
+    leads.forEach(function(l) { if (l.placeId) seenIds[l.placeId] = Date.now(); });
+    try { localStorage.setItem(seenKey, JSON.stringify(seenIds)); } catch(_) {}
 
     setProgress('prog-bar', 100);
     setStatus('status-dot', 'done');
@@ -552,16 +876,17 @@ async function startSearch() {
   }
 }
 
+// Returns normalized digit string if mobile, empty string otherwise
 function isMobile(phone) {
-  var d = phone.replace(/\D/g, '');
-  if (d.length > 11 && d.slice(0,2) === '55') d = d.slice(2); // remove +55
-  // BR mobile: DDD (2) + 9 + 8 digits = 11 digits, 3rd digit must be 9
-  return d.length === 11 && d[2] === '9';
+  if (!phone) return '';
+  var digits = phone.replace(/\D/g, '');
+  if (digits.startsWith('55') && digits.length >= 12) digits = digits.slice(2);
+  if (digits.length === 11 && digits[2] === '9') return digits;
+  if (digits.length === 10 && digits[2] === '9') return digits; // older format
+  return '';
 }
 
 function extractInstagram(place) {
-  // Google Places API v1 doesn't return social links directly
-  // We store website and check if it looks like instagram
   var web = place.websiteUri || '';
   if (web.indexOf('instagram.com') !== -1) return web;
   return '';
@@ -587,7 +912,7 @@ async function generateMessages() {
     }
   }
 
-  var produto       = document.getElementById('produto').value.trim();
+  var produto       = getProduto();
   var linkMaterial  = document.getElementById('link-material').value.trim();
   var senderName    = msgType === 'ai' ? document.getElementById('sender-name').value.trim() : document.getElementById('sender-name-m').value.trim();
   var senderCompany = msgType === 'ai' ? document.getElementById('sender-company').value.trim() : document.getElementById('sender-company-m').value.trim();
@@ -610,7 +935,6 @@ async function generateMessages() {
     return;
   }
 
-  // AI generation
   var tecnica   = document.getElementById('tecnica').value;
   var tom       = document.getElementById('tom').value;
   var personalize = document.getElementById('personalize').checked;
@@ -627,7 +951,6 @@ async function generateMessages() {
       lead.msg = await callAI(provider, lead, produto, tecnica, tom, personalize, linkMaterial, anexoFileName, senderName, senderCompany, saudacao, saudacaoText);
       lead.msgStatus = 'done';
     } catch(err) {
-      // Try fallback provider
       lead.msg = '❌ ' + err.message;
       lead.msgStatus = 'error';
     }
@@ -637,22 +960,15 @@ async function generateMessages() {
   document.getElementById('gen-status-txt').textContent = '✅ ' + leads.length + ' mensagens geradas!';
 }
 
-// ═══════════════ AI CALL (Claude / OpenAI / Platform) ═══════════════
+// ═══════════════ AI CALL ═══════════════
 async function callAI(provider, lead, produto, tecnica, tom, personalize, linkMaterial, anexo, senderName, senderCompany, saudacao, saudacaoText) {
   var prompt = buildPrompt(lead, produto, tecnica, tom, personalize, linkMaterial, anexo, senderName, senderCompany, saudacao, saudacaoText);
-
-  // Platform uses Claude under the hood (admin-configured key)
   if (provider === 'platform' || provider === 'claude') {
     var apiKey = provider === 'claude' ? document.getElementById('claude-key').value.trim() : 'PLATFORM_KEY';
     var res = await fetch('https://api.anthropic.com/v1/messages', {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'x-api-key': apiKey,
-        'anthropic-version': '2023-06-01',
-        'anthropic-dangerous-direct-browser-access': 'true'
-      },
-      body: JSON.stringify({ model: 'claude-sonnet-4-20250514', max_tokens: 700, messages: [{role:'user',content:prompt}] })
+      headers: { 'Content-Type':'application/json','x-api-key':apiKey,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true' },
+      body: JSON.stringify({ model:'claude-sonnet-4-20250514', max_tokens:700, messages:[{role:'user',content:prompt}] })
     });
     if (!res.ok) {
       var e = await res.json().catch(function(){return{};});
@@ -664,13 +980,12 @@ async function callAI(provider, lead, produto, tecnica, tom, personalize, linkMa
     var d = await res.json();
     return appendExtras(d.content[0].text.trim(), linkMaterial, anexo);
   }
-
   if (provider === 'openai') {
     var oaiKey = document.getElementById('openai-key').value.trim();
     var res2 = await fetch('https://api.openai.com/v1/chat/completions', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + oaiKey },
-      body: JSON.stringify({ model: 'gpt-4o-mini', max_tokens: 700, messages: [{role:'user',content:prompt}] })
+      headers: { 'Content-Type':'application/json','Authorization':'Bearer '+oaiKey },
+      body: JSON.stringify({ model:'gpt-4o-mini', max_tokens:700, messages:[{role:'user',content:prompt}] })
     });
     if (!res2.ok) {
       var e2 = await res2.json().catch(function(){return{};});
@@ -682,7 +997,6 @@ async function callAI(provider, lead, produto, tecnica, tom, personalize, linkMa
     var d2 = await res2.json();
     return appendExtras(d2.choices[0].message.content.trim(), linkMaterial, anexo);
   }
-
   throw new Error('Provedor desconhecido: ' + provider);
 }
 
@@ -701,27 +1015,22 @@ function buildPrompt(lead, produto, tecnica, tom, personalize, linkMaterial, ane
     amigavel: 'tom amigável e entusiasmado',
     curioso: 'abra com uma pergunta intrigante que gere curiosidade imediata'
   };
-
   var leadInfo = personalize
     ? 'Nome: ' + lead.name + ' | Categoria: ' + lead.category + ' | Avaliação: ' + lead.rating + '★ (' + lead.reviews + ' avaliações) | Endereço: ' + lead.address
     : 'Categoria: ' + lead.category;
-
   var saudacaoInstr = '';
   if (saudacao === 'ola_nome')  saudacaoInstr = 'Abra EXATAMENTE com: "Olá ' + lead.name + '!"';
   else if (saudacao === 'bom_dia') saudacaoInstr = 'Abra EXATAMENTE com: "Bom dia, ' + lead.name + '!"';
   else if (saudacao === 'oi')   saudacaoInstr = 'Abra EXATAMENTE com: "Oi, ' + lead.name + '!"';
   else if (saudacao === 'custom' && saudacaoText) saudacaoInstr = 'Abra EXATAMENTE com: "' + saudacaoText.replace('{nome}', lead.name) + '"';
-
   var assinatura = '';
   if (senderName || senderCompany) {
     assinatura = 'Assine ao final como: ' + (senderName || '') + (senderCompany ? ' da ' + senderCompany : '');
   }
-
   var extras = [];
   if (linkMaterial) extras.push('Inclua naturalmente este link no final: ' + linkMaterial);
   if (anexo) extras.push('Adicione ao final: "📎 [Lembre de anexar: ' + anexo + ']"');
   if (!linkMaterial && !anexo) extras.push('Finalize com CTA de baixo atrito (ex: "posso te mandar mais detalhes?" ou "tenho 5 min pra te mostrar?")');
-
   return 'Você é especialista em prospecção ativa e copywriting de vendas para WhatsApp.\n\n' +
     'Escreva UMA mensagem de prospecção usando: ' + tecnicas[tecnica] + '\n\n' +
     'LEAD:\n' + leadInfo + '\n\n' +
@@ -729,13 +1038,8 @@ function buildPrompt(lead, produto, tecnica, tom, personalize, linkMaterial, ane
     'TOM: ' + tons[tom] + '\n\n' +
     (saudacaoInstr ? 'SAUDAÇÃO: ' + saudacaoInstr + '\n\n' : '') +
     (assinatura ? 'ASSINATURA: ' + assinatura + '\n\n' : '') +
-    'REGRAS:\n' +
-    '- Máximo 5 parágrafos curtos\n' +
-    '- Sem bullet points\n' +
-    '- Pareça escrita por humano real, não IA\n' +
-    '- Sem markdown, apenas texto puro\n' +
-    extras.map(function(e){ return '- ' + e; }).join('\n') + '\n\n' +
-    'Escreva apenas a mensagem, sem explicações.';
+    'REGRAS:\n- Máximo 5 parágrafos curtos\n- Sem bullet points\n- Pareça escrita por humano real, não IA\n- Sem markdown, apenas texto puro\n' +
+    extras.map(function(e){ return '- ' + e; }).join('\n') + '\n\nEscreva apenas a mensagem, sem explicações.';
 }
 
 function appendExtras(msg, link, anexo) {
@@ -752,17 +1056,14 @@ function renderTable(showLoading) {
     var msgText = (showLoading && l.msgStatus === 'pending') ? '⏳ Gerando...' : (l.msg || '—');
     var waLink  = phone ? 'https://wa.me/55' + phone.replace(/^0/,'') + '?text=' + encodeURIComponent(l.msg || '') : null;
     var igLink  = l.instagram || '';
-
     var waBtn = waLink
       ? '<a class="wa-btn" href="' + waLink + '" target="_blank"><svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>WA</a>'
       : '<span style="font-size:11px;color:var(--text-dim)">Sem tel.</span>';
-
     var igBtn = igLink ? '<br><a class="ig-btn" href="' + igLink + '" target="_blank">📷 Instagram</a>' : '';
     var copyBtn = l.msg ? '<button class="copy-btn" onclick="copyMsg(' + (l.idx-1) + ')">📋</button>' : '';
     var checkCls = l.sent ? 'check-btn checked' : 'check-btn';
     var checkTxt = l.sent ? '✅ Enviado' : '○ Marcar';
     var rowCls = l.sent ? 'sent-row' : '';
-
     return '<tr class="' + rowCls + '" id="row-' + l.idx + '">' +
       '<td><input type="checkbox" ' + (l.sent?'checked':'') + ' onchange="toggleSent(' + (l.idx-1) + ',this.checked)" style="width:auto;accent-color:var(--accent)"></td>' +
       '<td style="color:var(--text-dim)">' + l.idx + '</td>' +
@@ -782,14 +1083,9 @@ function renderStats() {
   var sent = leads.filter(function(l){return l.sent;}).length;
   var ratings = leads.map(function(l){return parseFloat(l.rating)||0;}).filter(function(r){return r>0;});
   var avg = ratings.length ? (ratings.reduce(function(a,b){return a+b;},0)/ratings.length).toFixed(1) : '--';
-
   document.getElementById('stats-row').innerHTML =
-    stat(leads.length, 'Leads') +
-    stat(withPhone, 'Com telefone') +
-    stat(avg, 'Avaliação média') +
-    stat(leads.filter(function(l){return l.instagram;}).length, 'Instagram') +
-    stat(sent, 'Enviados ✅');
-
+    stat(leads.length, 'Leads') + stat(withPhone, 'Com telefone') + stat(avg, 'Avaliação média') +
+    stat(leads.filter(function(l){return l.instagram;}).length, 'Instagram') + stat(sent, 'Enviados ✅');
   document.getElementById('results-chips').innerHTML = leads.map(function(l,i) {
     return '<span style="font-size:11px;padding:2px 7px;border-radius:20px;margin:2px;cursor:pointer;display:inline-block;background:' +
       (l.sent ? 'rgba(0,229,160,.15);color:var(--accent)' : 'rgba(124,107,255,.12);color:var(--accent2)') +
@@ -804,6 +1100,17 @@ function stat(n, lbl) {
 // ═══════════════ SENT / CHECK ═══════════════
 function toggleSent(idx, val) {
   leads[idx].sent = val;
+  if (val && leads[idx].placeId) {
+    var nicho = document.getElementById('nicho').value.trim().toLowerCase().replace(/\s+/g,'_');
+    var cidade = document.getElementById('cidade').value.trim().toLowerCase().replace(/\s+/g,'_');
+    var seenKey = 'mb_seen_' + nicho + '_' + cidade;
+    try {
+      var seenIds = JSON.parse(localStorage.getItem(seenKey) || '{}');
+      seenIds[leads[idx].placeId] = Date.now();
+      localStorage.setItem(seenKey, JSON.stringify(seenIds));
+    } catch(_) {}
+  }
+  updateSeenCounter();
   renderTable(false);
   renderStats();
 }
@@ -812,6 +1119,23 @@ function toggleAllSent(val) {
   leads.forEach(function(l){ l.sent = val; });
   renderTable(false);
   renderStats();
+}
+
+function clearSeenIds() {
+  var allKeys = Object.keys(localStorage).filter(function(k){ return k.startsWith('mb_seen_'); });
+  if (!confirm('Limpar histórico de ' + allKeys.length + ' busca(s) salvas? Leads já vistos voltarão a aparecer.')) return;
+  allKeys.forEach(function(k){ localStorage.removeItem(k); });
+  updateSeenCounter();
+  alert('Histórico limpo!');
+}
+
+function updateSeenCounter() {
+  var el = document.getElementById('seen-counter');
+  if (!el) return;
+  var allKeys = Object.keys(localStorage).filter(function(k){ return k.startsWith('mb_seen_'); });
+  var total = 0;
+  allKeys.forEach(function(k){ try{ total += Object.keys(JSON.parse(localStorage.getItem(k)||'{}')).length; }catch(_){} });
+  el.textContent = total > 0 ? total + ' leads já vistos salvos' : 'Nenhum histórico salvo';
 }
 
 function filterSent() {
@@ -848,7 +1172,7 @@ function exportCSV() {
       .map(function(v){ return '"' + String(v).replace(/"/g,'""') + '"'; }).join(',');
   });
   var csv = [cols.join(',')].concat(rows).join('\n');
-  downloadBlob('\uFEFF' + csv, 'leads-multibrain.csv', 'text/csv;charset=utf-8;');
+  downloadBlob('﻿' + csv, 'leads-multibrain.csv', 'text/csv;charset=utf-8;');
 }
 
 // ═══════════════ EXPORT XLSX ═══════════════
@@ -861,9 +1185,7 @@ function exportXLSX() {
     rows.push([l.idx, l.name, l.category, parseFloat(l.rating)||0, l.reviews, l.address, l.phone||'', l.website||'', l.instagram||'', l.msg||'', waLink, l.sent?'Sim':'Não']);
   });
   var ws = XLSX.utils.aoa_to_sheet(rows);
-  // Column widths
   ws['!cols'] = [5,30,20,10,10,35,18,30,30,60,60,10].map(function(w){return{wch:w};});
-  // Style header row
   var wb = XLSX.utils.book_new();
   XLSX.utils.book_append_sheet(wb, ws, 'Leads');
   XLSX.writeFile(wb, 'leads-multibrain.xlsx');
