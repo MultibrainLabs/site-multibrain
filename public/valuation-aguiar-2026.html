@@ -1,0 +1,1042 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Aguiar — M&A Intelligence Report · Multibrain 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=JetBrains+Mono:wght@300;400;500&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --ink:#0e0e0e;--paper:#f7f4ee;--cream:#ede9df;
+  --gold:#b8960c;--gold-light:#f5efc4;
+  --red:#8b1919;--red-light:#fdf0f0;
+  --green:#1a5c35;--green-light:#e8f4ed;
+  --blue:#0f2d5e;--blue-light:#e8eef8;
+  --border:#d4cfc3;--muted:#7a7468;
+  --serif:'Playfair Display',serif;
+  --mono:'JetBrains Mono',monospace;
+  --sans:'Outfit',sans-serif;
+}
+body{background:var(--paper);color:var(--ink);font-family:var(--sans);font-size:13px;line-height:1.6}
+.masthead{background:var(--ink);color:white}
+.masthead-inner{display:grid;grid-template-columns:1fr 280px;min-height:200px}
+.masthead-left{padding:36px 48px;border-right:1px solid #222;display:flex;flex-direction:column;justify-content:space-between}
+.masthead-right{padding:28px 28px;display:flex;flex-direction:column;justify-content:center;align-items:center;background:#111;gap:8px}
+.publication{font-family:var(--mono);font-size:9px;letter-spacing:3px;color:#555;text-transform:uppercase;margin-bottom:12px}
+.masthead h1{font-family:var(--serif);font-size:40px;font-weight:900;line-height:1;letter-spacing:-1px}
+.masthead h1 em{color:var(--gold);font-style:italic}
+.masthead-sub{font-family:var(--mono);font-size:10px;color:#444;margin-top:10px}
+.price-label{font-family:var(--mono);font-size:8px;letter-spacing:2px;color:#555;text-transform:uppercase;text-align:center}
+.price-value{font-family:var(--serif);font-size:42px;font-weight:900;color:var(--gold);line-height:1;text-align:center}
+.price-sub{font-family:var(--mono);font-size:9px;color:#444;text-align:center;line-height:1.5}
+.meta-bar{display:flex;gap:0;background:#080808;border-top:1px solid #1a1a1a}
+.meta-item{font-family:var(--mono);font-size:9px;color:#444;padding:10px 20px;border-right:1px solid #1a1a1a}
+.meta-item strong{color:#666;display:block;font-size:8px;letter-spacing:1px;text-transform:uppercase;margin-bottom:2px}
+.tab-nav{background:var(--ink);border-top:1px solid #111;display:flex;overflow-x:auto;padding:0 48px;gap:0}
+.tab-btn{font-family:var(--mono);font-size:8px;letter-spacing:2px;text-transform:uppercase;color:#444;padding:12px 16px;cursor:pointer;border:none;background:none;white-space:nowrap;border-bottom:2px solid transparent;transition:all .2s}
+.tab-btn:hover{color:#888}
+.tab-btn.active{color:var(--gold);border-bottom-color:var(--gold)}
+.tab-content{display:none;padding:36px 48px;max-width:1400px}
+.tab-content.active{display:block}
+.section{margin-bottom:44px}
+.sec-rule{display:flex;align-items:center;gap:16px;margin-bottom:20px;padding-bottom:10px;border-bottom:2px solid var(--ink)}
+.sec-num{font-family:var(--serif);font-size:44px;font-weight:900;color:var(--border);line-height:1}
+.sec-title{font-family:var(--serif);font-size:20px;font-weight:700}
+.sec-title small{display:block;font-family:var(--mono);font-size:8px;font-weight:400;letter-spacing:2px;color:var(--muted);text-transform:uppercase;margin-bottom:3px}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:20px}
+.g4{display:grid;grid-template-columns:repeat(4,1fr);gap:0;border:1px solid var(--border)}
+.g4>*+*{border-left:1px solid var(--border)}
+.card{background:white;border:1px solid var(--border);padding:22px}
+.card-title{font-family:var(--serif);font-size:14px;font-weight:700;margin-bottom:14px;padding-bottom:8px;border-bottom:1px solid var(--border)}
+.kpi{padding:18px;text-align:center;background:white}
+.kpi-label{font-family:var(--mono);font-size:8px;letter-spacing:2px;color:var(--muted);text-transform:uppercase;margin-bottom:6px}
+.kpi-value{font-family:var(--serif);font-size:26px;font-weight:900;line-height:1}
+.kpi-sub{font-family:var(--mono);font-size:9px;color:var(--muted);margin-top:4px}
+.kv-g{color:var(--green)}.kv-r{color:var(--red)}.kv-y{color:var(--gold)}.kv-b{color:var(--blue)}
+.tbl{width:100%;border-collapse:collapse}
+.tbl th{font-family:var(--mono);font-size:8px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);padding:7px 10px;border-bottom:2px solid var(--ink);text-align:right}
+.tbl th:first-child{text-align:left}
+.tbl td{font-family:var(--mono);font-size:11px;padding:8px 10px;border-bottom:1px solid var(--border);text-align:right}
+.tbl td:first-child{text-align:left;color:var(--ink)}
+.tbl tr:last-child td{border-bottom:none}
+.tbl .tot td{border-top:2px solid var(--ink);font-weight:600;padding-top:10px}
+.td-g{color:var(--green);font-weight:500}.td-r{color:var(--red)}.td-y{color:var(--gold)}.td-m{color:var(--muted)}
+.badge{display:inline-block;font-family:var(--mono);font-size:8px;letter-spacing:1px;padding:2px 7px;text-transform:uppercase}
+.bg{background:var(--green-light);color:var(--green);border:1px solid #a8d4b8}
+.br{background:var(--red-light);color:var(--red);border:1px solid #e8b8b8}
+.by{background:var(--gold-light);color:var(--gold);border:1px solid #e0d080}
+.bb{background:var(--blue-light);color:var(--blue);border:1px solid #b0c4e0}
+.bx{background:#f0ede8;color:var(--muted);border:1px solid var(--border)}
+.alert{padding:12px 16px;margin:12px 0;font-size:12px;line-height:1.6}
+.alert strong{display:block;margin-bottom:3px;font-family:var(--mono);font-size:9px;letter-spacing:1px;text-transform:uppercase}
+.ar{background:var(--red-light);border-left:4px solid var(--red);color:var(--red)}
+.ag{background:var(--green-light);border-left:4px solid var(--green);color:var(--green)}
+.ay{background:var(--gold-light);border-left:4px solid var(--gold);color:#7a5c00}
+.ab{background:var(--blue-light);border-left:4px solid var(--blue);color:var(--blue)}
+.tl{position:relative;padding-left:28px}
+.tl::before{content:"";position:absolute;left:6px;top:0;bottom:0;width:2px;background:var(--border)}
+.tl-item{position:relative;margin-bottom:20px}
+.tl-dot{position:absolute;left:-24px;top:4px;width:10px;height:10px;border-radius:50%;border:2px solid var(--gold);background:white}
+.tl-dot.done{background:var(--green);border-color:var(--green)}
+.tl-dot.warn{background:var(--gold);border-color:var(--gold)}
+.tl-dot.alert{background:var(--red);border-color:var(--red)}
+.tl-when{font-family:var(--mono);font-size:8px;color:var(--muted);letter-spacing:1px;text-transform:uppercase;margin-bottom:3px}
+.tl-title{font-size:13px;font-weight:600;margin-bottom:3px}
+.tl-body{font-size:11px;color:var(--muted);line-height:1.5}
+/* SIMULATOR */
+.sim-wrap{display:grid;grid-template-columns:360px 1fr;gap:24px;align-items:start}
+.sim-panel{background:white;border:1px solid var(--border);padding:24px;position:sticky;top:16px}
+.sim-panel-title{font-family:var(--serif);font-size:17px;font-weight:700;margin-bottom:18px;padding-bottom:10px;border-bottom:2px solid var(--ink)}
+.sim-group{margin-bottom:18px}
+.sim-lbl{font-family:var(--mono);font-size:8px;letter-spacing:2px;color:var(--muted);text-transform:uppercase;margin-bottom:5px;display:flex;justify-content:space-between;align-items:center}
+.sim-lbl span{color:var(--ink);font-size:10px;font-weight:500}
+input[type=range]{width:100%;accent-color:var(--gold);height:3px;cursor:pointer;margin-top:4px}
+.sim-results{background:white;border:1px solid var(--border);padding:24px}
+.res-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border);border:1px solid var(--border);margin-bottom:16px}
+.res-cell{background:white;padding:14px;text-align:center}
+.res-lbl{font-family:var(--mono);font-size:8px;letter-spacing:1.5px;color:var(--muted);text-transform:uppercase;margin-bottom:5px}
+.res-val{font-family:var(--serif);font-size:22px;font-weight:900;line-height:1}
+.res-sub{font-family:var(--mono);font-size:9px;color:var(--muted);margin-top:3px}
+.pb-wrap{margin:12px 0}
+.pb-labels{font-family:var(--mono);font-size:8px;color:var(--muted);display:flex;justify-content:space-between;margin-bottom:4px}
+.pb-track{background:var(--cream);height:10px;position:relative;overflow:hidden}
+.pb-fill{height:100%;background:var(--gold);transition:width .4s ease}
+.roi-tbl{width:100%;border-collapse:collapse;font-family:var(--mono);font-size:11px}
+.roi-tbl th{font-size:8px;letter-spacing:1px;text-transform:uppercase;color:var(--muted);padding:5px 8px;border-bottom:1px solid var(--border);text-align:right}
+.roi-tbl th:first-child{text-align:left}
+.roi-tbl td{padding:6px 8px;border-bottom:1px solid #f0ede8;text-align:right}
+.roi-tbl td:first-child{text-align:left;color:var(--muted)}
+.roi-tbl .m0 td{background:var(--red-light);color:var(--red);font-weight:600}
+.roi-tbl .mpb td{background:var(--green-light)}
+/* VALUATION METHODS */
+.method-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:20px}
+.mcard{background:white;border:1px solid var(--border);padding:22px}
+.mcard.best{background:var(--ink);border-color:var(--ink);color:white}
+.mname{font-family:var(--serif);font-size:15px;font-weight:700;margin-bottom:3px}
+.mcard.best .mname{color:white}
+.msub{font-family:var(--mono);font-size:8px;color:var(--muted);letter-spacing:1px;margin-bottom:14px}
+.mcard.best .msub{color:#555}
+.mresult{font-family:var(--serif);font-size:30px;font-weight:900;color:var(--gold);margin:10px 0}
+.mnote{font-size:11px;color:var(--muted);line-height:1.6;border-top:1px solid var(--border);padding-top:10px;margin-top:10px}
+.mcard.best .mnote{border-top-color:#222;color:#666}
+/* SCENARIOS */
+.sc-grid{display:grid;grid-template-columns:1fr 1.3fr 1fr;gap:0}
+.sc{padding:22px;border:1px solid var(--border)}
+.sc.best{background:var(--ink);color:white;border-color:var(--ink)}
+.sc-lbl{font-family:var(--mono);font-size:8px;letter-spacing:2px;text-transform:uppercase;margin-bottom:8px;color:var(--muted)}
+.sc.best .sc-lbl{color:#555}
+.sc-price{font-family:var(--serif);font-size:32px;font-weight:900;line-height:1;margin-bottom:6px}
+.sc:first-child .sc-price{color:var(--red)}
+.sc.best .sc-price{color:var(--gold)}
+.sc:last-child .sc-price{color:var(--green)}
+.sc-items{font-size:11px;line-height:1.8;margin-top:10px;padding-top:10px;border-top:1px solid rgba(0,0,0,.08)}
+.sc.best .sc-items{border-top-color:rgba(255,255,255,.08);color:#888}
+.sc-items li{list-style:none;padding-left:14px;position:relative}
+.sc-items li::before{content:"→";position:absolute;left:0;color:var(--gold)}
+/* RECEIVABLES */
+.recv-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:0;border:1px solid var(--border)}
+.recv-cell{padding:22px;border-right:1px solid var(--border)}
+.recv-cell:last-child{border-right:none}
+.recv-status{font-family:var(--mono);font-size:8px;letter-spacing:2px;text-transform:uppercase;padding:3px 10px;margin-bottom:12px;display:inline-block}
+.rs-red{background:var(--red-light);color:var(--red);border:1px solid #e8b8b8}
+.rs-yellow{background:var(--gold-light);color:var(--gold);border:1px solid #e0d080}
+.rs-green{background:var(--green-light);color:var(--green);border:1px solid #a8d4b8}
+.recv-amount{font-family:var(--serif);font-size:28px;font-weight:900;line-height:1;margin-bottom:4px}
+.recv-label{font-family:var(--mono);font-size:9px;color:var(--muted);margin-bottom:12px}
+.recv-body{font-size:11px;color:var(--muted);line-height:1.6}
+.recv-body strong{color:var(--ink)}
+/* LEGAL STRUCTURE */
+.legal-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.layer-box{border:1px solid var(--border);padding:20px;background:white}
+.layer-num{font-family:var(--serif);font-size:32px;font-weight:900;color:var(--border);line-height:1;margin-bottom:8px}
+.layer-title{font-family:var(--serif);font-size:14px;font-weight:700;margin-bottom:4px}
+.layer-sub{font-family:var(--mono);font-size:8px;color:var(--muted);letter-spacing:1px;text-transform:uppercase;margin-bottom:10px}
+.layer-body{font-size:11px;color:var(--muted);line-height:1.6}
+.layer-body strong{color:var(--ink)}
+/* TAX */
+.tax-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:0;border:1px solid var(--border)}
+.tax-cell{padding:20px;border-right:1px solid var(--border);background:white}
+.tax-cell:last-child{border-right:none}
+.tax-name{font-family:var(--mono);font-size:9px;letter-spacing:1px;text-transform:uppercase;color:var(--muted);margin-bottom:6px}
+.tax-value{font-family:var(--serif);font-size:24px;font-weight:900;margin-bottom:4px}
+.tax-note{font-size:10px;color:var(--muted);line-height:1.5}
+/* PSYCHOLOGY */
+.psych-compare{display:grid;grid-template-columns:1fr 1fr;gap:0;border:1px solid var(--border);margin-bottom:20px}
+.pc-col{padding:24px}
+.pc-col:first-child{background:var(--red-light);border-right:1px solid var(--border)}
+.pc-col:last-child{background:var(--green-light)}
+.pc-header{font-family:var(--serif);font-size:16px;font-weight:700;margin-bottom:14px;padding-bottom:8px;border-bottom:1px solid rgba(0,0,0,.1)}
+.pc-col:first-child .pc-header{color:var(--red)}
+.pc-col:last-child .pc-header{color:var(--green)}
+.pc-row{display:flex;justify-content:space-between;align-items:start;padding:6px 0;border-bottom:1px solid rgba(0,0,0,.05);font-size:11px;gap:12px}
+.pc-row:last-child{border-bottom:none}
+.pc-key{color:var(--muted);flex-shrink:0}
+.pc-val{font-weight:600;text-align:right}
+.pc-col:first-child .pc-val{color:var(--red)}
+.pc-col:last-child .pc-val{color:var(--green)}
+.psych-script{background:var(--ink);color:white;padding:24px;margin-top:16px}
+.ps-title{font-family:var(--serif);font-size:15px;font-weight:700;color:var(--gold);margin-bottom:10px}
+.ps-line{font-size:12px;color:#888;line-height:1.8;padding-left:14px;border-left:2px solid #2a2a2a;margin-bottom:8px}
+.ps-line strong{color:white}
+/* RISK */
+.risk-item{display:grid;grid-template-columns:160px 1fr 110px 90px;gap:12px;padding:11px 0;border-bottom:1px solid var(--border);align-items:start}
+.risk-item:last-child{border-bottom:none}
+.risk-name{font-size:12px;font-weight:500}
+.risk-desc{font-size:11px;color:var(--muted);line-height:1.5}
+.risk-val{font-family:var(--mono);font-size:11px;color:var(--red);text-align:right}
+/* TRANSFER DANGER */
+.transfer-grid{display:grid;grid-template-columns:1fr 1fr;gap:0;border:1px solid var(--border);margin-bottom:20px}
+.tr-col{padding:22px}
+.tr-col:first-child{background:var(--red-light);border-right:1px solid var(--border)}
+.tr-col:last-child{background:var(--green-light)}
+.tr-header{font-family:var(--serif);font-size:14px;font-weight:700;margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid rgba(0,0,0,.1)}
+.tr-col:first-child .tr-header{color:var(--red)}
+.tr-col:last-child .tr-header{color:var(--green)}
+.tr-item{font-size:11px;color:var(--muted);padding:5px 0;border-bottom:1px solid rgba(0,0,0,.05);line-height:1.5;display:flex;gap:8px}
+.tr-item:last-child{border-bottom:none}
+.tr-item::before{content:"✗";color:var(--red);flex-shrink:0;font-weight:700}
+.tr-col:last-child .tr-item::before{content:"✓";color:var(--green)}
+/* EXEC HIGHLIGHT */
+.exec-hl{background:var(--ink);color:white;padding:28px;text-align:center;margin:20px 0}
+.exec-hl p{font-family:var(--serif);font-size:16px;line-height:1.7;color:#aaa;max-width:680px;margin:0 auto}
+.exec-hl p strong{color:var(--gold)}
+.footer{background:var(--ink);color:#333;padding:16px 48px;display:flex;justify-content:space-between;font-family:var(--mono);font-size:9px;margin-top:32px}
+</style>
+</head>
+<body>
+
+<!-- MASTHEAD -->
+<div class="masthead">
+  <div class="masthead-inner">
+    <div class="masthead-left">
+      <div>
+        <div class="publication">Multibrain M&A Intelligence · Relatório Executivo Confidencial · Jun 2026</div>
+        <h1>Aguiar Serviços<br>e <em>Construções</em></h1>
+        <div class="masthead-sub">CNPJ 23.361.128/0001-86 · Viamão/RS · Análise completa para decisão de aquisição ou parceria estratégica</div>
+      </div>
+    </div>
+    <div class="masthead-right">
+      <div class="price-label">Oferta Recomendada · Entrada</div>
+      <div class="price-value">R$ 900k</div>
+      <div class="price-sub">Estrutura: Mútuo Conversível + SCP<br>+ Participação 25% lucros reais<br>+ Opção de Compra em 12–18 meses</div>
+    </div>
+  </div>
+  <div class="meta-bar">
+    <div class="meta-item"><strong>Carteira Total</strong>R$ 25,83M</div>
+    <div class="meta-item"><strong>Já Executado</strong>R$ 2,70M (10%)</div>
+    <div class="meta-item"><strong>Saldo a Faturar</strong>R$ 23,13M</div>
+    <div class="meta-item"><strong>EBITDA Real 2025</strong>R$ 668k (15,9%)</div>
+    <div class="meta-item"><strong>Margem Líquida Real</strong>12,5% (2025)</div>
+    <div class="meta-item"><strong>Custo Tributário Est.</strong>R$ 240–480k</div>
+    <div class="meta-item"><strong>ROI Líquido Est.</strong>47–53% / 24m</div>
+  </div>
+</div>
+
+<!-- TABS -->
+<div class="tab-nav">
+  <button class="tab-btn active" onclick="showTab('overview',this)">01 · Visão Geral</button>
+  <button class="tab-btn" onclick="showTab('contracts',this)">02 · Contratos</button>
+  <button class="tab-btn" onclick="showTab('receivables',this)">03 · Recebíveis</button>
+  <button class="tab-btn" onclick="showTab('simulator',this)">04 · Simulador ROI</button>
+  <button class="tab-btn" onclick="showTab('valuation',this)">05 · Valuations</button>
+  <button class="tab-btn" onclick="showTab('structure',this)">06 · Estrutura Jurídica</button>
+  <button class="tab-btn" onclick="showTab('taxes',this)">07 · Impostos</button>
+  <button class="tab-btn" onclick="showTab('risks',this)">08 · Riscos</button>
+  <button class="tab-btn" onclick="showTab('psychology',this)">09 · Argumento</button>
+  <button class="tab-btn" onclick="showTab('recommendation',this)">10 · Recomendação</button>
+</div>
+
+<!-- ===== TAB 1: OVERVIEW ===== -->
+<div id="tab-overview" class="tab-content active">
+  <div class="section">
+    <div class="sec-rule"><div class="sec-num">01</div><div class="sec-title"><small>Situação Atual</small>O que Estamos Comprando</div></div>
+    <div class="g4" style="margin-bottom:20px">
+      <div class="kpi"><div class="kpi-label">Carteira Total</div><div class="kpi-value kv-g">R$ 25,83M</div><div class="kpi-sub">7 contratos públicos</div></div>
+      <div class="kpi"><div class="kpi-label">Saldo a Faturar</div><div class="kpi-value kv-y">R$ 23,13M</div><div class="kpi-sub">90% ainda por executar</div></div>
+      <div class="kpi"><div class="kpi-label">Lucro Projetado</div><div class="kpi-value kv-b">R$ 2,08–2,77M</div><div class="kpi-sub">9–12% margem · 24 meses</div></div>
+      <div class="kpi"><div class="kpi-label">EBITDA Real 2025</div><div class="kpi-value kv-g">R$ 668k</div><div class="kpi-sub">15,9% — base verificada</div></div>
+    </div>
+    <div class="g2">
+      <div class="card">
+        <div class="card-title">Status de Execução — Dados Reais do Excel Fornecido</div>
+        <table class="tbl">
+          <thead><tr><th>Contrato</th><th>Valor</th><th>Executado</th><th>Saldo</th><th>NFs</th><th>Status</th></tr></thead>
+          <tbody>
+            <tr><td>CORSAN Gramado-Canela</td><td class="td-g">R$ 11,17M</td><td class="td-m">1% · R$ 59k</td><td class="td-g">R$ 11,11M</td><td>1</td><td><span class="badge by">Início recente</span></td></tr>
+            <tr><td>Rio Pardo UBS</td><td>R$ 1,82M</td><td class="td-g">18% · R$ 323k</td><td>R$ 1,50M</td><td>5</td><td><span class="badge bg">Ativo</span></td></tr>
+            <tr><td>Rio Pardo Creche</td><td class="td-g">R$ 5,18M</td><td class="td-g">14% · R$ 748k</td><td class="td-g">R$ 4,44M</td><td>4</td><td><span class="badge bg">Ativo — NF jun/26</span></td></tr>
+            <tr><td>Nova Santa Rita UBS</td><td>R$ 2,09M</td><td class="td-g">43% · R$ 888k</td><td>R$ 1,20M</td><td>7</td><td><span class="badge bg">Sólido</span></td></tr>
+            <tr><td>São Lourenço UBS</td><td>R$ 2,25M</td><td class="td-g">30% · R$ 684k</td><td>R$ 1,57M</td><td>5</td><td><span class="badge bg">Ativo</span></td></tr>
+            <tr><td>CORSAN Met. Vazamentos</td><td>R$ 1,38M</td><td class="td-m">0%</td><td class="td-y">R$ 1,38M</td><td>0</td><td><span class="badge by">OS emitida · sem NF</span></td></tr>
+            <tr><td>CORSAN Met. Esgoto</td><td>R$ 1,91M</td><td class="td-m">0%</td><td class="td-r">R$ 1,91M</td><td>0</td><td><span class="badge br">SEM ORDEM DE INÍCIO</span></td></tr>
+          </tbody>
+          <tfoot><tr class="tot"><td><strong>Total</strong></td><td class="td-g"><strong>R$ 25,83M</strong></td><td class="td-g"><strong>10% · R$ 2,70M</strong></td><td class="td-g"><strong>R$ 23,13M</strong></td><td>22</td><td></td></tr></tfoot>
+        </table>
+      </div>
+      <div class="card">
+        <div class="card-title">Balanço Real — Passivos Conhecidos</div>
+        <table class="tbl">
+          <thead><tr><th>Item</th><th>Valor</th><th>Ação Necessária</th></tr></thead>
+          <tbody>
+            <tr><td>Empréstimo CEF</td><td class="td-r">R$ 773.646</td><td class="td-m">Quitar com entrada</td></tr>
+            <tr><td>Parcelamentos fiscais</td><td class="td-r">R$ 263.703</td><td class="td-m">Verificar regularidade</td></tr>
+            <tr><td>Mútuo sócios ("solução contábil")</td><td class="td-y">R$ 397.974</td><td class="td-m">Descontar do preço</td></tr>
+            <tr><td>ISS + INSS a recuperar</td><td class="td-y">R$ 837.516</td><td class="td-m">Confirmar realizabilidade</td></tr>
+            <tr><td>Recebíveis antigos estagnados</td><td class="td-y">R$ 493.210</td><td class="td-m">Provisionar como perda</td></tr>
+          </tbody>
+          <tfoot><tr class="tot"><td><strong>Total ajustes</strong></td><td class="td-r"><strong>~R$ 1,43M</strong></td><td></td></tr></tfoot>
+        </table>
+        <div class="alert ar" style="margin-top:12px"><strong>Atenção</strong>O mútuo de R$ 397k foi confirmado pelo dono como "solução contábil do passado" — não é dívida real. Deve ser zerado antes do fechamento ou descontado diretamente do preço de entrada.</div>
+        <div class="alert ay"><strong>DRE 2024 — CSP Zerado</strong>O Custo dos Serviços Prestados em 2024 foi lançado como R$ 0,00, gerando lucro fictício de 62,8%. Isso inflou a capitalização de R$ 6,5M. O patrimônio líquido de R$ 6,9M é ilusório — o valor real dos ativos tangíveis é próximo de zero. O valor está inteiramente na carteira de contratos.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== TAB 2: CONTRACTS ===== -->
+<div id="tab-contracts" class="tab-content">
+  <div class="section">
+    <div class="sec-rule"><div class="sec-num">02</div><div class="sec-title"><small>Análise Detalhada</small>Carteira de Contratos</div></div>
+    <div class="card" style="margin-bottom:20px">
+      <div class="card-title">Projeção de Faturamento Mensal por Contrato — Saldo Restante</div>
+      <table class="tbl">
+        <thead><tr><th>Contrato</th><th>Saldo</th><th>Prazo Rest.</th><th>Média/Mês</th><th>Fonte Recurso</th><th>Documentação</th></tr></thead>
+        <tbody>
+          <tr><td><strong>CORSAN Gramado</strong></td><td class="td-g">R$ 11,11M</td><td>~22m</td><td class="td-g">~R$ 505k</td><td><span class="badge bb">CORSAN RS</span></td><td><span class="badge bg">Contrato ✓ OS ✓ Cronograma ✓</span></td></tr>
+          <tr><td><strong>Rio Pardo UBS</strong></td><td>R$ 1,50M</td><td>~8m</td><td>~R$ 187k</td><td><span class="badge bb">Novo PAC Federal</span></td><td><span class="badge bg">5 NFs ✓ Aditivo ✓ Empenho ✓</span></td></tr>
+          <tr><td><strong>Rio Pardo Creche</strong></td><td class="td-g">R$ 4,44M</td><td>~10m</td><td class="td-g">~R$ 444k</td><td><span class="badge bb">PROINFÂNCIA</span></td><td><span class="badge bg">4 NFs ✓ Empenho duplo ✓</span></td></tr>
+          <tr><td><strong>Nova Santa Rita</strong></td><td>R$ 1,20M</td><td>~7m</td><td>~R$ 171k</td><td><span class="badge bb">Novo PAC Federal</span></td><td><span class="badge bg">7 NFs ✓ OS ✓ Empenho ✓</span></td></tr>
+          <tr><td><strong>São Lourenço</strong></td><td>R$ 1,57M</td><td>~13m</td><td>~R$ 121k</td><td><span class="badge bb">Atenção Básica</span></td><td><span class="badge bg">5 NFs ✓ OS ✓ 2 Empenhos ✓</span></td></tr>
+          <tr><td><strong>CORSAN Vazamentos</strong></td><td class="td-y">R$ 1,38M</td><td>~12m</td><td class="td-y">~R$ 115k</td><td><span class="badge bb">CORSAN RS</span></td><td><span class="badge by">OS ✓ · Zero NFs emitidas</span></td></tr>
+          <tr><td><strong>CORSAN Esgoto</strong></td><td class="td-r">R$ 1,91M</td><td>~12m</td><td class="td-r">~R$ 159k</td><td><span class="badge bb">CORSAN RS</span></td><td><span class="badge br">SEM ORDEM DE INÍCIO</span></td></tr>
+        </tbody>
+        <tfoot><tr class="tot"><td><strong>Total</strong></td><td class="td-g"><strong>R$ 23,13M</strong></td><td>—</td><td class="td-g"><strong>~R$ 1.702k/mês</strong></td><td colspan="2"></td></tr></tfoot>
+      </table>
+      <div class="alert ay"><strong>Nova Santa Rita — Mais Adiantada (43%)</strong>7 medições consecutivas aprovadas provam capacidade operacional real. É a referência de execução da empresa — um contrato que funciona exatamente como deveria. Use isso como argumento interno: a equipe entrega.</div>
+    </div>
+    <div class="g2">
+      <div class="card">
+        <div class="card-title">O que os Contratos Exigem Durante a Execução</div>
+        <table class="tbl">
+          <thead><tr><th>Obrigação</th><th>Consequência se Descumprir</th></tr></thead>
+          <tbody>
+            <tr><td>Certidão fiscal negativa válida</td><td class="td-r">Suspensão de pagamentos + rescisão</td></tr>
+            <tr><td>FGTS em dia (CRF válido)</td><td class="td-r">Bloqueio de medições</td></tr>
+            <tr><td>ART registrada no CREA</td><td class="td-r">Obra embargada + sem pagamento</td></tr>
+            <tr><td>Cronograma físico cumprido</td><td class="td-y">Multa 0,5–10% do valor</td></tr>
+            <tr><td>Manter condições de habilitação</td><td class="td-r">Rescisão unilateral pelo órgão</td></tr>
+            <tr><td>Comunicar alterações societárias</td><td class="td-y">Depende do contrato</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="card">
+        <div class="card-title">Multas por Atraso — Quantificadas</div>
+        <table class="tbl">
+          <thead><tr><th>Contrato</th><th>Multa Mínima (0,5%)</th><th>Multa Máxima (30%)</th></tr></thead>
+          <tbody>
+            <tr><td>CORSAN Gramado</td><td class="td-y">R$ 55.881</td><td class="td-r">R$ 3.352.892</td></tr>
+            <tr><td>Rio Pardo Creche</td><td class="td-y">R$ 25.920</td><td class="td-r">R$ 1.555.200</td></tr>
+            <tr><td>Nova Santa Rita</td><td class="td-y">R$ 10.450</td><td class="td-r">R$ 627.000</td></tr>
+            <tr><td>São Lourenço</td><td class="td-y">R$ 11.289</td><td class="td-r">R$ 677.351</td></tr>
+            <tr><td>Rio Pardo UBS</td><td class="td-y">R$ 9.113</td><td class="td-r">R$ 546.825</td></tr>
+          </tbody>
+        </table>
+        <div class="alert ay" style="margin-top:12px"><strong>Estimativa Realista</strong>Com 5 obras simultâneas em municípios diferentes, atraso em pelo menos uma é provável. Provisionar R$ 80–150k de multas potenciais no fluxo de caixa da operação.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== TAB 3: RECEIVABLES ===== -->
+<div id="tab-receivables" class="tab-content">
+  <div class="section">
+    <div class="sec-rule"><div class="sec-num">03</div><div class="sec-title"><small>Análise Jurídica</small>Cessão de Recebíveis — O que é Possível</div></div>
+    <div class="recv-grid" style="margin-bottom:20px">
+      <div class="recv-cell">
+        <div class="recv-status rs-red">🔴 BLOQUEADO</div>
+        <div class="recv-amount" style="color:var(--red)">R$ 14,41M</div>
+        <div class="recv-label">CORSAN — 3 contratos</div>
+        <div class="recv-body">
+          <strong>Cláusula 6.10 do Contrato CORSAN 290/2025:</strong><br><br>
+          "A Contratada renuncia à faculdade de emitir qualquer título de crédito em razão do Contrato, sendo vedado à Contratada utilizá-lo em garantias de transações bancárias ou financeiras de qualquer espécie, bem como efetuar operação de desconto, negociar, repassar ou, de qualquer forma, ceder os créditos decorrentes de sua execução a instituições financeiras, sem a prévia e expressa autorização da Contratante."<br><br>
+          <strong>Consequência:</strong> Qualquer antecipação ou cessão desses recebíveis sem autorização expressa da CORSAN é causa de rescisão contratual imediata. R$ 14,4M perdidos.
+        </div>
+      </div>
+      <div class="recv-cell">
+        <div class="recv-status rs-yellow">🟡 NEGOCIÁVEL</div>
+        <div class="recv-amount" style="color:var(--gold)">R$ 8,71M</div>
+        <div class="recv-label">Contratos Municipais — 4 contratos</div>
+        <div class="recv-body">
+          <strong>Situação:</strong> Todos os contratos municipais (Rio Pardo UBS, Rio Pardo Creche, Nova Santa Rita, São Lourenço) são silentes sobre cessão de recebíveis. Nem proíbem nem autorizam expressamente.<br><br>
+          <strong>O que é possível:</strong> Cessão fiduciária de recebíveis a instituição financeira, negociada caso a caso com cada prefeitura. O instrumento mais adequado é informar a prefeitura que os pagamentos deverão ser feitos a uma conta vinculada (FIDC ou banco operador).<br><br>
+          <strong>Custo estimado:</strong> Desconto de 1,5–3% ao mês sobre o valor antecipado. Sobre R$ 3M antecipados = R$ 45–90k/mês de custo financeiro.
+        </div>
+      </div>
+      <div class="recv-cell" style="border-right:none">
+        <div class="recv-status rs-green">🟢 ALTERNATIVA MELHOR</div>
+        <div class="recv-amount" style="color:var(--green)">Cláusula 5.9</div>
+        <div class="recv-label">CORSAN — Capital de Giro Interno</div>
+        <div class="recv-body">
+          <strong>O que ninguém te contou:</strong> O próprio contrato CORSAN prevê mecanismo de aporte de capital de giro mediante garantia bancária.<br><br>
+          <strong>Como funciona:</strong> A Aguiar apresenta carta fiança ou seguro garantia de 100% do valor solicitado, e a CORSAN antecipa recursos para mobilização das obras.<br><br>
+          <strong>Custo:</strong> 1–3% ao ano sobre o valor garantido. Sobre R$ 1M = R$ 10–30k/ano.<br><br>
+          <strong>Comparação:</strong> Um empréstimo bancário convencional custaria 18–24% ao ano. A cláusula 5.9 é 6–10x mais barata. <strong>Use isso primeiro antes de qualquer outra fonte de capital de giro para as obras CORSAN.</strong>
+        </div>
+      </div>
+    </div>
+    <div class="g2">
+      <div class="card">
+        <div class="card-title">Plano de Capital de Giro — Fonte por Fonte</div>
+        <table class="tbl">
+          <thead><tr><th>Fonte</th><th>Valor Disponível</th><th>Custo</th><th>Viabilidade</th></tr></thead>
+          <tbody>
+            <tr><td>Cláusula 5.9 CORSAN (fiança)</td><td class="td-g">R$ 800k–1,5M</td><td class="td-g">1–3%/ano</td><td><span class="badge bg">Ideal</span></td></tr>
+            <tr><td>Antecipação recebíveis municipais</td><td class="td-g">R$ 3–5M</td><td class="td-y">1,5–3%/mês</td><td><span class="badge by">Negociar</span></td></tr>
+            <tr><td>Mútuo conversível (Multibrain)</td><td>R$ 800k</td><td class="td-g">IOF ~R$ 35k</td><td><span class="badge bg">Estruturado</span></td></tr>
+            <tr><td>Empréstimo bancário convencional</td><td class="td-m">Ilimitado</td><td class="td-r">18–24%/ano</td><td><span class="badge br">Último recurso</span></td></tr>
+            <tr><td>Antecipação recebíveis CORSAN</td><td class="td-r">VEDADO</td><td class="td-r">—</td><td><span class="badge br">Proibido</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="card">
+        <div class="card-title">Transferência de Controle — O que Quebra os Contratos</div>
+        <div class="transfer-grid" style="margin:0 0 0 0;border:none">
+          <div class="tr-col" style="padding:14px">
+            <div class="tr-header">❌ Compra Direta Imediata</div>
+            <div class="tr-item">Alteração societária exige comunicação formal a Nova Santa Rita e São Lourenço</div>
+            <div class="tr-item">CORSAN pode interpretar como cessão e rescindir R$ 14,4M</div>
+            <div class="tr-item">Período de análise pelo órgão trava pagamentos de medições</div>
+            <div class="tr-item">Concorrentes que perderam a licitação podem impugnar</div>
+            <div class="tr-item">Risco de perder qualificação técnica durante transição</div>
+          </div>
+          <div class="tr-col" style="padding:14px">
+            <div class="tr-header">✅ Entrada como Diretor + SCP</div>
+            <div class="tr-item">Nenhum contrato é notificado — CNPJ permanece idêntico</div>
+            <div class="tr-item">Nenhuma cláusula de alteração subjetiva é acionada</div>
+            <div class="tr-item">Controle operacional real desde o Dia 1</div>
+            <div class="tr-item">Medições continuam sendo emitidas normalmente</div>
+            <div class="tr-item">Alteração societária formal só quando obras >60% executadas</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== TAB 4: SIMULATOR ===== -->
+<div id="tab-simulator" class="tab-content">
+  <div class="section">
+    <div class="sec-rule"><div class="sec-num">04</div><div class="sec-title"><small>Ferramenta Interativa</small>Simulador de ROI e Payback</div></div>
+    <div class="sim-wrap">
+      <div class="sim-panel">
+        <div class="sim-panel-title">Parâmetros</div>
+        <div class="sim-group">
+          <div class="sim-lbl">Valor de Entrada / Mútuo (R$) <span id="lbl-entrada">R$ 900k</span></div>
+          <input type="range" id="sl-entrada" min="300000" max="2000000" step="50000" value="900000" oninput="sim()">
+        </div>
+        <div class="sim-group">
+          <div class="sim-lbl">Capital de Giro Aportado (R$) <span id="lbl-capgiro">R$ 800k</span></div>
+          <input type="range" id="sl-capgiro" min="0" max="2000000" step="100000" value="800000" oninput="sim()">
+        </div>
+        <div class="sim-group">
+          <div class="sim-lbl">Margem Líquida da Carteira <span id="lbl-margem">12%</span></div>
+          <input type="range" id="sl-margem" min="6" max="18" step="0.5" value="12" oninput="sim()">
+          <div style="font-family:var(--mono);font-size:8px;color:var(--muted);margin-top:3px">← Pessimista (6%) · Real 2025 (12,5%) → Otimista (18%) →</div>
+        </div>
+        <div class="sim-group">
+          <div class="sim-lbl">% Participação ao Vendedor <span id="lbl-earnout">25%</span></div>
+          <input type="range" id="sl-earnout" min="0" max="40" step="5" value="25" oninput="sim()">
+          <div style="font-family:var(--mono);font-size:8px;color:var(--muted);margin-top:3px">Earn-out mensal pago sobre lucro real gerado</div>
+        </div>
+        <div class="sim-group">
+          <div class="sim-lbl">Carteira Executável (R$) <span id="lbl-carteira">R$ 23,13M</span></div>
+          <input type="range" id="sl-carteira" min="8000000" max="25000000" step="500000" value="23130000" oninput="sim()">
+          <div style="font-family:var(--mono);font-size:8px;color:var(--muted);margin-top:3px">← Só municipais (R$8,7M) · Tudo (R$23,1M) →</div>
+        </div>
+        <div class="sim-group">
+          <div class="sim-lbl">Desconto Passivos / Risco (R$) <span id="lbl-passivo">R$ 700k</span></div>
+          <input type="range" id="sl-passivo" min="0" max="1500000" step="50000" value="700000" oninput="sim()">
+        </div>
+        <div class="sim-group">
+          <div class="sim-lbl">Custo Tributário Est. (R$) <span id="lbl-imposto">R$ 300k</span></div>
+          <input type="range" id="sl-imposto" min="100000" max="500000" step="25000" value="300000" oninput="sim()">
+          <div style="font-family:var(--mono);font-size:8px;color:var(--muted);margin-top:3px">IOF + IRPJ/CSLL Multibrain sobre lucros recebidos</div>
+        </div>
+        <div class="sim-group">
+          <div class="sim-lbl">Prazo de Execução (meses) <span id="lbl-prazo">24</span></div>
+          <input type="range" id="sl-prazo" min="12" max="36" step="1" value="24" oninput="sim()">
+        </div>
+      </div>
+
+      <div class="sim-results">
+        <div class="res-grid">
+          <div class="res-cell"><div class="res-lbl">Lucro Bruto Projetado</div><div class="res-val kv-g" id="r-lucro">—</div><div class="res-sub">Carteira × Margem</div></div>
+          <div class="res-cell"><div class="res-lbl">Earn-out ao Vendedor</div><div class="res-val kv-r" id="r-earnout">—</div><div class="res-sub">Sua parte que vai para ele</div></div>
+          <div class="res-cell"><div class="res-lbl">Lucro Líquido do Comprador</div><div class="res-val kv-b" id="r-disponivel">—</div><div class="res-sub">Após earn-out + impostos</div></div>
+        </div>
+        <div class="res-grid">
+          <div class="res-cell"><div class="res-lbl">Desembolso Total Dia 0</div><div class="res-val kv-r" id="r-desembolso">—</div><div class="res-sub">Entrada + Cap. Giro</div></div>
+          <div class="res-cell"><div class="res-lbl">ROI sobre Desembolso</div><div class="res-val kv-y" id="r-roi">—</div><div class="res-sub">Retorno total / investido</div></div>
+          <div class="res-cell"><div class="res-lbl">Payback</div><div class="res-val kv-g" id="r-payback">—</div><div class="res-sub">Meses para recuperar tudo</div></div>
+        </div>
+        <div class="pb-wrap">
+          <div class="pb-labels"><span>Dia 0 — Desembolso</span><span id="pb-mid">Payback</span><span id="pb-end">Prazo Total</span></div>
+          <div class="pb-track"><div class="pb-fill" id="pb-fill" style="width:0%"></div></div>
+        </div>
+        <div style="overflow-x:auto;margin-top:16px">
+          <table class="roi-tbl">
+            <thead><tr><th>Mês</th><th>Faturamento</th><th>Lucro Bruto</th><th>Earn-out Vendedor</th><th>Lucro Comprador</th><th>Cumulativo</th><th>Status</th></tr></thead>
+            <tbody id="roi-body"></tbody>
+          </table>
+        </div>
+        <div class="alert ab" style="margin-top:12px"><strong>Como Ler</strong>Mês 0 = saída de caixa total (entrada + capital de giro). Meses seguintes = lucro líquido mensal real entrando no caixa da Multibrain. O cumulativo começa negativo e sobe até cruzar zero no payback. Impostos deduzidos no resultado final.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== TAB 5: VALUATIONS ===== -->
+<div id="tab-valuation" class="tab-content">
+  <div class="section">
+    <div class="sec-rule"><div class="sec-num">05</div><div class="sec-title"><small>Múltiplas Metodologias</small>Valuation Comparativo</div></div>
+    <div class="alert ar" style="margin-bottom:20px"><strong>Por que Métodos Tradicionais Falham Aqui</strong>A Aguiar é uma empresa de projetos finitos — quando os contratos terminam a receita vai a zero. Aplicar múltiplos de EBITDA como em empresas recorrentes superestima o valor porque ignora que não há perpetuidade. O valor correto está no fluxo de caixa específico desta carteira de obras.</div>
+    <div class="method-grid">
+      <div class="mcard">
+        <div class="mname">1. Fluxo de Caixa Descontado (DCF)</div>
+        <div class="msub">Método mais adequado para carteira de projetos finitos</div>
+        <div class="mresult">R$ 900k – R$ 1,5M</div>
+        <table class="tbl">
+          <tbody>
+            <tr><td>Lucro líquido projetado (12%)</td><td class="td-g">R$ 2.775.600</td></tr>
+            <tr><td>(-) Capital de giro</td><td class="td-r">(R$ 800.000)</td></tr>
+            <tr><td>(-) Passivos conhecidos</td><td class="td-r">(R$ 700.000)</td></tr>
+            <tr><td>(-) Impostos (Lucro Presumido)</td><td class="td-r">(R$ 240.000)</td></tr>
+            <tr><td>= Fluxo disponível bruto</td><td class="td-g">R$ 1.035.600</td></tr>
+            <tr><td>(-) Desconto risco execução 15%</td><td class="td-r">(R$ 155.340)</td></tr>
+            <tr><td>= <strong>Valor presente líquido</strong></td><td class="td-g"><strong>R$ 880.260</strong></td></tr>
+          </tbody>
+        </table>
+        <div class="mnote">Taxa de desconto: 15% a.a. (risco Brasil + execução). Cenário base usa carteira completa com desconto de probabilidade nos contratos CORSAN Metropolitanos sem execução.</div>
+      </div>
+      <div class="mcard">
+        <div class="mname">2. Múltiplo de EBITDA</div>
+        <div class="msub">Referência de mercado — uso limitado aqui</div>
+        <div class="mresult">R$ 2,3M – R$ 4,7M</div>
+        <table class="tbl">
+          <tbody>
+            <tr><td>EBITDA real 2025</td><td class="td-g">R$ 668.149</td></tr>
+            <tr><td>Múltiplo setor construção civil</td><td>3,5× – 7×</td></tr>
+            <tr><td>= Faixa pelo histórico</td><td class="td-y">R$ 2,3M – R$ 4,7M</td></tr>
+            <tr><td>⚠ Ajuste: empresa não-recorrente</td><td class="td-r">-60% desconto</td></tr>
+            <tr><td>= Faixa ajustada realista</td><td class="td-y">R$ 920k – R$ 1,9M</td></tr>
+          </tbody>
+        </table>
+        <div class="mnote">Empresas de construção civil com receita recorrente negociam a 4–8× EBITDA. A Aguiar não tem recorrência — o desconto de 60% reflete o risco de a receita ir a zero quando os contratos acabarem.</div>
+      </div>
+      <div class="mcard">
+        <div class="mname">3. Valor Patrimonial Ajustado</div>
+        <div class="msub">Piso da negociação — valor de liquidação</div>
+        <div class="mresult">R$ 300k – R$ 700k</div>
+        <table class="tbl">
+          <tbody>
+            <tr><td>Patrimônio Líquido contábil</td><td class="td-g">R$ 6.946.406</td></tr>
+            <tr><td>(-) Capitalização inflada (CSP zero 2024)</td><td class="td-r">(R$ 6.500.000)</td></tr>
+            <tr><td>(-) Mútuo sócios não realizável</td><td class="td-r">(R$ 397.974)</td></tr>
+            <tr><td>(-) Recebíveis duvidosos antigos</td><td class="td-r">(R$ 300.000)</td></tr>
+            <tr><td>= PL real ajustado</td><td class="td-r">~R$ 0</td></tr>
+            <tr><td>+ CNPJ habilitado (intangível)</td><td class="td-g">R$ 300–700k</td></tr>
+          </tbody>
+        </table>
+        <div class="mnote">O PL de R$ 6,9M é 94% capitalização de 2024 a partir de lucros artificialmente inflados. Os ativos tangíveis reais valem próximo de zero. O único ativo real é o CNPJ habilitado e o histórico de licitações.</div>
+      </div>
+      <div class="mcard">
+        <div class="mname">4. Carteira Ponderada por Risco</div>
+        <div class="msub">Método mais honesto para este caso específico</div>
+        <div class="mresult">R$ 470k – R$ 1,1M</div>
+        <table class="tbl">
+          <tbody>
+            <tr><td>Tudo entrega bem (30% prob.)</td><td class="td-g">R$ 2,77M × 30% = R$ 831k</td></tr>
+            <tr><td>Entrega 80%, atrasos (45% prob.)</td><td class="td-y">R$ 1,8M × 45% = R$ 810k</td></tr>
+            <tr><td>Problemas sérios (20% prob.)</td><td class="td-r">R$ 0 × 20% = R$ 0</td></tr>
+            <tr><td>Perde contrato por fiscal (5%)</td><td class="td-r">-R$ 300k × 5% = -R$ 15k</td></tr>
+            <tr><td>= Valor esperado bruto</td><td class="td-g">R$ 1.626k</td></tr>
+            <tr><td>(-) Desembolsos e impostos</td><td class="td-r">(R$ 1.500k)</td></tr>
+            <tr><td>= <strong>Excedente esperado</strong></td><td class="td-g"><strong>R$ 126k</strong></td></tr>
+          </tbody>
+        </table>
+        <div class="mnote">Qualquer valor de entrada acima do excedente esperado (R$ 126k) só se justifica pelo valor estratégico do CNPJ e do pipeline de novas licitações via Miguel.</div>
+      </div>
+      <div class="mcard">
+        <div class="mname">5. Valor Estratégico (Synergy Value)</div>
+        <div class="msub">O quanto vale especificamente para a Expert Franquias</div>
+        <div class="mresult">R$ 1,2M – R$ 2,0M</div>
+        <table class="tbl">
+          <tbody>
+            <tr><td>Tempo para construir CNPJ equivalente</td><td>18–24 meses</td></tr>
+            <tr><td>Custo para construir do zero</td><td class="td-r">R$ 400–600k</td></tr>
+            <tr><td>Receita perdida no período</td><td class="td-r">R$ 800k–1,2M</td></tr>
+            <tr><td>Pipeline Miguel (novas licitações)</td><td class="td-g">+R$ 5–15M/ano</td></tr>
+            <tr><td>Ganho de margem pela gestão Expert</td><td class="td-g">+3–5 p.p.</td></tr>
+          </tbody>
+        </table>
+        <div class="mnote">Para a Expert Franquias a Aguiar não é só uma empresa — é um atalho de 2 anos para um mercado de obras públicas federais. Esse valor de aceleração justifica pagar acima do valor puramente financeiro.</div>
+      </div>
+      <div class="mcard best">
+        <div class="mname">Consolidado — Faixa Justa</div>
+        <div class="msub">Síntese dos 5 métodos ponderados</div>
+        <div class="mresult">R$ 700k – R$ 1,1M</div>
+        <table class="tbl">
+          <tbody>
+            <tr><td style="color:#888">DCF</td><td style="color:var(--gold)">R$ 880k</td><td style="color:#555">★★★ Alto peso</td></tr>
+            <tr><td style="color:#888">Múltiplo ajustado</td><td style="color:var(--gold)">R$ 920k–1,9M</td><td style="color:#555">★ Baixo peso</td></tr>
+            <tr><td style="color:#888">Patrimonial</td><td style="color:var(--gold)">R$ 300–700k</td><td style="color:#555">★★ Médio peso</td></tr>
+            <tr><td style="color:#888">Carteira ponderada</td><td style="color:var(--gold)">R$ 470k+</td><td style="color:#555">★★★ Alto peso</td></tr>
+            <tr><td style="color:#888">Estratégico</td><td style="color:var(--gold)">R$ 1,2–2,0M</td><td style="color:#555">★★★ Alto peso</td></tr>
+          </tbody>
+          <tfoot><tr><td style="border-top:1px solid #222;color:white"><strong>Oferta Justa Entrada</strong></td><td style="border-top:1px solid #222;color:var(--gold)"><strong>R$ 900k</strong></td><td style="border-top:1px solid #222;color:#555">+ 25% earn-out</td></tr></tfoot>
+        </table>
+        <div class="mnote">+ Mútuo conversível protege o capital aportado. + SCP garante direitos formais sobre os lucros. + Opção de compra fixa o preço final antecipadamente.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== TAB 6: STRUCTURE ===== -->
+<div id="tab-structure" class="tab-content">
+  <div class="section">
+    <div class="sec-rule"><div class="sec-num">06</div><div class="sec-title"><small>Estrutura Jurídica</small>Como Entrar sem Quebrar os Contratos</div></div>
+    <div class="alert ay" style="margin-bottom:20px"><strong>O Paradoxo Central</strong>Você quer controlar a operação e aportar capital sem ser sócio formal. Sem estrutura jurídica adequada, você pode aportar R$ 1,34M e não ter nenhum direito formal — o dono, ainda sendo sócio único, pode usar o dinheiro como quiser.</div>
+    <div class="legal-grid" style="margin-bottom:20px">
+      <div class="layer-box">
+        <div class="layer-num">01</div>
+        <div class="layer-title">Sociedade em Conta de Participação (SCP)</div>
+        <div class="layer-sub">Camada de participação nos lucros · Invisível externamente</div>
+        <div class="layer-body">Instrumento jurídico brasileiro criado exatamente para essa situação. Você entra como <strong>sócio participante</strong> — invisível para o mundo externo. O dono continua como <strong>sócio ostensivo</strong> em todos os contratos públicos.<br><br>
+        <strong>Para os contratos públicos:</strong> nada muda. O CNPJ é o mesmo, o sócio ostensivo é o mesmo, as certidões são as mesmas.<br><br>
+        <strong>Para você:</strong> direitos legais formais sobre os lucros, proporcional ao aporte. Se o dono negar sua parte, você tem base jurídica sólida para acionar judicialmente.<br><br>
+        <strong>Não aparece na Junta Comercial.</strong> Não aciona nenhuma cláusula contratual.</div>
+      </div>
+      <div class="layer-box">
+        <div class="layer-num">02</div>
+        <div class="layer-title">Mútuo Conversível com Garantia</div>
+        <div class="layer-sub">Camada de proteção do capital aportado</div>
+        <div class="layer-body">Você empresta R$ 1,34M (entrada + capital de giro) para a Aguiar formalmente. É uma dívida documentada da empresa com a Multibrain.<br><br>
+        <strong>Garantia:</strong> cessão fiduciária dos recebíveis municipais em garantia (não para antecipação — só como garantia). Se algo der errado, você recebe diretamente das prefeituras antes de qualquer outro credor.<br><br>
+        <strong>Conversão:</strong> quando você exercer a opção de compra, o valor do mútuo é deduzido do preço final. Você já pagou — não paga de novo.<br><br>
+        <strong>IOF estimado:</strong> R$ 35k (PJ, 18 meses). É o custo de ter o dinheiro protegido juridicamente.</div>
+      </div>
+      <div class="layer-box">
+        <div class="layer-num">03</div>
+        <div class="layer-title">Diretor de Operações</div>
+        <div class="layer-sub">Camada de controle operacional · Visível externamente</div>
+        <div class="layer-body">Sócio da Expert Franquias é nomeado Diretor de Operações da Aguiar via ata societária registrada na Junta Comercial.<br><br>
+        <strong>Poderes incluídos:</strong> assinar medições, emitir notas fiscais, contratar fornecedores, movimentar conta vinculada às obras, representar a empresa perante fiscais e órgãos públicos.<br><br>
+        <strong>Poderes excluídos:</strong> contrair empréstimos, alienar ativos, distribuir lucros sem co-assinatura do sócio.<br><br>
+        <strong>Para os contratos públicos:</strong> mudança de diretor interno não aciona nenhuma cláusula. O CNPJ é o mesmo. Nenhuma comunicação obrigatória.</div>
+      </div>
+      <div class="layer-box">
+        <div class="layer-num">04</div>
+        <div class="layer-title">Opção de Compra com Preço Fixo</div>
+        <div class="layer-sub">Camada de saída garantida · Exercível em 12–18 meses</div>
+        <div class="layer-body">Contrato privado com preço fixo pré-acordado hoje. O dono é obrigado a vender quando você exercer — sem possibilidade de recusa, sem renegociação de preço.<br><br>
+        <strong>Quando exercer:</strong> quando as obras estiverem com mais de 60% executado nos contratos principais, os passivos mapeados e as certidões regularizadas.<br><br>
+        <strong>Preço na opção:</strong> R$ 90k (10% da entrada) — simbólico, pois o valor real já foi pago via mútuo conversível.<br><br>
+        <strong>Evento de inadimplemento:</strong> se o dono violar qualquer cláusula do acordo, você exerce a opção imediatamente pelo preço mínimo e ele perde o earn-out futuro.</div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-title">Proteções Contratuais Obrigatórias no Acordo Privado</div>
+      <div class="g2">
+        <table class="tbl">
+          <thead><tr><th>Cláusula</th><th>Protege de</th></tr></thead>
+          <tbody>
+            <tr><td>Não oneração</td><td class="td-m">Dono criar novas dívidas na Aguiar</td></tr>
+            <tr><td>Não interferência operacional</td><td class="td-m">Dono dar ordens a equipe/fornecedores</td></tr>
+            <tr><td>Separação de negócios</td><td class="td-m">Recursos das obras cobrirem outros negócios</td></tr>
+            <tr><td>Conta bancária vinculada</td><td class="td-m">Saques não autorizados das receitas das obras</td></tr>
+            <tr><td>Visibilidade de extrato</td><td class="td-m">Movimentos financeiros ocultos</td></tr>
+          </tbody>
+        </table>
+        <table class="tbl">
+          <thead><tr><th>Cláusula</th><th>Protege de</th></tr></thead>
+          <tbody>
+            <tr><td>Evento de inadimplemento</td><td class="td-m">Violação = opção exercida ao preço mínimo</td></tr>
+            <tr><td>Não concorrência (3–5 anos)</td><td class="td-m">Dono abrir empresa rival na região</td></tr>
+            <tr><td>Permanência Miguel (12 meses)</td><td class="td-m">Perda do pipeline de licitações</td></tr>
+            <tr><td>Quitação mútuo sócios R$ 397k</td><td class="td-m">Crédito irrecuperável pós-compra</td></tr>
+            <tr><td>Notificação passivos outros negócios</td><td class="td-m">Penhora da Aguiar por dívida externa</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="alert ag" style="margin-top:12px"><strong>Custo Jurídico Estimado</strong>Honorários advocatícios para redigir os 4 documentos (SCP + Mútuo + Opção + Ata): R$ 15–30k. É o investimento mais importante de toda a operação. Uma redação ruim pode custar R$ 1M+.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== TAB 7: TAXES ===== -->
+<div id="tab-taxes" class="tab-content">
+  <div class="section">
+    <div class="sec-rule"><div class="sec-num">07</div><div class="sec-title"><small>Estrutura Tributária</small>Impostos da Operação Completa</div></div>
+    <div class="tax-grid" style="margin-bottom:20px">
+      <div class="tax-cell">
+        <div class="tax-name">ITBI</div>
+        <div class="tax-value kv-g">R$ 0</div>
+        <div class="tax-note">Não se aplica. ITBI incide sobre imóveis. A Aguiar não tem imóveis no ativo — só recebíveis e equipamentos.</div>
+      </div>
+      <div class="tax-cell">
+        <div class="tax-name">IOF sobre Mútuo</div>
+        <div class="tax-value kv-y">~R$ 35k</div>
+        <div class="tax-note">PJ para PJ: 0,0041%/dia + 0,38% fixo. Sobre R$ 1,34M por 18 meses = ~R$ 35.205. Custo de ter o capital protegido juridicamente.</div>
+      </div>
+      <div class="tax-cell">
+        <div class="tax-name">Imposto do Vendedor</div>
+        <div class="tax-value kv-g">R$ 0</div>
+        <div class="tax-note">Capital social R$ 6,75M. Venda por R$ 900k = perda contábil de R$ 5,85M. Sem ganho de capital, sem IRPF. Argumento positivo na negociação com ele.</div>
+      </div>
+    </div>
+    <div class="g2" style="margin-bottom:20px">
+      <div class="card">
+        <div class="card-title">IRPJ + CSLL sobre Lucros Recebidos pela Multibrain (via SCP)</div>
+        <table class="tbl">
+          <thead><tr><th>Regime Tributário</th><th>Base de Cálculo</th><th>Alíquota Efetiva</th><th>Imposto sobre R$ 1,27M</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Lucro Presumido</strong></td><td class="td-m">32% da receita</td><td class="td-y">~14,5%</td><td class="td-y">~R$ 184k</td></tr>
+            <tr><td><strong>Lucro Real</strong></td><td class="td-m">Lucro efetivo</td><td class="td-r">~34%</td><td class="td-r">~R$ 431k</td></tr>
+            <tr><td><strong>Diferença</strong></td><td></td><td class="td-r">-19,5 p.p.</td><td class="td-r">-R$ 247k</td></tr>
+          </tbody>
+        </table>
+        <div class="alert ay" style="margin-top:12px"><strong>Ação Recomendada</strong>Verificar o regime tributário atual da Multibrain antes de fechar. A diferença entre Lucro Presumido e Lucro Real é R$ 247k — dinheiro real que pode ser economizado com planejamento tributário simples.</div>
+      </div>
+      <div class="card">
+        <div class="card-title">PIS/COFINS — Isenção Possível</div>
+        <div class="alert ag"><strong>Dividendos de participação societária são isentos de PIS/COFINS</strong>Art. 10 da Lei 9.249/95. Se os lucros da SCP forem classificados como receita de participação societária pela Multibrain, PIS/COFINS = R$ 0.<br><br>Depende de como o contador da Multibrain vai classificar os recebimentos. Vale confirmar antes de estruturar a SCP.</div>
+        <div class="card-title" style="margin-top:16px">Perguntas para o Contador Antes de Fechar</div>
+        <div class="tl" style="margin-top:12px">
+          <div class="tl-item"><div class="tl-dot warn"></div><div class="tl-title">Qual o regime tributário atual da Multibrain?</div><div class="tl-body">Lucro Presumido ou Real? Impacto de R$ 247k na escolha.</div></div>
+          <div class="tl-item"><div class="tl-dot warn"></div><div class="tl-title">Vale criar uma holding intermediária?</div><div class="tl-body">Receber os lucros da SCP via holding pode reduzir a carga tributária total.</div></div>
+          <div class="tl-item"><div class="tl-dot warn"></div><div class="tl-title">O mútuo deve ser feito pela Multibrain ou por uma SPE?</div><div class="tl-body">Uma SPE criada para essa operação pode isolar o risco e otimizar o tratamento tributário.</div></div>
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-title">Custo Total da Operação — Tudo Incluído</div>
+      <table class="tbl">
+        <thead><tr><th>Item</th><th>Cenário Otimista</th><th>Cenário Base</th><th>Cenário Pessimista</th></tr></thead>
+        <tbody>
+          <tr><td>Entrada / Mútuo conversível</td><td class="td-g">R$ 700k</td><td class="td-y">R$ 900k</td><td class="td-y">R$ 1.200k</td></tr>
+          <tr><td>Capital de giro aportado</td><td>R$ 600k</td><td>R$ 800k</td><td>R$ 1.200k</td></tr>
+          <tr><td>IOF sobre mútuo</td><td class="td-m">R$ 26k</td><td class="td-m">R$ 35k</td><td class="td-m">R$ 46k</td></tr>
+          <tr><td>Honorários advocatícios</td><td class="td-m">R$ 15k</td><td class="td-m">R$ 22k</td><td class="td-m">R$ 30k</td></tr>
+          <tr><td>IRPJ/CSLL sobre lucros (Lucro Presumido)</td><td class="td-y">R$ 150k</td><td class="td-y">R$ 184k</td><td class="td-y">R$ 220k</td></tr>
+          <tr><td>Registro Junta Comercial + custos</td><td class="td-m">R$ 3k</td><td class="td-m">R$ 5k</td><td class="td-m">R$ 8k</td></tr>
+          <tr><td>Multas operacionais provisionadas</td><td class="td-m">R$ 50k</td><td class="td-y">R$ 100k</td><td class="td-r">R$ 200k</td></tr>
+        </tbody>
+        <tfoot>
+          <tr class="tot"><td><strong>Custo Total Real</strong></td><td class="td-g"><strong>R$ 1.544k</strong></td><td class="td-y"><strong>R$ 2.046k</strong></td><td class="td-r"><strong>R$ 2.904k</strong></td></tr>
+          <tr><td><strong>Lucro projetado disponível</strong></td><td class="td-g"><strong>R$ 1.500k</strong></td><td class="td-y"><strong>R$ 1.270k</strong></td><td class="td-r"><strong>R$ 800k</strong></td></tr>
+          <tr><td><strong>ROI líquido total</strong></td><td class="td-g"><strong>97%</strong></td><td class="td-y"><strong>62%</strong></td><td class="td-r"><strong>28%</strong></td></tr>
+        </tfoot>
+      </table>
+      <div class="alert ab" style="margin-top:12px"><strong>Referência</strong>CDI atual: ~13,75% ao ano. O cenário base entrega 62% em 24 meses = ~31% ao ano = 2,25× o CDI com risco de execução. O cenário pessimista entrega 28% em 24 meses = ~14% ao ano = ainda acima do CDI mas sem prêmio de risco relevante. O negócio só faz sentido financeiro se você acredita que a execução vai ser pelo menos no cenário base.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== TAB 8: RISKS ===== -->
+<div id="tab-risks" class="tab-content">
+  <div class="section">
+    <div class="sec-rule"><div class="sec-num">08</div><div class="sec-title"><small>Matriz de Riscos</small>O que Pode Dar Errado</div></div>
+    <div class="card">
+      <div class="card-title">Riscos Quantificados — Ordenados por Impacto</div>
+      <div class="risk-item" style="font-family:var(--mono);font-size:8px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;padding:6px 0">
+        <div>Risco</div><div>Descrição</div><div>Potencial</div><div>Prob.</div>
+      </div>
+      <div class="risk-item">
+        <div class="risk-name">Irregularidade fiscal<span class="badge br" style="margin-top:4px;display:block">Crítico</span></div>
+        <div class="risk-desc">Parcelamentos atrasam → empresa perde certidão negativa → municípios suspendem pagamentos → CORSAN rescinde. Histórico de parcelamentos desde 2021 que nunca zeraram é sinal de risco real. Mitigado: verificar regularidade antes do fechamento e montar controle mensal.</div>
+        <div class="risk-val">Perda total<br>até R$ 23M</div>
+        <div><span class="badge br">Alto</span><br><span style="font-family:var(--mono);font-size:8px;color:var(--muted)">se não gerenciado</span></div>
+      </div>
+      <div class="risk-item">
+        <div class="risk-name">Saída de Bruno<span class="badge by" style="margin-top:4px;display:block">Operacional</span></div>
+        <div class="risk-desc">Único engenheiro no dia a dia — em burnout declarado. Se sair antes de ser substituído, ARTs ficam sem RT e medições param. CORSAN é rigorosa. Solução: engenheiro da Expert entra nos canteiros imediatamente e em 60–90 dias assume as ARTs.</div>
+        <div class="risk-val">R$ 0–500k/mês parado</div>
+        <div><span class="badge by">Médio-Alto</span><br><span style="font-family:var(--mono);font-size:8px;color:var(--muted)">35% prob.</span></div>
+      </div>
+      <div class="risk-item">
+        <div class="risk-name">Atraso nas obras<span class="badge by" style="margin-top:4px;display:block">Contratual</span></div>
+        <div class="risk-desc">5 obras simultâneas em municípios diferentes com uma equipe no limite. Atraso acima de 30 dias gera multa de 0,5–10% do contrato. CORSAN tem avaliação de desempenho que afeta contratos futuros. Provisionar R$ 80–150k no fluxo.</div>
+        <div class="risk-val">R$ 56k – R$ 1,1M</div>
+        <div><span class="badge by">Médio</span><br><span style="font-family:var(--mono);font-size:8px;color:var(--muted)">40% pelo menos 1</span></div>
+      </div>
+      <div class="risk-item">
+        <div class="risk-name">Interferência do dono<span class="badge by" style="margin-top:4px;display:block">Societário</span></div>
+        <div class="risk-desc">Dono ainda é sócio único durante a SCP. O histórico do mútuo de R$ 397k mostra que esse comportamento já ocorreu. Mitigado: conta bancária vinculada com movimentação conjunta, cláusula de não oneração com penalidade de exercício imediato da opção de compra.</div>
+        <div class="risk-val">R$ 100k – R$ 500k</div>
+        <div><span class="badge by">Médio</span><br><span style="font-family:var(--mono);font-size:8px;color:var(--muted)">30% sem proteção</span></div>
+      </div>
+      <div class="risk-item">
+        <div class="risk-name">CORSAN Esgoto sem OS<span class="badge by" style="margin-top:4px;display:block">Execução</span></div>
+        <div class="risk-desc">R$ 1,91M contratado mas sem ordem de início emitida. Enquanto não há OS não há faturamento. Se a CORSAN atrasar 6+ meses, esse valor fica fora do fluxo de caixa projetado. Descontar 30% desse contrato na projeção conservadora.</div>
+        <div class="risk-val">R$ 229k</div>
+        <div><span class="badge by">Médio</span><br><span style="font-family:var(--mono);font-size:8px;color:var(--muted)">25% atraso</span></div>
+      </div>
+      <div class="risk-item">
+        <div class="risk-name">Passivos ocultos<span class="badge by" style="margin-top:4px;display:block">Jurídico</span></div>
+        <div class="risk-desc">Prestadores PJ mal classificados (vínculo empregatício disfarçado), execuções fiscais não declaradas, garantias dadas em outros negócios usando o CNPJ da Aguiar. O CSP zerado de 2024 indica contabilidade irregular. Mitigado: escrow de 18 meses cobre esse risco.</div>
+        <div class="risk-val">R$ 200k – R$ 800k</div>
+        <div><span class="badge by">Médio</span><br><span style="font-family:var(--mono);font-size:8px;color:var(--muted)">Escrow mitiga</span></div>
+      </div>
+      <div class="risk-item" style="border-bottom:none">
+        <div class="risk-name">Rescisão por estrutura<span class="badge bg" style="margin-top:4px;display:block">Mitigado</span></div>
+        <div class="risk-desc">Risco de os contratos interpretarem a SCP + Diretor de Operações como cessão disfarçada. Mitigado pela estrutura escolhida — mudança interna de gestão, não transferência contratual. Redação jurídica cuidadosa e parecer do advogado eliminam em grande parte.</div>
+        <div class="risk-val">Perda contratual</div>
+        <div><span class="badge bg">Baixo</span><br><span style="font-family:var(--mono);font-size:8px;color:var(--muted)">5% com boa redação</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== TAB 9: PSYCHOLOGY ===== -->
+<div id="tab-psychology" class="tab-content">
+  <div class="section">
+    <div class="sec-rule"><div class="sec-num">09</div><div class="sec-title"><small>Argumento de Negociação</small>A Conta que Ele Ainda Não Fez</div>
+    </div>
+    <div class="exec-hl">
+      <p>Ele tem <strong>60 anos, saúde comprometida</strong>, um genro em burnout, e está <strong>tirando dinheiro de um negócio para pagar outro</strong>. A carteira de R$ 23M parece muito — mas distribuída em <strong>24 meses de operação pesada</strong>, o que sobra mensalmente não justifica o custo físico e financeiro de continuar sozinho. <strong>Os números abaixo mostram isso.</strong></p>
+    </div>
+    <div class="psych-compare">
+      <div class="pc-col">
+        <div class="pc-header">Continua Sozinho — 24 Meses</div>
+        <div class="pc-row"><div class="pc-key">Faturamento médio/mês</div><div class="pc-val">R$ 964k</div></div>
+        <div class="pc-row"><div class="pc-key">(-) Custos diretos de obra (~70%)</div><div class="pc-val">-R$ 675k</div></div>
+        <div class="pc-row"><div class="pc-key">(-) Desp. operacionais fixas</div><div class="pc-val">-R$ 145k</div></div>
+        <div class="pc-row"><div class="pc-key">(-) Impostos (~6,5%)</div><div class="pc-val">-R$ 63k</div></div>
+        <div class="pc-row"><div class="pc-key">(-) Juros CEF + parcelamentos</div><div class="pc-val">-R$ 18k</div></div>
+        <div class="pc-row"><div class="pc-key">= Lucro líquido mensal</div><div class="pc-val">~R$ 63k</div></div>
+        <div class="pc-row"><div class="pc-key">(-) Risco de multa provisionado</div><div class="pc-val">-R$ 6k</div></div>
+        <div class="pc-row" style="font-size:13px;font-weight:700;padding-top:10px"><div class="pc-key" style="color:var(--red)">O QUE SOBRA POR MÊS</div><div class="pc-val" style="font-size:18px">~R$ 57k</div></div>
+        <div class="pc-row"><div class="pc-key">Total em 24 meses</div><div class="pc-val">~R$ 1,37M</div></div>
+        <div class="pc-row"><div class="pc-key">Horas trabalhadas</div><div class="pc-val">200h+/mês</div></div>
+        <div class="pc-row"><div class="pc-key">Capital de giro que precisa arranjar</div><div class="pc-val">R$ 800k–1,2M</div></div>
+        <div class="pc-row"><div class="pc-key">Risco se uma obra der errado</div><div class="pc-val">Quebra tudo</div></div>
+        <div class="pc-row"><div class="pc-key">Saúde ao final</div><div class="pc-val">Comprometida</div></div>
+        <div class="pc-row"><div class="pc-key">Outros negócios</div><div class="pc-val">Parados/sangrados</div></div>
+      </div>
+      <div class="pc-col">
+        <div class="pc-header">Vende para a Multibrain — Dia 1</div>
+        <div class="pc-row"><div class="pc-key">Recebe no fechamento</div><div class="pc-val">R$ 540k</div></div>
+        <div class="pc-row"><div class="pc-key">Escrow (18 meses)</div><div class="pc-val">R$ 270k</div></div>
+        <div class="pc-row"><div class="pc-key">Earn-out mensal (25% lucro)</div><div class="pc-val">~R$ 14k/mês</div></div>
+        <div class="pc-row"><div class="pc-key">Total earn-out em 24 meses</div><div class="pc-val">~R$ 336k</div></div>
+        <div class="pc-row" style="font-size:13px;font-weight:700;padding-top:10px"><div class="pc-key" style="color:var(--green)">TOTAL QUE RECEBE</div><div class="pc-val" style="font-size:18px">~R$ 1,14M</div></div>
+        <div class="pc-row"><div class="pc-key">Diferença vs. continuar</div><div class="pc-val">-R$ 230k</div></div>
+        <div class="pc-row"><div class="pc-key">Horas trabalhadas</div><div class="pc-val">0</div></div>
+        <div class="pc-row"><div class="pc-key">Capital de giro a arranjar</div><div class="pc-val">R$ 0</div></div>
+        <div class="pc-row"><div class="pc-key">Risco se uma obra der errado</div><div class="pc-val">Zero — problema nosso</div></div>
+        <div class="pc-row"><div class="pc-key">Saúde</div><div class="pc-val">Descansa</div></div>
+        <div class="pc-row"><div class="pc-key">Outros negócios</div><div class="pc-val">Livres para crescer</div></div>
+      </div>
+    </div>
+    <div class="alert ar"><strong>A Pergunta que Fecha o Argumento</strong>"Você vai receber R$ 230 mil a mais continuando sozinho — mas vai trabalhar 200 horas por mês, com saúde comprometida, arriscando quebrar vários negócios ao mesmo tempo, por 24 meses seguidos. Quanto vale para você — neste momento da sua vida — não ter que fazer isso?"</div>
+    <div class="psych-script">
+      <div class="ps-title">Abertura — Reconhecimento Genuíno</div>
+      <div class="ps-line">"Antes de falar de número, preciso entender sua situação de verdade. <strong>Você construiu algo impressionante em poucos anos</strong> — contratos com a CORSAN, com o PAC federal, com três municípios. Isso tem um valor real. Mas como você está dormindo?"</div>
+    </div>
+    <div class="psych-script" style="margin-top:1px">
+      <div class="ps-title">O Espelho — A Tabela na Mesa</div>
+      <div class="ps-line">"Deixa eu te mostrar o que os próximos 24 meses representam se você continuar sozinho." <strong>Coloca a tabela acima na mesa.</strong> "R$ 57 mil mensais líquidos para gerir cinco obras em municípios diferentes, com Bruno no limite, capital escasso, e outros negócios parados. <strong>Não estou dizendo que você não consegue. Estou dizendo que o preço que vai pagar pela sua saúde não aparece em nenhum balanço.</strong>"</div>
+    </div>
+    <div class="psych-script" style="margin-top:1px">
+      <div class="ps-title">A Proposta — Alívio Imediato e Concreto</div>
+      <div class="ps-line">"Se você fechar com a gente, <strong>no dia da assinatura você recebe R$ 540 mil em conta</strong>. Para de operar hoje. Bruno descansa. Denise para. Você quita o empréstimo da Caixa, libera o fluxo dos outros negócios. E ainda continua recebendo conforme as obras entregam — <strong>sem precisar fazer absolutamente nada</strong>."</div>
+    </div>
+    <div class="psych-script" style="margin-top:1px">
+      <div class="ps-title">Se Ele Resistir no Preço</div>
+      <div class="ps-line">"Você pode ter razão que vale mais em um mundo perfeito. Mas <strong>quem vai estar aqui para garantir esse mundo perfeito?</strong> Você me disse que não tem mais saúde para isso. O valor real hoje é o valor que alguém com capacidade de executar está disposto a pagar — não o valor de um cenário ótimo que você não consegue mais entregar sozinho."</div>
+    </div>
+    <div class="psych-script" style="margin-top:1px">
+      <div class="ps-title">O Fechamento — O Legado</div>
+      <div class="ps-line">"<strong>Essas obras vão ser entregues.</strong> As UBS vão funcionar. A creche vai ter crianças. O nome da Aguiar vai estar nessas placas. Só que vai ser nossa equipe colocando o tijolo. <strong>E você vai dormir.</strong>"</div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== TAB 10: RECOMMENDATION ===== -->
+<div id="tab-recommendation" class="tab-content">
+  <div class="section">
+    <div class="sec-rule"><div class="sec-num">10</div><div class="sec-title"><small>Síntese Final</small>Recomendação para os Sócios</div></div>
+    <div class="exec-hl">
+      <p>A Aguiar é um negócio <strong>real, com contratos públicos verificados</strong>, equipe operacional provada e R$ 23M ainda por executar. O vendedor está em posição onde <strong>vender é racionalmente melhor do que continuar</strong>. A questão é estruturar uma oferta que proteja a Multibrain dos riscos reais identificados — e a estrutura SCP + Mútuo + Diretor resolve isso <strong>sem quebrar nenhum contrato público.</strong></p>
+    </div>
+    <div class="sc-grid" style="margin-bottom:20px">
+      <div class="sc"><div class="sc-lbl">Conservador — Só Municipais</div><div class="sc-price">R$ 600k</div><ul class="sc-items"><li>Base: R$ 8,7M confirmados</li><li>CORSAN excluído do cálculo</li><li>ROI estimado: ~45%</li><li>Payback: ~20 meses</li><li>Risco mais baixo</li><li>Earn-out: 20% lucro real</li></ul></div>
+      <div class="sc best"><div class="sc-lbl">Base · Recomendado</div><div class="sc-price">R$ 900k</div><ul class="sc-items"><li>Carteira completa c/ 70% CORSAN</li><li>SCP + Mútuo + Opção de Compra</li><li>ROI estimado: ~62%</li><li>Payback: ~16 meses</li><li>Earn-out: 25% lucro real mensal</li><li>Desembolso Dia 0: R$ 1,34M</li><li>Custo tributário: ~R$ 300k</li><li>ROI líquido total: ~47%</li></ul></div>
+      <div class="sc"><div class="sc-lbl">Otimista — Carteira Plena</div><div class="sc-price">R$ 1,5M</div><ul class="sc-items"><li>Toda carteira R$ 23,1M</li><li>CORSAN Esgoto confirmado</li><li>ROI estimado: ~55%</li><li>Payback: ~18 meses</li><li>Earn-out: 20% lucro real</li><li>Só se CORSAN OS emitida</li></ul></div>
+    </div>
+    <div class="g2">
+      <div class="card">
+        <div class="card-title">✓ Condições para Fechar</div>
+        <div class="tl">
+          <div class="tl-item"><div class="tl-dot done"></div><div class="tl-title">Certidões fiscais negativas válidas</div><div class="tl-body">Federal (PGFN), FGTS (CRF), Municipal Viamão e dos 3 municípios contratantes.</div></div>
+          <div class="tl-item"><div class="tl-dot done"></div><div class="tl-title">Mútuo R$ 397k quitado ou descontado</div><div class="tl-body">Não pode ficar como ativo fictício no balanço que você vai assumir.</div></div>
+          <div class="tl-item"><div class="tl-dot done"></div><div class="tl-title">Engenheiro substituto para Bruno identificado</div><div class="tl-body">Antes de assinar — não depois. A transição técnica precisa começar no Dia 1.</div></div>
+          <div class="tl-item"><div class="tl-dot done"></div><div class="tl-title">Advogado societário contratado</div><div class="tl-body">Para redigir SCP + Mútuo + Opção de Compra + Ata de Diretor.</div></div>
+          <div class="tl-item"><div class="tl-dot done"></div><div class="tl-title">Contador da Multibrain consultado</div><div class="tl-body">Confirmar regime tributário e estrutura mais eficiente para receber lucros da SCP.</div></div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-title">✗ Condições para Não Fechar</div>
+        <div class="tl">
+          <div class="tl-item"><div class="tl-dot alert"></div><div class="tl-title">Certidões irregulares sem previsão de regularização</div><div class="tl-body">Empresa com fiscal irregular não sobrevive 24 meses de contratos públicos.</div></div>
+          <div class="tl-item"><div class="tl-dot alert"></div><div class="tl-title">Vendedor recusa qualquer forma de pagamento condicionado</div><div class="tl-body">Quem rejeita escrow sabe que passivos vão aparecer.</div></div>
+          <div class="tl-item"><div class="tl-dot alert"></div><div class="tl-title">Descoberta de garantias dadas em outros negócios</div><div class="tl-body">CNPJ da Aguiar usado como garantia em dívidas externas = risco de penhora dos contratos.</div></div>
+          <div class="tl-item"><div class="tl-dot alert"></div><div class="tl-title">Bruno sair antes do substituto estar pronto</div><div class="tl-body">Sem responsável técnico as obras param. Não fechar sem cobertura técnica garantida.</div></div>
+          <div class="tl-item"><div class="tl-dot alert"></div><div class="tl-title">Passivos ocultos > R$ 500k identificados na due diligence</div><div class="tl-body">Ajustar o preço ou desistir — não absorver passivos não mapeados.</div></div>
+        </div>
+      </div>
+    </div>
+    <div class="card" style="margin-top:20px">
+      <div class="card-title">Próximos Passos — Sequência de Ação</div>
+      <div class="g2">
+        <div>
+          <table class="tbl">
+            <thead><tr><th>Prazo</th><th>Ação</th><th>Responsável</th></tr></thead>
+            <tbody>
+              <tr><td class="td-m">48h</td><td>Solicitar certidões negativas ao vendedor</td><td class="td-m">Multibrain</td></tr>
+              <tr><td class="td-m">48h</td><td>Confirmar OS CORSAN Esgoto Metropolitano</td><td class="td-m">Multibrain</td></tr>
+              <tr><td class="td-m">3 dias</td><td>Contratar advogado societário</td><td class="td-m">Multibrain</td></tr>
+              <tr><td class="td-m">3 dias</td><td>Consultar contador regime tributário</td><td class="td-m">Multibrain</td></tr>
+              <tr><td class="td-m">1 semana</td><td>Identificar engenheiro substituto para Bruno</td><td class="td-m">Expert Franquias</td></tr>
+              <tr><td class="td-m">1 semana</td><td>Apresentar proposta ao vendedor com tabela psicológica</td><td class="td-m">Multibrain</td></tr>
+              <tr><td class="td-m">2 semanas</td><td>Assinar acordo privado (SCP + Mútuo + Opção)</td><td class="td-m">Advogado</td></tr>
+              <tr><td class="td-m">3 semanas</td><td>Registrar ata de Diretor de Operações na Junta</td><td class="td-m">Advogado</td></tr>
+              <tr><td class="td-m">3 semanas</td><td>Abrir conta vinculada às obras</td><td class="td-m">Multibrain</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div>
+          <div class="alert ay"><strong>O que Não Fazer</strong>Não revelar que identificamos o CSP zerado de 2024 — guarde para renegociação se passivos aparecerem. Não propor alteração societária imediata — use a estrutura SCP + Diretor. Não pagar acima de R$ 1,2M de entrada sem os CORSAN Metropolitanos com execução confirmada. Não assinar nada sem o advogado ter revisado.</div>
+          <div class="alert ag" style="margin-top:12px"><strong>O Ativo Mais Valioso que Não Aparece no Balanço</strong>Miguel Claro. Se ele continuar captando licitações para a Aguiar após a aquisição — mesmo como consultor externo remunerado por resultado — o pipeline de novas obras pode render R$ 5–15M/ano adicionais. Esse é o multiplicador de longo prazo que transforma um negócio de 2 anos em um negócio permanente.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="footer">
+  <div>Multibrain M&A Intelligence · Relatório Executivo Confidencial · Jun 2026 · v2.0</div>
+  <div>Análise baseada em documentos fornecidos · Não substitui due diligence jurídica e tributária completa</div>
+</div>
+
+<script>
+function showTab(id, btn){
+  document.querySelectorAll('.tab-content').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('tab-'+id).classList.add('active');
+  if(btn) btn.classList.add('active');
+}
+
+function fmt(v){
+  const abs=Math.abs(v);
+  const sign=v<0?'-':'';
+  if(abs>=1000000) return sign+'R$ '+(abs/1000000).toFixed(2)+'M';
+  if(abs>=1000) return sign+'R$ '+Math.round(abs/1000)+'k';
+  return sign+'R$ '+Math.round(abs);
+}
+
+function sim(){
+  const entrada=+document.getElementById('sl-entrada').value;
+  const capgiro=+document.getElementById('sl-capgiro').value;
+  const margemPct=+document.getElementById('sl-margem').value;
+  const margem=margemPct/100;
+  const earnoutPct=+document.getElementById('sl-earnout').value/100;
+  const carteira=+document.getElementById('sl-carteira').value;
+  const passivo=+document.getElementById('sl-passivo').value;
+  const imposto=+document.getElementById('sl-imposto').value;
+  const prazo=+document.getElementById('sl-prazo').value;
+
+  document.getElementById('lbl-entrada').textContent=fmt(entrada);
+  document.getElementById('lbl-capgiro').textContent=fmt(capgiro);
+  document.getElementById('lbl-margem').textContent=margemPct.toFixed(1)+'%';
+  document.getElementById('lbl-earnout').textContent=(earnoutPct*100).toFixed(0)+'%';
+  document.getElementById('lbl-carteira').textContent=fmt(carteira);
+  document.getElementById('lbl-passivo').textContent=fmt(passivo);
+  document.getElementById('lbl-imposto').textContent=fmt(imposto);
+  document.getElementById('lbl-prazo').textContent=prazo;
+
+  // Core calculations
+  const lucroTotal = carteira * margem;
+  const earnoutTotal = lucroTotal * earnoutPct;
+  const lucroComprador = lucroTotal - earnoutTotal - passivo - imposto;
+  const desembolso = entrada + capgiro;
+  const roi = lucroComprador > 0 ? (lucroComprador / desembolso * 100) : 0;
+
+  // Monthly
+  const revMes = carteira / prazo;
+  const lucroMes = revMes * margem;
+  const earnoutMes = lucroMes * earnoutPct;
+  const liquidoMes = lucroMes - earnoutMes - (passivo / prazo) - (imposto / prazo);
+
+  // Payback
+  let paybackM = 999;
+  if(liquidoMes > 0) paybackM = Math.ceil(desembolso / liquidoMes);
+  const pbDisplay = paybackM > prazo ? '>'+prazo+' meses' : '~'+paybackM+' meses';
+
+  document.getElementById('r-lucro').textContent = fmt(lucroTotal);
+  document.getElementById('r-lucro').className = 'res-val kv-g';
+  document.getElementById('r-earnout').textContent = fmt(earnoutTotal);
+  document.getElementById('r-disponivel').textContent = fmt(lucroComprador);
+  document.getElementById('r-disponivel').className = 'res-val '+(lucroComprador>0?'kv-b':'kv-r');
+  document.getElementById('r-desembolso').textContent = fmt(desembolso);
+  document.getElementById('r-roi').textContent = roi.toFixed(0)+'%';
+  document.getElementById('r-roi').className = 'res-val '+(roi>50?'kv-g':roi>25?'kv-y':'kv-r');
+  document.getElementById('r-payback').textContent = pbDisplay;
+  document.getElementById('r-payback').className = 'res-val '+(paybackM<=prazo?'kv-g':'kv-r');
+  document.getElementById('pb-mid').textContent = 'Payback: '+pbDisplay;
+  document.getElementById('pb-end').textContent = 'Prazo: '+prazo+'m';
+
+  const pbPct = Math.min(100, paybackM/prazo*100);
+  document.getElementById('pb-fill').style.width = pbPct+'%';
+
+  // Monthly table
+  const months = [0,1,2,3,6,9,12,15,18,21,24,30,36].filter(m=>m<=prazo);
+  let html='';
+  let cum = -desembolso;
+  let pbHit = false;
+  months.forEach(m=>{
+    if(m===0){
+      html+=`<tr class="m0"><td>Mês 0</td><td>—</td><td>—</td><td>—</td><td>${fmt(-desembolso)}</td><td>${fmt(-desembolso)}</td><td><span class="badge br">Desembolso</span></td></tr>`;
+      return;
+    }
+    // Steps between months
+    const prev = months[months.indexOf(m)-1];
+    const steps = m - prev;
+    const periodRev = revMes * steps;
+    const periodLucro = lucroMes * steps;
+    const periodEarnout = earnoutMes * steps;
+    const periodLiquido = liquidoMes * steps;
+    cum += periodLiquido;
+    const isPb = !pbHit && cum >= 0;
+    if(isPb) pbHit = true;
+    const cumColor = cum>=0?'color:var(--green)':'color:var(--red)';
+    const rowClass = isPb ? 'class="mpb"' : '';
+    html+=`<tr ${rowClass}>
+      <td>Mês ${m}</td>
+      <td>${fmt(periodRev)}</td>
+      <td style="color:var(--green)">${fmt(periodLucro)}</td>
+      <td style="color:var(--red)">${fmt(-periodEarnout)}</td>
+      <td style="color:var(--blue)">${fmt(periodLiquido)}</td>
+      <td style="${cumColor}">${fmt(cum)}</td>
+      <td>${isPb?'<span class="badge bg">✓ Payback</span>':''}</td>
+    </tr>`;
+  });
+  document.getElementById('roi-body').innerHTML=html;
+}
+
+sim();
+</script>
+</body>
+</html>
