@@ -10,6 +10,7 @@ import Home from "./pages/Home";
 import Acelera from "./pages/Acelera";
 import Prospecta from "./pages/Prospecta";
 import ValuationAguiar from "./pages/ValuationAguiar";
+import CatalogoQtokQuadros from "./pages/CatalogoQtokQuadros";
 import Auth from "./pages/Auth";
 import NotFound from "./pages/NotFound";
 import HubApp from "./pages/hub/HubApp";
@@ -29,6 +30,7 @@ const App = () => (
             <Route path="/acelera" element={<Acelera />} />
             <Route path="/prospecta" element={<Prospecta />} />
             <Route path="/valuation/aguiar-2026" element={<ValuationAguiar />} />
+            <Route path="/catalogo-qtokquadros" element={<CatalogoQtokQuadros />} />
             <Route path="/auth" element={<Auth />} />
             <Route 
               path="/hub/*" 
