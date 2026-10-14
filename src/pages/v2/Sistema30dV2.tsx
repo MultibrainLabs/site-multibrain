@@ -142,7 +142,7 @@ const Sistema30dV2 = () => (
             <p className="v2-body" style={{ marginTop: 8 }}>{CASES.ensino.text}</p>
           </div>
           <div className="v2-card v2-card--flat" style={{ borderColor: "var(--v2-line-strong)", padding: 28 }}>
-            <div className="v2-num" style={{ fontSize: 12 }}>PLATAFORMA MULTIBRAIN</div>
+            <div className="v2-num" style={{ fontSize: 12 }}>AUTOSTACKER</div>
             <div className="v2-big" style={{ marginTop: 14 }}>1.100 apps</div>
             <p className="v2-body" style={{ marginTop: 8 }}>
               implantados para 445 clientes ativos em 309 servidores gerenciados (fev/2026).
