@@ -5,7 +5,7 @@
 export const WHATSAPP_NUMBER = "5551993410110";
 export const SCHEDULE_URL = "";
 // Página de agendamento do Diagnóstico Estratégico. Enquanto vazio, usa SCHEDULE_URL (ou o WhatsApp).
-export const DIAGNOSTICO_URL = ""; // [preencher]
+export const DIAGNOSTICO_URL = "https://api.clickmax.io/forms/R8rvoz9IIdVfGOeq2CTq83wE";
 export const INSTAGRAM_URL = "https://instagram.com/multibrain.company";
 export const LINKEDIN_URL = ""; // [preencher]
 export const CNPJ = ""; // [preencher]
