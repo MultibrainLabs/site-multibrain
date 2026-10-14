@@ -4,7 +4,7 @@ Rotas novas, sem alterar a home atual:
 
 | Rota | Página |
 | --- | --- |
-| `/v2` | Nova home institucional |
+| `/` | Home institucional (`HomeV2`). `/v2` redireciona para `/`; a home antiga está em `/home-old` |
 | `/v2/sistema-30-dias` | LP-1 — Sistema próprio em 30 dias |
 | `/v2/saconline` | LP-2 — SacOnline |
 | `/v2/diagnostico` | LP-3 — Diagnóstico Estratégico |

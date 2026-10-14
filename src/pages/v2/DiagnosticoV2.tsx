@@ -1,8 +1,8 @@
 import V2Layout, { SmartLink } from "./V2Layout";
 import Faq from "./Faq";
-import { CASES, DIAGNOSTICO_URL, scheduleLink } from "./content";
+import { CASES, DIAGNOSTICO_URL } from "./content";
 
-const SCHEDULE = DIAGNOSTICO_URL || scheduleLink("Olá! Quero agendar o Diagnóstico Estratégico da Multibrain.");
+const SCHEDULE = DIAGNOSTICO_URL;
 
 const DORES = [
   "O crescimento travou e não sei onde está o gargalo.",

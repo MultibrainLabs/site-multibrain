@@ -3,7 +3,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { AuthProvider } from "@/hooks/useAuth";
 import ProtectedRoute from "@/components/ProtectedRoute";
 import Home from "./pages/Home";
@@ -37,14 +37,15 @@ const App = () => (
         <Sonner />
         <BrowserRouter>
           <Routes>
-            <Route path="/" element={<Home />} />
+            <Route path="/" element={v2(<HomeV2 />)} />
+            <Route path="/home-old" element={<Home />} />
             <Route path="/acelera" element={<Acelera />} />
             <Route path="/prospecta" element={<Prospecta />} />
             <Route path="/valuation/aguiar-2026" element={<ValuationAguiar />} />
             <Route path="/catalogo-qtokquadros" element={<CatalogoQtokQuadros />} />
             <Route path="/club" element={<Club />} />
             <Route path="/auth" element={<Auth />} />
-            <Route path="/v2" element={v2(<HomeV2 />)} />
+            <Route path="/v2" element={<Navigate to="/" replace />} />
             <Route path="/v2/sistema-30-dias" element={v2(<Sistema30dV2 />)} />
             <Route path="/v2/saconline" element={v2(<SacOnlineV2 />)} />
             <Route path="/v2/diagnostico" element={v2(<DiagnosticoV2 />)} />

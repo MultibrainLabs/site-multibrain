@@ -1,7 +1,7 @@
 import V2Layout, { SmartLink } from "./V2Layout";
-import { CASES, PLATFORM_SOURCE, PLATFORM_STATS, PORTFOLIO_DOMAINS, PRODUCTS, scheduleLink, whatsapp } from "./content";
+import { CASES, DIAGNOSTICO_URL, PLATFORM_SOURCE, PLATFORM_STATS, PORTFOLIO_DOMAINS, PRODUCTS, whatsapp } from "./content";
 
-const SCHEDULE = scheduleLink("Olá! Quero agendar um diagnóstico gratuito com a Multibrain.");
+const SCHEDULE = DIAGNOSTICO_URL;
 
 const SOLUTIONS = [
   {
@@ -82,7 +82,7 @@ const HomeV2 = () => (
     title="Multibrain — Sistemas, SaaS e infraestrutura"
     description="Construímos e operamos os sistemas que sua empresa precisa. Do processo manual ao sistema em produção em dias, não meses."
     ctaLabel="Agendar diagnóstico"
-    ctaHref="#contato"
+    ctaHref={SCHEDULE}
   >
     {/* HERO */}
     <section className="v2-wrap" style={{ padding: "88px 24px 72px" }}>
@@ -97,7 +97,7 @@ const HomeV2 = () => (
             produtos próprios rodando para centenas de clientes.
           </p>
           <div className="v2-actions">
-            <a href="#contato" className="v2-btn v2-btn--primary">Agendar diagnóstico gratuito</a>
+            <SmartLink href={SCHEDULE} className="v2-btn v2-btn--primary">Agendar diagnóstico gratuito</SmartLink>
             <a href="#produtos" className="v2-btn v2-btn--ghost">Ver produtos</a>
           </div>
         </div>

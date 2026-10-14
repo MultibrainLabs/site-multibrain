@@ -15,11 +15,8 @@ type Props = {
   children: ReactNode;
 };
 
-/**
- * Enquanto o /v2 estiver em teste, as páginas saem com noindex
- * para não competir com a home atual no Google. Remova ao migrar.
- */
-const NOINDEX = true;
+/** O v2 virou a home do site: as páginas são indexadas normalmente. */
+const NOINDEX = false;
 
 const FONTS_HREF =
   "https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap";
@@ -79,7 +76,7 @@ export const SmartLink = ({ href, className, children }: { href: string; classNa
   );
 
 const Brand = ({ productName }: { productName?: string }) => (
-  <Link to="/v2" className="v2-brand" aria-label="Multibrain, página inicial">
+  <Link to="/" className="v2-brand" aria-label="Multibrain, página inicial">
     <img src="/logo-cerebro-dark.png" alt="" width={34} height={34} />
     {productName ? (
       <>
@@ -166,7 +163,7 @@ const V2Layout = ({ title, description, variant = "lp", productName, ctaLabel, c
               {productName ? `${productName} é um produto Multibrain` : `© ${year} Multibrain`}
               {CNPJ ? ` · CNPJ ${CNPJ}` : ""}
             </span>
-            <Link to="/v2">multibrain.com.br</Link>
+            <Link to="/">multibrain.com.br</Link>
           </div>
         </footer>
       )}

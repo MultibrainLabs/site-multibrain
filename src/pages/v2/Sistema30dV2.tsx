@@ -1,8 +1,8 @@
 import V2Layout, { SmartLink } from "./V2Layout";
 import Faq from "./Faq";
-import { CASES, scheduleLink } from "./content";
+import { CASES, DIAGNOSTICO_URL } from "./content";
 
-const SCHEDULE = scheduleLink("Olá! Vi a página do Sistema em 30 dias e quero agendar um diagnóstico gratuito.");
+const SCHEDULE = DIAGNOSTICO_URL;
 
 const PAINS = [
   ["Paga caro e usa pouco", "Assinaturas que crescem a cada usuário novo, para usar 20% das funções."],
