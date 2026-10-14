@@ -160,6 +160,8 @@ const Sistema30dV2 = () => (
           <ul className="v2-list" style={{ lineHeight: 2 }}>
             <li>Sua empresa tem um processo que é o coração do negócio</li>
             <li>Você paga várias ferramentas que não se conversam</li>
+            <li>Várias pessoas trabalham com planilhas</li>
+            <li>Tem processo que trava com uma pessoa específica</li>
             <li>Quer dados e regras sob seu controle</li>
             <li>Precisa de resultado em semanas, não em semestres</li>
           </ul>
