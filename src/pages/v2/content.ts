@@ -77,8 +77,13 @@ export const PORTFOLIO_DOMAINS = [
 export const CASES = {
   qtok: {
     label: "E-commerce · Qtok Quadros",
-    value: "45 h → 5 min",
-    text: "por semana em tratamento de imagens, mockups e upload, a cada 100 produtos.",
+    value: "~30 min",
+    text: "para cadastrar 1.000 produtos com imagens geradas por IA (vs. 250 h no processo manual).",
+  },
+  documerge: {
+    label: "RH · Grupo com 1.000+ colaboradores",
+    value: "15 dias",
+    text: "para entregar a automação que o ERP do cliente não resolveu: 960 h/ano de trabalho manual viraram 3 h.",
   },
   ensino: {
     label: "Grande rede de ensino",

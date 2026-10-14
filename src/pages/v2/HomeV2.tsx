@@ -10,6 +10,11 @@ const SOLUTIONS = [
     items: ["Diagnóstico do processo", "MVP em ciclos curtos", "Integração com o que você já usa"],
   },
   {
+    title: "Automação e agentes de IA",
+    desc: "Tarefas repetitivas que rodam sozinhas: IA que lê documentos, cruza dados, gera conteúdo e prepara a decisão para o seu time aprovar.",
+    items: ["Leitura e conferência de documentos em massa", "Geração de imagens e catálogo com IA", "Revisão humana onde a IA não tem certeza"],
+  },
+  {
     title: "Produtos SaaS prontos",
     desc: "Plataformas próprias já em produção para atendimento, obras, licitações e infraestrutura. Assine e comece a usar.",
     items: ["Implantação rápida", "Opção white-label", "Suporte do time que construiu"],
@@ -40,9 +45,18 @@ const ENSINO_SYSTEMS = [
 ];
 
 const QTOK_STEPS = [
-  ["01", "Loja virtual completa, do catálogo ao pedido"],
-  ["02", "Motor de geração e tratamento de imagens com IA"],
-  ["03", "Integração do motor com o catálogo da loja"],
+  ["01", "Drive: leitura automática das artes"],
+  ["02", "Curadoria: nome e categoria sugeridos"],
+  ["03", "Aprovação em lote, sem editar item a item"],
+  ["04", "IA: geração automática de mockups"],
+  ["05", "Loja: exportação estruturada para o site"],
+];
+
+const DOCUMERGE_STEPS = [
+  ["ANTES", "Imprimir, recortar, casar e escanear holerite + comprovante de cada colaborador"],
+  ["PRAZO", "3 a 5 dias por mês, com 2 a 3 pessoas dedicadas só a isso"],
+  ["RISCO", "Sem o documento, os contratos com prefeituras não são pagos"],
+  ["DEPOIS", "620 documentos casados em 4min31s; 76% sozinhos, o resto vai para revisão humana"],
 ];
 
 const HOW = [
@@ -53,6 +67,8 @@ const HOW = [
 ];
 
 const SECTORS = [
+  "E-commerce",
+  "RH e departamento pessoal",
   "Construção civil",
   "Setor público e licitações",
   "Atendimento e vendas",
@@ -120,7 +136,7 @@ const HomeV2 = () => (
     {/* SOLUTIONS */}
     <section id="solucoes" className="v2-wrap v2-section">
       <p className="v2-eyebrow">O que fazemos</p>
-      <h2 className="v2-h2">Cinco formas de colocar tecnologia para trabalhar no seu negócio.</h2>
+      <h2 className="v2-h2">Seis formas de colocar tecnologia para trabalhar no seu negócio.</h2>
       <div className="v2-grid" style={{ marginTop: 56, gap: 24 }}>
         {SOLUTIONS.map((s, i) => (
           <article className="v2-card v2-card--col" key={s.title}>
@@ -194,12 +210,17 @@ const HomeV2 = () => (
           <h2 className="v2-h2">Qtok Quadros: a loja e o motor de imagens com IA.</h2>
           <p className="v2-lead" style={{ fontSize: 18, marginTop: 24 }}>
             Criamos o e-commerce completo da Qtok Quadros e todo o motor de imagens com IA que alimenta o catálogo de
-            quadros decorativos.
+            quadros decorativos. Cada produto exigia 7 imagens e 112 campos preenchidos à mão; hoje a arte sai do Drive
+            e chega à loja num único fluxo.
           </p>
           <div className="v2-metrics">
             <div>
               <div className="v2-metric__value">{CASES.qtok.value}</div>
-              <div className="v2-metric__label">{CASES.qtok.text}</div>
+              <div className="v2-metric__label">para 1.000 produtos (vs. 250 h manual)</div>
+            </div>
+            <div>
+              <div className="v2-metric__value">−86%</div>
+              <div className="v2-metric__label">no tempo de cadastro</div>
             </div>
           </div>
           <a href="https://qtokquadros.com.br" target="_blank" rel="noopener noreferrer"
@@ -213,6 +234,40 @@ const HomeV2 = () => (
             <span>O QUE ENTREGAMOS</span>
           </div>
           {QTOK_STEPS.map(([k, v]) => (
+            <div className="v2-row" key={k} style={{ padding: "18px 24px" }}>
+              <span className="v2-row__key">{k}</span>
+              <span>{v}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <div className="v2-split v2-split--top">
+        <div>
+          <p className="v2-eyebrow">Case · RH e departamento pessoal</p>
+          <h2 className="v2-h2">Quando o ERP de 16 mil clientes não resolveu, entregamos em {CASES.documerge.value}.</h2>
+          <p className="v2-lead" style={{ fontSize: 18, marginTop: 24 }}>
+            Um grupo de empresas com mais de 1.000 colaboradores precisava juntar, todo mês, o holerite e o comprovante de
+            pagamento de cada pessoa para receber dos contratos com prefeituras. O fornecedor do ERP mandou consultores e não
+            conseguiu. Construímos o DocuMerge: a IA lê os documentos, casa cada par e separa o que precisa de revisão humana.
+          </p>
+          <div className="v2-metrics">
+            <div>
+              <div className="v2-metric__value">−99,7%</div>
+              <div className="v2-metric__label">de horas-homem por ano (960 h → 3 h)</div>
+            </div>
+            <div>
+              <div className="v2-metric__value">4min31s</div>
+              <div className="v2-metric__label">para processar 620 documentos</div>
+            </div>
+          </div>
+        </div>
+        <div className="v2-panel">
+          <div className="v2-panel__head" style={{ justifyContent: "flex-start", padding: "14px 24px" }}>
+            <span style={{ width: 72 }}>ETAPA</span>
+            <span>O QUE MUDOU</span>
+          </div>
+          {DOCUMERGE_STEPS.map(([k, v]) => (
             <div className="v2-row" key={k} style={{ padding: "18px 24px" }}>
               <span className="v2-row__key">{k}</span>
               <span>{v}</span>

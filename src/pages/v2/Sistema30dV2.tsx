@@ -125,13 +125,16 @@ const Sistema30dV2 = () => (
       <div className="v2-wrap v2-section">
         <p className="v2-eyebrow">Resultados</p>
         <h2 className="v2-h2" style={{ maxWidth: 720 }}>Não é promessa. É o que já está rodando.</h2>
-        <div className="v2-grid" style={{ marginTop: 48 }}>
+        <div className="v2-grid v2-grid--4" style={{ marginTop: 48 }}>
           <div className="v2-card v2-card--flat" style={{ borderColor: "var(--v2-line-strong)", padding: 28 }}>
             <div className="v2-num" style={{ fontSize: 12 }}>{CASES.qtok.label.toUpperCase()}</div>
             <div className="v2-big" style={{ marginTop: 14 }}>{CASES.qtok.value}</div>
-            <p className="v2-body" style={{ marginTop: 8 }}>
-              por semana em tratamento de imagens, mockups e upload, a cada 100 produtos, com um motor de imagens com IA.
-            </p>
+            <p className="v2-body" style={{ marginTop: 8 }}>{CASES.qtok.text}</p>
+          </div>
+          <div className="v2-card v2-card--flat" style={{ borderColor: "var(--v2-line-strong)", padding: 28 }}>
+            <div className="v2-num" style={{ fontSize: 12 }}>{CASES.documerge.label.toUpperCase()}</div>
+            <div className="v2-big" style={{ marginTop: 14 }}>{CASES.documerge.value}</div>
+            <p className="v2-body" style={{ marginTop: 8 }}>{CASES.documerge.text}</p>
           </div>
           <div className="v2-card v2-card--flat" style={{ borderColor: "var(--v2-line-strong)", padding: 28 }}>
             <div className="v2-num" style={{ fontSize: 12 }}>{CASES.ensino.label.toUpperCase()}</div>

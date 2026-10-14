@@ -181,7 +181,8 @@ const DiagnosticoV2 = () => (
           </div>
           <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
             {[
-              [CASES.qtok.value, "por semana de trabalho manual eliminado em um e-commerce, com IA."],
+              [CASES.qtok.value, "para cadastrar 1.000 produtos em um e-commerce com IA (vs. 250 h manual)."],
+              ["−99,7%", "de horas-homem em RH: holerites de 1.000+ colaboradores casados pela IA."],
               [CASES.ensino.value, "sob gestão com governança em uma grande rede de ensino."],
               ["445 clientes", "ativos nas nossas plataformas."],
             ].map(([v, t]) => (
