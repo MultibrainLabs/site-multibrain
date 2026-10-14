@@ -13,6 +13,7 @@ Rotas novas, sem alterar a home atual:
 
 - **Contatos, produtos, números e cases:** `content.ts`
   - `SCHEDULE_URL`: link do Calendly. Enquanto vazio, os botões de agendamento abrem o WhatsApp.
+  - `DIAGNOSTICO_URL`: página de agendamento do Diagnóstico Estratégico (botões da LP-3). Enquanto vazio, usa `SCHEDULE_URL`.
   - `LINKEDIN_URL` e `CNPJ`: aparecem no rodapé quando preenchidos.
 - **Cabeçalho, rodapé, título e meta tags:** `V2Layout.tsx`
 - **Visual (cores, fontes, espaçamentos):** `src/styles/v2.css`, tudo escopado em `.v2`

@@ -1,7 +1,8 @@
-import { FormEvent, useState } from "react";
-import V2Layout from "./V2Layout";
+import V2Layout, { SmartLink } from "./V2Layout";
 import Faq from "./Faq";
-import { CASES, whatsapp } from "./content";
+import { CASES, DIAGNOSTICO_URL, scheduleLink } from "./content";
+
+const SCHEDULE = DIAGNOSTICO_URL || scheduleLink("Olá! Quero agendar o Diagnóstico Estratégico da Multibrain.");
 
 const DORES = [
   "O crescimento travou e não sei onde está o gargalo.",
@@ -35,7 +36,7 @@ const LEVELS = [
 ];
 
 const STEPS = [
-  ["Você responde 5 perguntas", "Um formulário rápido para chegarmos na reunião já entendendo o seu contexto."],
+  ["Você agenda o horário", "Escolha o melhor dia e horário para a conversa, online ou presencial."],
   ["Reunião de 60 minutos", "Você apresenta as dores. Nós fazemos as perguntas certas e desenhamos as soluções ao vivo."],
   ["Você recebe o mapa de soluções", "Um documento com os três níveis de resposta, entregue em até [X] dias úteis."],
 ];
@@ -48,58 +49,12 @@ const FAQ = [
   { q: "Atendem empresas de qual porte e setor?", a: "De pequenas e médias empresas a grandes corporações, em setores como educação, construção, varejo, serviços e setor público." },
 ];
 
-const SIZES = ["Até 10", "11 a 50", "51 a 200", "Mais de 200"];
-
-const DiagnosticoForm = () => {
-  const [sent, setSent] = useState(false);
-
-  // Sem backend por enquanto: o formulário monta uma mensagem e abre o WhatsApp do time.
-  const onSubmit = (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    const f = new FormData(e.currentTarget);
-    const msg = [
-      "Olá! Quero agendar o Diagnóstico Estratégico.",
-      `Nome: ${f.get("nome")}`,
-      `Empresa e cargo: ${f.get("empresa")}`,
-      `WhatsApp: ${f.get("whatsapp")}`,
-      `Colaboradores: ${f.get("porte")}`,
-      `Maior problema hoje: ${f.get("problema")}`,
-    ].join("\n");
-    window.open(whatsapp(msg), "_blank", "noopener,noreferrer");
-    setSent(true);
-  };
-
-  return (
-    <form className="v2-card v2-form" onSubmit={onSubmit} style={{ flex: "1 1 460px" }}>
-      <label className="v2-field">Nome<input name="nome" type="text" autoComplete="name" required /></label>
-      <label className="v2-field">Empresa e cargo<input name="empresa" type="text" autoComplete="organization" required /></label>
-      <label className="v2-field">WhatsApp<input name="whatsapp" type="tel" autoComplete="tel" required /></label>
-      <label className="v2-field">
-        Número de colaboradores
-        <select name="porte" defaultValue={SIZES[0]}>
-          {SIZES.map((s) => <option key={s}>{s}</option>)}
-        </select>
-      </label>
-      <label className="v2-field">
-        Qual é o maior problema da sua empresa hoje?
-        <textarea name="problema" rows={4} required />
-      </label>
-      <button type="submit" className="v2-btn v2-btn--primary v2-btn--lg">Quero meu diagnóstico</button>
-      {sent && (
-        <p className="v2-small" role="status">
-          Abrimos o WhatsApp com suas respostas. É só enviar a mensagem para confirmar.
-        </p>
-      )}
-    </form>
-  );
-};
-
 const DiagnosticoV2 = () => (
   <V2Layout
     title="Multibrain — Diagnóstico Estratégico"
     description="Traga os problemas da sua empresa e saia com um plano para resolvê-los com tecnologia e inovação, nos níveis estratégico, tático e operacional."
     ctaLabel="Agendar diagnóstico"
-    ctaHref="#agendar"
+    ctaHref={SCHEDULE}
   >
     {/* HERO */}
     <section className="v2-wrap" style={{ padding: "88px 24px 96px" }}>
@@ -112,7 +67,7 @@ const DiagnosticoV2 = () => (
         resolvê-las com tecnologia e inovação, nos níveis estratégico, tático e operacional.
       </p>
       <div className="v2-actions">
-        <a href="#agendar" className="v2-btn v2-btn--primary v2-btn--lg">Quero meu diagnóstico</a>
+        <SmartLink href={SCHEDULE} className="v2-btn v2-btn--primary v2-btn--lg">Agendar meu diagnóstico</SmartLink>
         <span className="v2-small">60 minutos · online ou presencial · confidencial</span>
       </div>
     </section>
@@ -196,10 +151,10 @@ const DiagnosticoV2 = () => (
       </div>
     </section>
 
-    {/* FORM */}
+    {/* CTA */}
     <section id="agendar" className="v2-wrap v2-section">
-      <div className="v2-split v2-split--top">
-        <div style={{ flex: "1 1 380px" }}>
+      <div className="v2-split" style={{ justifyContent: "space-between" }}>
+        <div style={{ flex: "1 1 560px" }}>
           <h2 className="v2-h2" style={{ fontSize: "clamp(30px, 3.6vw, 46px)", lineHeight: 1.08 }}>
             Agende seu Diagnóstico Estratégico.
           </h2>
@@ -210,7 +165,9 @@ const DiagnosticoV2 = () => (
             Vagas limitadas por semana. Assinamos acordo de confidencialidade se você preferir.
           </p>
         </div>
-        <DiagnosticoForm />
+        <div className="v2-actions" style={{ marginTop: 0, flex: "0 1 auto" }}>
+          <SmartLink href={SCHEDULE} className="v2-btn v2-btn--primary v2-btn--lg">Agendar meu diagnóstico</SmartLink>
+        </div>
       </div>
     </section>
 
