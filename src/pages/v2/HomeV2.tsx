@@ -304,7 +304,7 @@ const HomeV2 = () => (
         <div className="v2-split" style={{ justifyContent: "space-between" }}>
           <div style={{ flex: "1 1 560px" }}>
             <h2 className="v2-h2" style={{ fontSize: "clamp(30px, 3.6vw, 48px)", lineHeight: 1.1 }}>
-              Tem um processo que ainda roda em planilha?
+              Tem um processo que ainda roda manualmente ou em planilha?
             </h2>
             <p className="v2-lead" style={{ fontSize: 18, marginTop: 18, maxWidth: 600 }}>
               Conte para a gente em 15 minutos. Se fizer sentido virar sistema, você sai da conversa com um caminho e uma
