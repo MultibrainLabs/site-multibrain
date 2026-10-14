@@ -15,6 +15,16 @@ import Club from "./pages/Club";
 import Auth from "./pages/Auth";
 import NotFound from "./pages/NotFound";
 import HubApp from "./pages/hub/HubApp";
+import { lazy, Suspense } from "react";
+
+// Site v2 (em teste). Carregado sob demanda para não pesar nas páginas atuais.
+const HomeV2 = lazy(() => import("./pages/v2/HomeV2"));
+const Sistema30dV2 = lazy(() => import("./pages/v2/Sistema30dV2"));
+const SacOnlineV2 = lazy(() => import("./pages/v2/SacOnlineV2"));
+const DiagnosticoV2 = lazy(() => import("./pages/v2/DiagnosticoV2"));
+const v2 = (el: JSX.Element) => (
+  <Suspense fallback={<div style={{ minHeight: "100vh", background: "#0B0D17" }} />}>{el}</Suspense>
+);
 
 const queryClient = new QueryClient();
 
@@ -34,6 +44,10 @@ const App = () => (
             <Route path="/catalogo-qtokquadros" element={<CatalogoQtokQuadros />} />
             <Route path="/club" element={<Club />} />
             <Route path="/auth" element={<Auth />} />
+            <Route path="/v2" element={v2(<HomeV2 />)} />
+            <Route path="/v2/sistema-30-dias" element={v2(<Sistema30dV2 />)} />
+            <Route path="/v2/saconline" element={v2(<SacOnlineV2 />)} />
+            <Route path="/v2/diagnostico" element={v2(<DiagnosticoV2 />)} />
             <Route 
               path="/hub/*" 
               element={
